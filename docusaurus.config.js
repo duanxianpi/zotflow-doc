@@ -34,10 +34,14 @@ const config = {
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
+  // may want to replace "en" with "zh".
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "zh"],
+    localeConfigs: {
+      en: { label: "English" },
+      zh: { label: "简体中文" },
+    },
   },
 
   presets: [
@@ -97,6 +101,7 @@ const config = {
           //   label: "Documentation",
           // },
           // { to: "/blog", label: "Blog", position: "left" },
+          { type: "localeDropdown", position: "right" },
           {
             href: "https://github.com/duanxianpi/zotflow",
             label: "GitHub",

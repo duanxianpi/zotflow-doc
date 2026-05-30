@@ -1,48 +1,53 @@
 ---
-sidebar_position: 1
 slug: /
+sidebar_position: 1
 ---
 
-# Tutorial Intro
+# ZotFlow Documentation
 
-Let's discover **Docusaurus in less than 5 minutes**.
+## What is ZotFlow?
 
-## Getting Started
+ZotFlow is an Obsidian plugin that eliminates the tool switching between "literature reading" and "note writing." It integrates Zotero's item browsing, PDF/EPUB annotation, citation insertion, and note management entirely within Obsidian, allowing you to complete the full read-to-write loop in a single editor, with one set of keyboard shortcuts, under one theme.
 
-Get started by **creating a new site**.
+The core philosophy: **Zotero is the source of truth for bibliographic metadata, and Obsidian is your thinking and writing home base.** ZotFlow builds a bidirectional sync channel between the two — metadata, attachments, annotations, and child notes can all be pushed/pulled on demand — while using the Source Note auto-generation mechanism to create a traceable, linkable "source-of-fact layer" for each bibliographic item in your vault.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+## Documentation Navigation
 
-### What you'll need
+### 1. Quick Start & Working Model
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+- [Installation, connecting Zotero, and first sync](getting-started.md)
+- [Working model overview (sync modes, permissions, conflicts, Source Note design philosophy)](concepts.md)
 
-## Generate a new site
+### 2. Reader & Annotations
 
-Generate a new Docusaurus site using the **classic template**.
+- [Reading attachments, local reader, annotations, and image extraction](reading-and-annotating.md)
 
-The classic template will automatically be added to your project after you run the command:
+### 3. Note System
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+- [Source Note: auto-generation, locking, and updates](source-notes.md)
+- [Item Note: creating, editing, and deleting Zotero child notes](item-notes.md)
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+### 4. Citation & Writing Flow
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+- [Citation formats, insertion methods, and annotation context](citation-guide.md)
 
-## Start your site
+### 5. Templates & Automation
 
-Run the development server:
+- [Template system and variable reference](template-guide.md)
 
-```bash
-cd my-website
-npm run start
-```
+### 6. Settings & Troubleshooting
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+- [Settings reference](settings-reference.md)
+- [Troubleshooting](troubleshooting.md)
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+### 7. Release Notes
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+- [Version changelog](releases/1.0.11.md)
+
+## Terminology
+
+- **Source Note**: An auto-generated Markdown note for each Zotero item, rendered by a LiquidJS template. Defaults to `zotflow-locked: true`, read-only in Reading View. Serves as the "source-of-fact layer" in your knowledge graph.
+- **Item Note**: A Zotero native child note attached to an item, which can be created/edited/deleted within ZotFlow and bidirectionally synced back to Zotero. A completely different concept from Source Note.
+- **Library Reader**: The reader mode for Zotero library attachments, where annotations can be written back to Zotero via bidirectional sync.
+- **Local Reader**: The reader mode for local PDF/EPUB/HTML files within your vault, where annotations are written to a co-located `.zf.json` sidecar file and never touch Zotero.
+- **Editable Region**: A section within a Source Note wrapped by `<!-- ZF_NOTE_BEG_<key> -->` / `<!-- ZF_ANNO_BEG_<key> -->` markers that can be unlocked for editing.

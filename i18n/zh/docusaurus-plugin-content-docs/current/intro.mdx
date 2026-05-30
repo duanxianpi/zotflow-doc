@@ -1,0 +1,53 @@
+---
+slug: /
+sidebar_position: 1
+---
+
+# ZotFlow 中文文档
+
+## What is ZotFlow?
+
+ZotFlow 是一个 Obsidian 插件，目标是消除"文献阅读"与"笔记写作"之间的工具切换。它把 Zotero 的条目浏览、PDF/EPUB 批注、引用插入、笔记管理全部整合到 Obsidian 内，让你在一个统一的编辑器、一套快捷键、一个主题下完成从读到写的完整闭环。
+
+核心思路就一条：**Zotero 是文献元数据的 source of truth，Obsidian 是你的思考和写作主场**。ZotFlow 在这两者之间搭建了一条双向同步通道——metadata、attachment、annotation、child note 均可按需 push/pull——同时用 Source Note 这套自动生成机制在你的 vault 里为每个文献条目建立可追踪、可链接的"来源事实层"。
+
+## 文档导航
+
+### 1. 快速开始与工作模型
+
+- [安装、连接 Zotero、首次同步](getting-started.md)
+- [工作模型总览（同步模式、权限、冲突、Source Note 设计理念）](concepts.md)
+
+### 2. 阅读器与批注
+
+- [阅读附件、本地阅读器、批注与图片提取](reading-and-annotating.md)
+
+### 3. 笔记系统
+
+- [Source Note：自动生成、锁定与更新](source-notes.md)
+- [Item Note：Zotero 子笔记的创建、编辑、删除](item-notes.md)
+
+### 4. 引用与写作流
+
+- [引用格式、插入方式、批注上下文](citation-guide.md)
+
+### 5. 模板与自动化
+
+- [模板系统与变量参考](template-guide.md)
+
+### 6. 设置与排错
+
+- [设置参考](settings-reference.md)
+- [故障排查](troubleshooting.md)
+
+### 7. 发布说明
+
+- [版本更新记录](releases/1.0.11.md)
+
+## 术语约定
+
+- **Source Note**：每个 Zotero 条目对应的一份自动生成 Markdown 笔记，由 LiquidJS 模板驱动渲染。默认 `zotflow-locked: true`，在 Reading View 下只读。是知识图谱中的"来源事实层"。
+- **Item Note**：Zotero 原生子笔记（child note），附着在条目下，可在 ZotFlow 内新建/编辑/删除并双向同步回 Zotero。与 Source Note 是两个完全不同的概念。
+- **Library Reader**：读取 Zotero 库附件的阅读器模式，annotation 可随 bidirectional sync 回写 Zotero。
+- **Local Reader**：读取 vault 内本地 PDF/EPUB/HTML 的阅读器模式，annotation 写入 `.zf.json` sidecar，永不接触 Zotero。
+- **Editable Region**：Source Note 中由 `<!-- ZF_NOTE_BEG_<key> -->` / `<!-- ZF_ANNO_BEG_<key> -->` 标记包裹的可解锁编辑区域。
