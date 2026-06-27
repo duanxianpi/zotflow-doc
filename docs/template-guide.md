@@ -10,12 +10,12 @@ The template engine is [LiquidJS](https://liquidjs.com), syntax-compatible with 
 
 ## Four Template Entry Points
 
-| Template Type           | What it controls                                         | Setting Location                                                     |
-| ----------------------- | -------------------------------------------------------- | -------------------------------------------------------------------- |
-| **Zotero Source Note**  | Body of library item Source Notes                        | Settings → General → Template Path                                   |
-| **Local Source Note**   | Body of local file Source Notes                          | Settings → General → Local Source Note Template                      |
-| **Citation**            | Output for Pandoc / Wikilink / Footnote / Citekey formats | Settings → Citation                                                  |
-| **Path**                | File placement for Source Notes                          | Settings → General → Note Path Template / Local Note Path Template   |
+| Template Type          | What it controls                                          | Setting Location                                                   |
+| ---------------------- | --------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Zotero Source Note** | Body of library item Source Notes                         | Settings → General → Template Path                                 |
+| **Local Source Note**  | Body of local file Source Notes                           | Settings → General → Local Source Note Template                    |
+| **Citation**           | Output for Pandoc / Wikilink / Footnote / Citekey formats | Settings → Citation                                                |
+| **Path**               | File placement for Source Notes                           | Settings → General → Note Path Template / Local Note Path Template |
 
 All template types share the same LiquidJS engine but expose different context variables. Leave any template path empty to fall back to the built-in default.
 
@@ -32,9 +32,9 @@ Templates are composed of:
 
 Globally available variables:
 
-| Variable   | Type     | Description                                                    |
-| ---------- | -------- | -------------------------------------------------------------- |
-| `newline`  | `string` | Literal newline character `"\n"`, for `replace` filter on multiline text |
+| Variable  | Type     | Description                                                              |
+| --------- | -------- | ------------------------------------------------------------------------ |
+| `newline` | `string` | Literal newline character `"\n"`, for `replace` filter on multiline text |
 
 ---
 
@@ -44,107 +44,112 @@ Controls the body of Source Notes for Zotero library items. Context is `{ item, 
 
 ### `item` — Zotero Item
 
-| Variable                      | Type                      | Description                                                                  |
-| ----------------------------- | ------------------------- | ---------------------------------------------------------------------------- |
-| `item.key`                    | `string`                  | Zotero item key                                                              |
-| `item.version`                | `number`                  | Item version number, used for incremental update detection                   |
-| `item.libraryID`              | `number`                  | Library ID                                                                   |
-| `item.citationKey`            | `string`                  | Citation key (e.g., from Better BibTeX); empty string if not set             |
-| `item.itemType`               | `string`                  | Item type (`"journalArticle"`, `"book"`, etc.)                               |
-| `item.title`                  | `string`                  | Title                                                                        |
-| `item.creators`               | `Array<{ name: string }>` | Creator list, `name` is the combined full name                                |
-| `item.date`                   | `string \| null`          | Publication date string (raw value from Zotero)                               |
-| `item.dateAdded`              | `string`                  | ISO timestamp when the item was added to Zotero                               |
-| `item.dateModified`           | `string`                  | ISO timestamp of last modification                                            |
-| `item.accessDate`             | `string \| null`          | Last access date                                                             |
-| `item.abstractNote`           | `string \| undefined`     | Abstract                                                                     |
-| `item.publicationTitle`       | `string \| undefined`     | Journal / conference name                                                    |
-| `item.publisher`              | `string \| undefined`     | Publisher                                                                    |
-| `item.place`                  | `string \| undefined`     | Place of publication                                                         |
-| `item.volume`                 | `string \| undefined`     | Volume                                                                       |
-| `item.issue`                  | `string \| undefined`     | Issue                                                                        |
-| `item.pages`                  | `string \| undefined`     | Page range                                                                   |
-| `item.series`                 | `string \| undefined`     | Series name                                                                  |
-| `item.seriesNumber`           | `string \| undefined`     | Series number                                                                |
-| `item.edition`                | `string \| undefined`     | Edition                                                                      |
-| `item.url`                    | `string \| undefined`     | URL                                                                          |
-| `item.DOI`                    | `string \| undefined`     | DOI                                                                          |
-| `item.ISBN`                   | `string \| undefined`     | ISBN                                                                         |
-| `item.ISSN`                   | `string \| undefined`     | ISSN                                                                         |
-| `item.tags`                   | `Array<{ tag, type? }>`   | Tag list                                                                     |
-| `item.itemPaths`              | `string[]`                | Collection path array for the item (e.g., `["Research/ML"]`)                 |
-| `item.attachments`            | `AttachmentContext[]`     | Child attachment list (PDFs, etc.)                                           |
-| `item.annotations`            | `AnnotationContext[]`     | Annotations directly on the item (only for standalone attachment items)      |
-| `item.attachmentAnnotations`  | `AnnotationContext[]`     | Flattened summary of all annotations across all attachments                  |
-| `item.notes`                  | `NoteContext[]`           | Zotero child note list                                                       |
-| `item.relatedItems`           | `RelatedItemContext[]`    | Zotero "Related" item list                                                   |
+| Variable                     | Type                      | Description                                                             |
+| ---------------------------- | ------------------------- | ----------------------------------------------------------------------- |
+| `item.key`                   | `string`                  | Zotero item key                                                         |
+| `item.version`               | `number`                  | Item version number, used for incremental update detection              |
+| `item.libraryID`             | `number`                  | Library ID                                                              |
+| `item.citationKey`           | `string`                  | Citation key (e.g., from Better BibTeX); empty string if not set        |
+| `item.itemType`              | `string`                  | Item type (`"journalArticle"`, `"book"`, etc.)                          |
+| `item.title`                 | `string`                  | Title                                                                   |
+| `item.parentItem`            | `string`                  | Parent item key; empty string for top-level items                       |
+| `item.creators`              | `Array<{ name: string }>` | Creator list, `name` is the combined full name                          |
+| `item.date`                  | `string \| null`          | Publication date string (raw value from Zotero)                         |
+| `item.year`                  | `string \| null`          | Four-digit year extracted from `item.date`, or null if not extractable  |
+| `item.dateAdded`             | `string`                  | ISO timestamp when the item was added to Zotero                         |
+| `item.dateModified`          | `string`                  | ISO timestamp of last modification                                      |
+| `item.accessDate`            | `string \| null`          | Last access date                                                        |
+| `item.abstractNote`          | `string \| undefined`     | Abstract                                                                |
+| `item.publicationTitle`      | `string \| undefined`     | Journal / conference name                                               |
+| `item.publisher`             | `string \| undefined`     | Publisher                                                               |
+| `item.place`                 | `string \| undefined`     | Place of publication                                                    |
+| `item.volume`                | `string \| undefined`     | Volume                                                                  |
+| `item.issue`                 | `string \| undefined`     | Issue                                                                   |
+| `item.pages`                 | `string \| undefined`     | Page range                                                              |
+| `item.series`                | `string \| undefined`     | Series name                                                             |
+| `item.seriesNumber`          | `string \| undefined`     | Series number                                                           |
+| `item.edition`               | `string \| undefined`     | Edition                                                                 |
+| `item.url`                   | `string \| undefined`     | URL                                                                     |
+| `item.DOI`                   | `string \| undefined`     | DOI                                                                     |
+| `item.ISBN`                  | `string \| undefined`     | ISBN                                                                    |
+| `item.ISSN`                  | `string \| undefined`     | ISSN                                                                    |
+| `item.tags`                  | `Array<{ tag, type? }>`   | Tag list                                                                |
+| `item.itemPaths`             | `string[]`                | Collection path array for the item (e.g., `["Research/ML"]`)            |
+| `item.attachments`           | `AttachmentContext[]`     | Child attachment list (PDFs, etc.)                                      |
+| `item.annotations`           | `AnnotationContext[]`     | Annotations directly on the item (only for standalone attachment items) |
+| `item.attachmentAnnotations` | `AnnotationContext[]`     | Flattened summary of all annotations across all attachments             |
+| `item.notes`                 | `NoteContext[]`           | Zotero child note list                                                  |
+| `item.relatedItems`          | `RelatedItemContext[]`    | Zotero "Related" item list                                              |
 
 ### `item.attachments[]` — Attachment Sub-Objects
 
-| Variable                   | Type                    | Description                                  |
-| -------------------------- | ----------------------- | -------------------------------------------- |
-| `attachment.key`           | `string`                | Attachment item key                          |
-| `attachment.libraryID`     | `number`                | Library ID                                   |
-| `attachment.filename`      | `string`                | Filename (e.g., `"paper.pdf"`)               |
-| `attachment.contentType`   | `string`                | MIME type (e.g., `"application/pdf"`)        |
-| `attachment.tags`          | `Array<{ tag, type? }>` | Tags                                         |
-| `attachment.dateAdded`     | `string`                | ISO timestamp                                |
-| `attachment.dateModified`  | `string`                | ISO timestamp                                |
-| `attachment.annotations`   | `AnnotationContext[]`   | Annotation list on this attachment           |
+| Variable                  | Type                    | Description                           |
+| ------------------------- | ----------------------- | ------------------------------------- |
+| `attachment.key`          | `string`                | Attachment item key                   |
+| `attachment.libraryID`    | `number`                | Library ID                            |
+| `attachment.parentItem`   | `string`                | Key of the parent top-level item      |
+| `attachment.filename`     | `string`                | Filename (e.g., `"paper.pdf"`)        |
+| `attachment.contentType`  | `string`                | MIME type (e.g., `"application/pdf"`) |
+| `attachment.tags`         | `Array<{ tag, type? }>` | Tags                                  |
+| `attachment.dateAdded`    | `string`                | ISO timestamp                         |
+| `attachment.dateModified` | `string`                | ISO timestamp                         |
+| `attachment.annotations`  | `AnnotationContext[]`   | Annotation list on this attachment    |
 
 ### `item.notes[]` — Child Notes
 
-| Variable             | Type                    | Description                                                    |
-| -------------------- | ----------------------- | -------------------------------------------------------------- |
-| `note.key`           | `string`                | Note item key                                                  |
-| `note.libraryID`     | `number`                | Library ID                                                     |
-| `note.title`         | `string`                | Note title (first line, or empty)                              |
-| `note.note`          | `string`                | Full note HTML (Zotero ProseMirror format)                     |
-| `note.tags`          | `Array<{ tag, type? }>` | Tags                                                           |
-| `note.dateAdded`     | `string`                | ISO timestamp                                                  |
-| `note.dateModified`  | `string`                | ISO timestamp                                                  |
+| Variable            | Type                    | Description                                |
+| ------------------- | ----------------------- | ------------------------------------------ |
+| `note.key`          | `string`                | Note item key                              |
+| `note.libraryID`    | `number`                | Library ID                                 |
+| `note.title`        | `string`                | Note title (first line, or empty)          |
+| `note.parentItem`   | `string`                | Parent item key                            |
+| `note.note`         | `string`                | Full note HTML (Zotero ProseMirror format) |
+| `note.tags`         | `Array<{ tag, type? }>` | Tags                                       |
+| `note.dateAdded`    | `string`                | ISO timestamp                              |
+| `note.dateModified` | `string`                | ISO timestamp                              |
 
 ### `item.relatedItems[]` — Related Items
 
 From Zotero's Related tab (`dc:relation`). Each entry corresponds to a relation URI. `key` and `libraryID` are always parsed from the URI; other fields are populated only when the related item exists in the local database.
 
-| Variable           | Type                  | Description                                                                    |
-| ------------------ | --------------------- | ------------------------------------------------------------------------------ |
-| `rel.key`          | `string`              | Zotero item key of the related item                                            |
-| `rel.libraryID`    | `number`              | Library ID parsed from the relation URI                                        |
-| `rel.resolved`     | `boolean`             | Whether the item is in the local database (`false` = cross-library / unsynced / deleted) |
-| `rel.title`        | `string \| undefined` | Title (only when resolved)                                                     |
-| `rel.itemType`     | `string \| undefined` | Item type (only when resolved)                                                 |
-| `rel.citationKey`  | `string \| undefined` | Citation key (only when resolved)                                              |
-| `rel.notePath`     | `string \| undefined` | Path to the item's Source Note in the vault (only when resolved)               |
+| Variable          | Type                  | Description                                                                              |
+| ----------------- | --------------------- | ---------------------------------------------------------------------------------------- |
+| `rel.key`         | `string`              | Zotero item key of the related item                                                      |
+| `rel.libraryID`   | `number`              | Library ID parsed from the relation URI                                                  |
+| `rel.resolved`    | `boolean`             | Whether the item is in the local database (`false` = cross-library / unsynced / deleted) |
+| `rel.title`       | `string \| undefined` | Title (only when resolved)                                                               |
+| `rel.itemType`    | `string \| undefined` | Item type (only when resolved)                                                           |
+| `rel.citationKey` | `string \| undefined` | Citation key (only when resolved)                                                        |
+| `rel.notePath`    | `string \| undefined` | Path to the item's Source Note in the vault (only when resolved)                         |
 
 Cross-library or unsynced related items still appear in the list (`resolved: false`), useful for placeholder display. Filter with `{% if rel.resolved %}` or `{% if rel.title %}`.
 
 ### `item.annotations[]` / `attachment.annotations[]` — Annotations
 
-| Variable                   | Type                    | Description                                                                                  |
-| -------------------------- | ----------------------- | -------------------------------------------------------------------------------------------- |
-| `annotation.key`           | `string`                | Annotation item key                                                                          |
-| `annotation.libraryID`     | `number`                | Library ID                                                                                   |
-| `annotation.type`          | `string`                | Type: `"highlight"`, `"note"`, `"image"`, `"ink"`                                            |
-| `annotation.authorName`    | `string \| undefined`   | Annotation author                                                                            |
-| `annotation.text`          | `string \| null`        | Highlighted text (`>` and `<` already escaped)                                                |
-| `annotation.comment`       | `string \| undefined`   | Annotation comment (already Markdown-converted: `<b>`→`**`, `<i>`→`*`, `<sub>`/`<sup>` stay inline HTML) |
-| `annotation.color`         | `string \| undefined`   | Hex color (e.g., `"#ffd400"`)                                                                |
-| `annotation.pageLabel`     | `string \| undefined`   | Page label                                                                                   |
-| `annotation.tags`          | `Array<{ tag, type? }>` | Tags                                                                                         |
-| `annotation.dateAdded`     | `string`                | ISO timestamp                                                                                |
-| `annotation.dateModified`  | `string`                | ISO timestamp                                                                                |
-| `annotation.raw`           | `AnnotationJSON`        | Raw annotation object, for use with the `process_nav_info` filter                            |
+| Variable                  | Type                    | Description                                                                                              |
+| ------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------- |
+| `annotation.key`          | `string`                | Annotation item key                                                                                      |
+| `annotation.libraryID`    | `number`                | Library ID                                                                                               |
+| `annotation.parentItem`   | `string \| undefined`   | Key of the owning attachment                                                                             |
+| `annotation.type`         | `string`                | Type: `"highlight"`, `"note"`, `"image"`, `"ink"`                                                        |
+| `annotation.authorName`   | `string \| undefined`   | Annotation author                                                                                        |
+| `annotation.text`         | `string \| null`        | Highlighted text (`>` and `<` already escaped)                                                           |
+| `annotation.comment`      | `string \| undefined`   | Annotation comment (already Markdown-converted: `<b>`→`**`, `<i>`→`*`, `<sub>`/`<sup>` stay inline HTML) |
+| `annotation.color`        | `string \| undefined`   | Hex color (e.g., `"#ffd400"`)                                                                            |
+| `annotation.pageLabel`    | `string \| undefined`   | Page label                                                                                               |
+| `annotation.tags`         | `Array<{ tag, type? }>` | Tags                                                                                                     |
+| `annotation.dateAdded`    | `string`                | ISO timestamp                                                                                            |
+| `annotation.dateModified` | `string`                | ISO timestamp                                                                                            |
+| `annotation.raw`          | `AnnotationJSON`        | Raw annotation object, for use with the `process_nav_info` filter                                        |
 
 ### `settings` — Plugin Configuration
 
 `ZotFlowSettings` exposed in full. Commonly used:
 
-| Variable                          | Type     | Description                   |
-| --------------------------------- | -------- | ----------------------------- |
-| `settings.annotationImageFolder`  | `string` | Annotation image output dir   |
-| `settings.sourceNoteFolder`       | `string` | Default Source Note directory |
+| Variable                         | Type     | Description                   |
+| -------------------------------- | -------- | ----------------------------- |
+| `settings.annotationImageFolder` | `string` | Annotation image output dir   |
+| `settings.sourceNoteFolder`      | `string` | Default Source Note directory |
 
 ### Default Template
 
@@ -158,9 +163,10 @@ itemType: {{ item.itemType | json }}
 creators: [{% for c in item.creators %}"{{ c.name }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
 publication: {{ item.publicationTitle | default: item.publisher | json }}
 date: {{ item.date | json }}
-year: {{ item.date | slice: 0, 4 }}
+year: {{ item.year }}
 url: {{ item.url | json }}
 doi: {{ item.DOI | json }}
+tags: [{% for t in item.tags %}"#{{ t.tag | replace: " ", "_" }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
 ---
 {%- capture quote_string %}{{ newline }}> {% endcapture -%}
 {%- capture quote_string_2 %}{{ newline }}> >{% endcapture -%}
@@ -173,17 +179,16 @@ doi: {{ item.DOI | json }}
 {%- if item.attachments.length > 0 -%}
 ## Attachments
 {%- for attachment in item.attachments -%}
-- [{{ attachment.filename }}](obsidian://zotflow?type=open-attachment&libraryID={{ attachment.libraryID }}&key={{ attachment.key }})
+- [{{ attachment.filename }}]({{ attachment | attachment_link }})
 {%- endfor -%}
 
 {%- endif -%}
-{%- if item.notes.length > 0 -%}
 ## Notes
+{%- if item.notes.length > 0 -%}
 {%- for note in item.notes -%}
-### {{ note.title | default: "Note" }}
-{{ note.note }}
-{%- endfor -%}
+{{ note.note | html2md | wrap_editable: "NOTE", note.key }}
 
+{%- endfor -%}
 {%- endif -%}
 {%- if item.attachments.length > 0 and item.attachmentAnnotations.length > 0 -%}
 ## Annotations
@@ -191,16 +196,16 @@ doi: {{ item.DOI | json }}
 {%- if attachment.annotations.length > 0 -%}
 ### {{ attachment.filename }}
 {%- for annotation in attachment.annotations -%}
-> [!zotflow-{{ annotation.type }}-{{ annotation.color }}] [{{ attachment.filename }}, p.{{ annotation.pageLabel }}](obsidian://zotflow?type=open-attachment&libraryID={{ attachment.libraryID }}&key={{ attachment.key }}&navigation={{ annotation.key | process_nav_info}})
+> [!zotflow-{{ annotation.type }}-{{ annotation.color }}] [{{ attachment.filename }}, p.{{ annotation.pageLabel }}]({{ annotation | annotation_link }})
 {%- if annotation.type == "ink" or annotation.type == "image"-%}
 > > ![[{{settings.annotationImageFolder}}/{{ annotation.key }}.png]]
 {%- else -%}
 > > {{ annotation.text | replace: newline, quote_string_2 }}
 {%- endif -%}
-{%- if annotation.comment != "" -%}
 >
-> {{ annotation.comment | replace: newline, quote_string }}
-{%- endif -%}^{{ annotation.key }}
+> {{ annotation.comment | wrap_editable: "ANNO", annotation.key | replace: newline, quote_string }}
+> {% if annotation.tags and annotation.tags.length > 0 -%} {% for t in annotation.tags %}#{{ t.tag | replace: " ", "_" }}{% unless forloop.last %} {% endunless %}{% endfor %} {%- endif %}
+^{{ annotation.key }}
 
 {%- endfor -%}
 {%- endif -%}
@@ -209,27 +214,27 @@ doi: {{ item.DOI | json }}
 {%- if item.attachments.length == 0 and item.itemType == "attachment" and item.annotations.length > 0 -%}
 ## Annotations
 {%- for annotation in item.annotations -%}
-> [!zotflow-{{ annotation.type }}-{{ annotation.color }}] [{{ item.title }}, p.{{ annotation.pageLabel }}](obsidian://zotflow?type=open-attachment&libraryID={{ item.libraryID }}&key={{ item.key }}&navigation={{ annotation.key | process_nav_info}})
+> [!zotflow-{{ annotation.type }}-{{ annotation.color }}] [{{ item.title }}, p.{{ annotation.pageLabel }}]({{ annotation | annotation_link }})
 {%- if annotation.type == "ink" or annotation.type == "image"-%}
 > > ![[{{settings.annotationImageFolder}}/{{ annotation.key }}.png]]
 {%- else -%}
 > > {{ annotation.text | replace: newline, quote_string_2 }}
 {%- endif -%}
-{%- if annotation.comment != "" -%}
 >
-> {{ annotation.comment | replace: newline, quote_string }}
-{%- endif -%}^{{ annotation.key }}
+> {{ annotation.comment | wrap_editable: "ANNO", annotation.key | replace: newline, quote_string }}
+> {% if annotation.tags and annotation.tags.length > 0 -%} {% for t in annotation.tags %}#{{ t.tag | replace: " ", "_" }}{% unless forloop.last %} {% endunless %}{% endfor %} {%- endif %}
+^{{ annotation.key }}
 
 {%- endfor -%}
 {%- endif -%}
 ```
 
-1. **Frontmatter** — Outputs `citationKey`, `title`, `itemType`, `creators`, `publication`, `date`, `year`, `url`, `doi`
+1. **Frontmatter** — Outputs `citationKey`, `title`, `itemType`, `creators`, `publication`, `date`, `year`, `url`, `doi`, `tags`
 2. **Title** — `# Title`
 3. **Abstract** — Rendered in blockquote format
-4. **Attachments** — List of Obsidian URI links
-5. **Child notes** — Each note rendered as a `### heading` + `{{ note.note }}` (Markdown-converted) section
-6. **Annotations** — Grouped by attachment, rendered with `[!zotflow-<type>-<color>]` callouts, annotation comments wrapped as editable regions
+4. **Attachments** — List of clickable links (via `attachment_link` filter, opening in ZotFlow reader by default)
+5. **Child notes** — Each note rendered with `html2md | wrap_editable` as an editable region
+6. **Annotations** — Grouped by attachment, rendered with `[!zotflow-<type>-<color>]` callouts, annotation comments wrapped as editable regions, tags displayed on a dedicated line below the comment
 
 ---
 
@@ -239,30 +244,30 @@ Controls Source Notes for vault-local files (PDF/EPUB/HTML). Context is `{ item,
 
 ### `item` — Local File
 
-| Variable            | Type                | Description                                               |
-| ------------------- | ------------------- | --------------------------------------------------------- |
-| `item.name`         | `string`            | Full filename (e.g., `"paper.pdf"`)                        |
-| `item.path`         | `string`            | Vault-relative path (e.g., `"Articles/paper.pdf"`)         |
-| `item.extension`    | `string`            | Extension (e.g., `"pdf"`)                                  |
-| `item.basename`     | `string`            | Filename without extension (e.g., `"paper"`)              |
-| `item.annotations`  | `LocalAnnotation[]` | Annotation list from the local reader                     |
+| Variable           | Type                | Description                                        |
+| ------------------ | ------------------- | -------------------------------------------------- |
+| `item.name`        | `string`            | Full filename (e.g., `"paper.pdf"`)                |
+| `item.path`        | `string`            | Vault-relative path (e.g., `"Articles/paper.pdf"`) |
+| `item.extension`   | `string`            | Extension (e.g., `"pdf"`)                          |
+| `item.basename`    | `string`            | Filename without extension (e.g., `"paper"`)       |
+| `item.annotations` | `LocalAnnotation[]` | Annotation list from the local reader              |
 
 ### `item.annotations[]` — Local Annotations
 
-| Variable                   | Type                    | Description                                         |
-| -------------------------- | ----------------------- | --------------------------------------------------- |
-| `annotation.key`           | `string`                | Annotation ID                                       |
-| `annotation.libraryID`     | `number`                | Always `0` (local file)                             |
-| `annotation.type`          | `string`                | `"highlight"`, `"note"`, `"image"`, `"ink"`         |
-| `annotation.authorName`    | `string \| undefined`   | Annotation author                                   |
-| `annotation.text`          | `string \| null`        | Highlighted text                                    |
-| `annotation.comment`       | `string \| undefined`   | User comment                                        |
-| `annotation.color`         | `string \| undefined`   | Color                                               |
-| `annotation.pageLabel`     | `string \| undefined`   | Page label                                          |
-| `annotation.tags`          | `Array<{ tag, type? }>` | Tags                                                |
-| `annotation.dateAdded`     | `string \| undefined`   | ISO timestamp                                       |
-| `annotation.dateModified`  | `string \| undefined`   | ISO timestamp                                       |
-| `annotation.raw`           | `AnnotationJSON`        | Raw object, for use with the `process_raw_anno_json` filter |
+| Variable                  | Type                    | Description                                                 |
+| ------------------------- | ----------------------- | ----------------------------------------------------------- |
+| `annotation.key`          | `string`                | Annotation ID                                               |
+| `annotation.libraryID`    | `number`                | Always `0` (local file)                                     |
+| `annotation.type`         | `string`                | `"highlight"`, `"note"`, `"image"`, `"ink"`                 |
+| `annotation.authorName`   | `string \| undefined`   | Annotation author                                           |
+| `annotation.text`         | `string \| null`        | Highlighted text                                            |
+| `annotation.comment`      | `string \| undefined`   | User comment                                                |
+| `annotation.color`        | `string \| undefined`   | Color                                                       |
+| `annotation.pageLabel`    | `string \| undefined`   | Page label                                                  |
+| `annotation.tags`         | `Array<{ tag, type? }>` | Tags                                                        |
+| `annotation.dateAdded`    | `string \| undefined`   | ISO timestamp                                               |
+| `annotation.dateModified` | `string \| undefined`   | ISO timestamp                                               |
+| `annotation.raw`          | `AnnotationJSON`        | Raw object, for use with the `process_raw_anno_json` filter |
 
 ### `path` / `settings`
 
@@ -295,6 +300,10 @@ zotflow-local-attachment: [[{{ path }}]]
 >
 > {{ annotation.comment | replace: newline, quote_string }}
 {%- endif -%}
+{%- if annotation.tags and annotation.tags.length > 0 -%}
+>
+> {% for t in annotation.tags %}#{{ t.tag | replace: " ", "_" }}{% unless forloop.last %} {% endunless %}{% endfor %}
+{%- endif -%}
 ^{{ annotation.key }}
 
 {%- endfor -%}
@@ -307,35 +316,35 @@ zotflow-local-attachment: [[{{ path }}]]
 
 Control the rendered output for citation insertion. Five slots:
 
-| Slot                    | Output                              | Trigger scenario                              |
-| ----------------------- | ----------------------------------- | --------------------------------------------- |
-| **Pandoc**              | `[@key]` format citation           | Drag / suggest / copy with Pandoc selected     |
-| **Wikilink**            | `[[notePath\|label]]` format link   | Drag / suggest / copy with Wikilink selected   |
-| **Footnote Reference**  | Inline `[^key]` marker             | Inline part of a Footnote citation             |
-| **Footnote Definition** | Footnote definition at doc end     | Definition part of a Footnote citation         |
-| **Citekey**             | Bare `@key`                        | Direct output, no template rendering           |
+| Slot                    | Output                            | Trigger scenario                             |
+| ----------------------- | --------------------------------- | -------------------------------------------- |
+| **Pandoc**              | `[@key]` format citation          | Drag / suggest / copy with Pandoc selected   |
+| **Wikilink**            | `[[notePath\|label]]` format link | Drag / suggest / copy with Wikilink selected |
+| **Footnote Reference**  | Inline `[^key]` marker            | Inline part of a Footnote citation           |
+| **Footnote Definition** | Footnote definition at doc end    | Definition part of a Footnote citation       |
+| **Citekey**             | Bare `@key`                       | Direct output, no template rendering         |
 
 ### Citation Context Variables
 
-| Variable             | Type                  | Description                                                    |
-| -------------------- | --------------------- | -------------------------------------------------------------- |
-| `item.key`           | `string`              | Zotero item key                                                |
-| `item.citationKey`   | `string`              | Citation key (falls back to `item.key` if empty)               |
-| `item.title`         | `string`              | Title                                                          |
-| `item.creators`      | `Array<{ name }>`     | Creator list                                                   |
-| `item.date`          | `string`              | Publication date                                               |
-| `item.itemType`      | `string`              | Item type                                                      |
-| `item.url`           | `string \| undefined` | URL                                                            |
-| `item.DOI`           | `string \| undefined` | DOI                                                            |
-| `item.publicationTitle` | `string \| undefined` | Journal / conference name                                   |
-| `item.publisher`     | `string \| undefined` | Publisher                                                      |
-| `item.volume`        | `string \| undefined` | Volume                                                         |
-| `item.issue`         | `string \| undefined` | Issue                                                          |
-| `item.pages`         | `string \| undefined` | Page range                                                     |
-| `item.tags`          | `Array<{ tag }>`      | Tags                                                           |
-| `item.*`             |                       | Other Zotero item fields are also available                    |
-| `notePath`           | `string`              | Vault-relative path to the Source Note                         |
-| `annotations`        | `Array`               | Currently selected annotations (empty array when none selected) |
+| Variable                | Type                  | Description                                                     |
+| ----------------------- | --------------------- | --------------------------------------------------------------- |
+| `item.key`              | `string`              | Zotero item key                                                 |
+| `item.citationKey`      | `string`              | Citation key (falls back to `item.key` if empty)                |
+| `item.title`            | `string`              | Title                                                           |
+| `item.creators`         | `Array<{ name }>`     | Creator list                                                    |
+| `item.date`             | `string`              | Publication date                                                |
+| `item.itemType`         | `string`              | Item type                                                       |
+| `item.url`              | `string \| undefined` | URL                                                             |
+| `item.DOI`              | `string \| undefined` | DOI                                                             |
+| `item.publicationTitle` | `string \| undefined` | Journal / conference name                                       |
+| `item.publisher`        | `string \| undefined` | Publisher                                                       |
+| `item.volume`           | `string \| undefined` | Volume                                                          |
+| `item.issue`            | `string \| undefined` | Issue                                                           |
+| `item.pages`            | `string \| undefined` | Page range                                                      |
+| `item.tags`             | `Array<{ tag }>`      | Tags                                                            |
+| `item.*`                |                       | Other Zotero item fields are also available                     |
+| `notePath`              | `string`              | Vault-relative path to the Source Note                          |
+| `annotations`           | `Array`               | Currently selected annotations (empty array when none selected) |
 
 `annotations[]` sub-fields: `annotation.key`, `annotation.type`, `annotation.text`, `annotation.comment`, `annotation.color`, `annotation.pageLabel`, `annotation.tags`, `annotation.dateAdded`, `annotation.dateModified`.
 
@@ -394,31 +403,31 @@ Control where Source Note files land in your vault. Each path segment is automat
 
 ### Library Path Variables
 
-| Variable          | Type              | Description                            |
-| ----------------- | ----------------- | -------------------------------------- |
-| `key`             | `string`          | Zotero item key                        |
-| `citationKey`     | `string`          | Citation key                           |
-| `libraryID`       | `number`          | Library ID                             |
-| `itemType`        | `string`          | Item type                              |
-| `title`           | `string`          | Title                                  |
-| `creators`        | `Array<{ name }>` | Creator list                           |
-| `date`            | `string`          | Publication date                       |
-| `year`            | `string`          | Four-digit year extracted from date    |
-| `libraryName`     | `string`          | Library display name                   |
-| `publicationTitle`| `string`          | Journal / conference name              |
-| `publisher`       | `string`          | Publisher                              |
-| `tags`            | `Array<{ tag }>`  | Tags                                   |
-| `itemPaths`       | `string[]`        | Collection paths                       |
-| `*`               |                   | Other Zotero metadata fields available |
+| Variable           | Type              | Description                            |
+| ------------------ | ----------------- | -------------------------------------- |
+| `key`              | `string`          | Zotero item key                        |
+| `citationKey`      | `string`          | Citation key                           |
+| `libraryID`        | `number`          | Library ID                             |
+| `itemType`         | `string`          | Item type                              |
+| `title`            | `string`          | Title                                  |
+| `creators`         | `Array<{ name }>` | Creator list                           |
+| `date`             | `string`          | Publication date                       |
+| `year`             | `string`          | Four-digit year extracted from date    |
+| `libraryName`      | `string`          | Library display name                   |
+| `publicationTitle` | `string`          | Journal / conference name              |
+| `publisher`        | `string`          | Publisher                              |
+| `tags`             | `Array<{ tag }>`  | Tags                                   |
+| `itemPaths`        | `string[]`        | Collection paths                       |
+| `*`                |                   | Other Zotero metadata fields available |
 
 ### Local Path Variables
 
-| Variable     | Type     | Description                         |
-| ------------ | -------- | ----------------------------------- |
-| `basename`   | `string` | Filename without extension          |
-| `name`       | `string` | Full filename                       |
-| `path`       | `string` | Vault-relative path                 |
-| `extension`  | `string` | Extension (without dot)             |
+| Variable    | Type     | Description                |
+| ----------- | -------- | -------------------------- |
+| `basename`  | `string` | Filename without extension |
+| `name`      | `string` | Full filename              |
+| `path`      | `string` | Vault-relative path        |
+| `extension` | `string` | Extension (without dot)    |
 
 ### Default Path Templates
 
@@ -454,6 +463,41 @@ Converts an annotation key into a URL-encoded JSON navigation parameter for cons
 Input: `"ABC12345"`
 Output: `%7B%22annotationID%22%3A%22ABC12345%22%7D`
 
+### `attachment_link`
+
+Applies to: **Zotero Source Note**
+
+Generates a clickable link to open an attachment. By default, produces a ZotFlow protocol URI (`obsidian://zotflow?type=open-attachment&...`) that opens the attachment in ZotFlow's built-in reader. Pass `"zotero"` as the argument to generate a native Zotero URI instead.
+
+```liquid
+{{ attachment | attachment_link }}
+{{ attachment | attachment_link: "zotero" }}
+```
+
+### `annotation_link`
+
+Applies to: **Zotero Source Note**
+
+Generates a clickable link that navigates to a specific annotation. By default, produces a ZotFlow protocol URI (`obsidian://zotflow?type=open-annotation&...`) that opens the parent attachment in ZotFlow's reader and navigates to the annotation. Pass `"zotero"` as the argument to generate a native Zotero URI instead.
+
+```liquid
+{{ annotation | annotation_link }}
+{{ annotation | annotation_link: "zotero" }}
+```
+
+### `item_link`
+
+Applies to: **Zotero Source Note**
+
+Generates a clickable link to an item. By default, produces a ZotFlow protocol URI (`obsidian://zotflow?type=open-note&...`) that opens the item's Source Note. Pass `"zotero"` as the argument to generate a native Zotero `zotero://select/...` URI instead.
+
+```liquid
+{{ item | item_link }}
+{{ related | item_link: "zotero" }}
+```
+
+> **Auto-detection**: When using the `"zotero"` argument, the Zotero URL prefix automatically uses `groups/<id>` for group libraries and `library` for personal libraries.
+
 ### `html2md`
 
 Applies to: **Zotero Source Note**
@@ -476,10 +520,10 @@ Wraps content in hidden HTML comment markers recognized by ZotFlow's editor exte
 {{ value | wrap_editable: "TYPE", key }}
 ```
 
-| Parameter | Type     | Description                                                    |
-| --------- | -------- | -------------------------------------------------------------- |
-| `"TYPE"`  | `string` | `"NOTE"` — Zotero child note; `"ANNO"` — annotation comment    |
-| `key`     | `string` | Corresponding Zotero note key or annotation key                |
+| Parameter | Type     | Description                                                 |
+| --------- | -------- | ----------------------------------------------------------- |
+| `"TYPE"`  | `string` | `"NOTE"` — Zotero child note; `"ANNO"` — annotation comment |
+| `key`     | `string` | Corresponding Zotero note key or annotation key             |
 
 Output: Input string wrapped with `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` markers.
 
@@ -515,10 +559,10 @@ ZotFlow **never modifies them** — no overwrite, no delete, no addition. These 
 
 On each re-render, template frontmatter fields are merged with the note's existing frontmatter according to prefix rules:
 
-| Prefix                                | Behavior                                                                                                      |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| **`??` prefix** (e.g., `??rating`)    | Field **absent** from note → fill with template value. Field **already present** in note → keep note's value   |
-| **No `??` prefix**                    | Always overwrite the note's value with template content                                                       |
+| Prefix                             | Behavior                                                                                                     |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **`??` prefix** (e.g., `??rating`) | Field **absent** from note → fill with template value. Field **already present** in note → keep note's value |
+| **No `??` prefix**                 | Always overwrite the note's value with template content                                                      |
 
 Mandatory fields (`zotflow-locked: true`, `zotero-key`, `item-version`, `library-id`, and `zotflow-local-attachment` for local notes) are always injected by the system — no need to declare them in templates.
 
@@ -606,15 +650,18 @@ DOI: [{{ item.DOI }}](https://doi.org/{{ item.DOI }})
 {%- endif -%}
 ```
 
-### Render Tags
+### Render Tags (YAML Frontmatter)
 
 ```liquid
-{%- if item.tags.length > 0 -%}
-tags:
-{%- for tag in item.tags -%}
-  - {{ tag.tag }}
-{%- endfor -%}
-{%- endif -%}
+tags: [{% for t in item.tags %}"#{{ t.tag | replace: " ", "_" }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
+```
+
+### Render Tags (Inline in Annotation Callout)
+
+```liquid
+{% if annotation.tags and annotation.tags.length > 0 -%}
+> {% for t in annotation.tags %}#{{ t.tag | replace: " ", "_" }}{% unless forloop.last %} {% endunless %}{% endfor %}
+{%- endif %}
 ```
 
 ### Related Items
@@ -636,16 +683,34 @@ tags:
 
 Three branches cover: items with a Source Note path (wikilink), items that exist locally but have no path (title + key), and unsynced / cross-library items (key only).
 
-### Deep Link to Attachment
+### Attachment Link
 
 ```liquid
-[Open PDF](obsidian://zotflow?type=open-attachment&libraryID={{ attachment.libraryID }}&key={{ attachment.key }})
+- [{{ attachment.filename }}]({{ attachment | attachment_link }})
 ```
 
-### Jump to Specific Annotation
+To open in Zotero's native reader instead:
 
 ```liquid
-[Jump to annotation](obsidian://zotflow?type=open-attachment&libraryID={{ attachment.libraryID }}&key={{ attachment.key }}&navigation={{ annotation.key | process_nav_info }})
+- [{{ attachment.filename }}]({{ attachment | attachment_link: "zotero" }})
+```
+
+### Annotation Link (Jump to Specific Annotation)
+
+```liquid
+> [!zotflow-{{ annotation.type }}-{{ annotation.color }}] [{{ attachment.filename }}, p.{{ annotation.pageLabel }}]({{ annotation | annotation_link }})
+```
+
+With Zotero native reader:
+
+```liquid
+[{{ attachment.filename }}, p.{{ annotation.pageLabel }}]({{ annotation | annotation_link: "zotero" }})
+```
+
+### Item Link
+
+```liquid
+Related: [{{ related.title }}]({{ related | item_link }})
 ```
 
 ### Group Annotations by Attachment

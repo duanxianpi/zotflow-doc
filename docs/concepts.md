@@ -17,7 +17,7 @@ Your Zotero library is the canonical store for bibliographic metadata. ZotFlow's
 - **Pull**: Fetch metadata, items, collections, and annotations from the Zotero Web API into a local IndexedDB cache
 - **Push**: Write your Obsidian-side changes back to Zotero
 
-> **What data gets written back?** Currently, only **annotations** (add/edit/delete) and **Item Notes** (create/edit/delete child notes) are pushed back to Zotero. Changes to tags, frontmatter, and item metadata (title, creators, etc.) are **not** pushed back to Zotero. Source Note frontmatter custom fields are local-only and invisible to Zotero.
+> **What data gets written back?** Currently, **annotations** (add/edit/delete), **Item Notes** (create/edit/delete child notes), and **tags** (edit item/annotation tags via the tag editing modal) are pushed back to Zotero. Changes to frontmatter and item metadata (title, creators, etc.) are **not** pushed back to Zotero. Source Note frontmatter custom fields are local-only and invisible to Zotero.
 
 Each accessible Zotero library has an independently configured sync mode:
 

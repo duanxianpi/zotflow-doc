@@ -44,40 +44,42 @@ ZotFlow 的几乎所有用户可见输出都由模板驱动。你不需要等 fe
 
 ### `item` — Zotero 条目
 
-| 变量                         | 类型                      | 说明                                                         |
-| ---------------------------- | ------------------------- | ------------------------------------------------------------ |
-| `item.key`                   | `string`                  | Zotero item key                                              |
-| `item.version`               | `number`                  | 条目版本号，用于增量更新检测                                 |
-| `item.libraryID`             | `number`                  | 库 ID                                                        |
-| `item.citationKey`           | `string`                  | Citation key（如 Better BibTeX 生成），未设置则为空串        |
-| `item.itemType`              | `string`                  | 条目类型（`"journalArticle"`、`"book"` 等）                  |
-| `item.title`                 | `string`                  | 标题                                                         |
-| `item.creators`              | `Array<{ name: string }>` | 作者列表，`name` 为组合后的全名                              |
-| `item.date`                  | `string \| null`          | 出版日期字符串（Zotero 中填写的原始值）                      |
-| `item.dateAdded`             | `string`                  | ISO 时间戳，条目添加到 Zotero 的时间                         |
-| `item.dateModified`          | `string`                  | ISO 时间戳，最后修改时间                                     |
-| `item.accessDate`            | `string \| null`          | 最后访问日期                                                 |
-| `item.abstractNote`          | `string \| undefined`     | 摘要                                                         |
-| `item.publicationTitle`      | `string \| undefined`     | 期刊/会议名                                                  |
-| `item.publisher`             | `string \| undefined`     | 出版社                                                       |
-| `item.place`                 | `string \| undefined`     | 出版地                                                       |
-| `item.volume`                | `string \| undefined`     | 卷                                                           |
-| `item.issue`                 | `string \| undefined`     | 期                                                           |
-| `item.pages`                 | `string \| undefined`     | 页码范围                                                     |
-| `item.series`                | `string \| undefined`     | 系列名                                                       |
-| `item.seriesNumber`          | `string \| undefined`     | 系列编号                                                     |
-| `item.edition`               | `string \| undefined`     | 版次                                                         |
-| `item.url`                   | `string \| undefined`     | URL                                                          |
-| `item.DOI`                   | `string \| undefined`     | DOI                                                          |
-| `item.ISBN`                  | `string \| undefined`     | ISBN                                                         |
-| `item.ISSN`                  | `string \| undefined`     | ISSN                                                         |
-| `item.tags`                  | `Array<{ tag, type? }>`   | 标签列表                                                     |
-| `item.itemPaths`             | `string[]`                | 条目所在的 collection 路径数组（如 `["Research/ML"]`）       |
-| `item.attachments`           | `AttachmentContext[]`     | 子附件列表（PDF 等）                                         |
-| `item.annotations`           | `AnnotationContext[]`     | 直接在条目上的 annotation（仅 standalone attachment 条目有） |
-| `item.attachmentAnnotations` | `AnnotationContext[]`     | 所有 attachment 下 annotation 的扁平汇总                     |
-| `item.notes`                 | `NoteContext[]`           | Zotero 子笔记列表                                            |
-| `item.relatedItems`          | `RelatedItemContext[]`    | Zotero "Related" 关联条目列表                                |
+| 变量                         | 类型                      | 说明                                                                                                            |
+| ---------------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `item.key`                   | `string`                  | Zotero item key                                                                                                 |
+| `item.version`               | `number`                  | 条目版本号，用于增量更新检测                                                                                    |
+| `item.libraryID`             | `number`                  | 库 ID                                                                                                           |
+| `item.citationKey`           | `string`                  | Citation key（如 Better BibTeX 生成），未设置则为空串                                                           |
+| `item.itemType`              | `string`                  | 条目类型（`"journalArticle"`、`"book"` 等）                                                                     |
+| `item.title`                 | `string`                  | 标题                                                                                                            |
+| `item.parentItem`            | `string`                  | 父条目 key；顶层条目为空串                                                                                      |
+| `item.creators`              | `Array<{ name: string }>` | 作者列表，`name` 为组合后的全名                                                                                 |
+| `item.date`                  | `string \| null`          | 出版日期字符串（Zotero 中填写的原始值）                                                                         |
+| `item.year`                  | `string \| null`          | 从 date 提取的四位年份（如 date 为 `"2024-05-01"` 则 year 为 `"2024"`，date 为空或格式不规范则 year 也为 null） |
+| `item.dateAdded`             | `string`                  | ISO 时间戳，条目添加到 Zotero 的时间                                                                            |
+| `item.dateModified`          | `string`                  | ISO 时间戳，最后修改时间                                                                                        |
+| `item.accessDate`            | `string \| null`          | 最后访问日期                                                                                                    |
+| `item.abstractNote`          | `string \| undefined`     | 摘要                                                                                                            |
+| `item.publicationTitle`      | `string \| undefined`     | 期刊/会议名                                                                                                     |
+| `item.publisher`             | `string \| undefined`     | 出版社                                                                                                          |
+| `item.place`                 | `string \| undefined`     | 出版地                                                                                                          |
+| `item.volume`                | `string \| undefined`     | 卷                                                                                                              |
+| `item.issue`                 | `string \| undefined`     | 期                                                                                                              |
+| `item.pages`                 | `string \| undefined`     | 页码范围                                                                                                        |
+| `item.series`                | `string \| undefined`     | 系列名                                                                                                          |
+| `item.seriesNumber`          | `string \| undefined`     | 系列编号                                                                                                        |
+| `item.edition`               | `string \| undefined`     | 版次                                                                                                            |
+| `item.url`                   | `string \| undefined`     | URL                                                                                                             |
+| `item.DOI`                   | `string \| undefined`     | DOI                                                                                                             |
+| `item.ISBN`                  | `string \| undefined`     | ISBN                                                                                                            |
+| `item.ISSN`                  | `string \| undefined`     | ISSN                                                                                                            |
+| `item.tags`                  | `Array<{ tag, type? }>`   | 标签列表                                                                                                        |
+| `item.itemPaths`             | `string[]`                | 条目所在的 collection 路径数组（如 `["Research/ML"]`）                                                          |
+| `item.attachments`           | `AttachmentContext[]`     | 子附件列表（PDF 等）                                                                                            |
+| `item.annotations`           | `AnnotationContext[]`     | 直接在条目上的 annotation（仅 standalone attachment 条目有）                                                    |
+| `item.attachmentAnnotations` | `AnnotationContext[]`     | 所有 attachment 下 annotation 的扁平汇总                                                                        |
+| `item.notes`                 | `NoteContext[]`           | Zotero 子笔记列表                                                                                               |
+| `item.relatedItems`          | `RelatedItemContext[]`    | Zotero "Related" 关联条目列表                                                                                   |
 
 ### `item.attachments[]` — 附件子对象
 
@@ -85,6 +87,7 @@ ZotFlow 的几乎所有用户可见输出都由模板驱动。你不需要等 fe
 | ------------------------- | ----------------------- | ----------------------------------- |
 | `attachment.key`          | `string`                | Attachment item key                 |
 | `attachment.libraryID`    | `number`                | 库 ID                               |
+| `attachment.parentItem`   | `string`                | 所属顶层条目的 key                  |
 | `attachment.filename`     | `string`                | 文件名（如 `"paper.pdf"`）          |
 | `attachment.contentType`  | `string`                | MIME 类型（如 `"application/pdf"`） |
 | `attachment.tags`         | `Array<{ tag, type? }>` | 标签                                |
@@ -99,6 +102,7 @@ ZotFlow 的几乎所有用户可见输出都由模板驱动。你不需要等 fe
 | `note.key`          | `string`                | Note item key                            |
 | `note.libraryID`    | `number`                | 库 ID                                    |
 | `note.title`        | `string`                | 笔记标题（首行或空）                     |
+| `note.parentItem`   | `string`                | 父条目 key                               |
 | `note.note`         | `string`                | 笔记完整 HTML（Zotero ProseMirror 格式） |
 | `note.tags`         | `Array<{ tag, type? }>` | 标签                                     |
 | `note.dateAdded`    | `string`                | ISO 时间戳                               |
@@ -126,6 +130,7 @@ ZotFlow 的几乎所有用户可见输出都由模板驱动。你不需要等 fe
 | ------------------------- | ----------------------- | ---------------------------------------------------------------------------------- |
 | `annotation.key`          | `string`                | Annotation item key                                                                |
 | `annotation.libraryID`    | `number`                | 库 ID                                                                              |
+| `annotation.parentItem`   | `string \| undefined`   | 所属附件的 key                                                                     |
 | `annotation.type`         | `string`                | 类型：`"highlight"`、`"note"`、`"image"`、`"ink"`                                  |
 | `annotation.authorName`   | `string \| undefined`   | 批注作者                                                                           |
 | `annotation.text`         | `string \| null`        | 高亮文本（`>` 和 `<` 已转义）                                                      |
@@ -158,9 +163,10 @@ itemType: {{ item.itemType | json }}
 creators: [{% for c in item.creators %}"{{ c.name }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
 publication: {{ item.publicationTitle | default: item.publisher | json }}
 date: {{ item.date | json }}
-year: {{ item.date | slice: 0, 4 }}
+year: {{ item.year }}
 url: {{ item.url | json }}
 doi: {{ item.DOI | json }}
+tags: [{% for t in item.tags %}"#{{ t.tag | replace: " ", "_" }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
 ---
 {%- capture quote_string %}{{ newline }}> {% endcapture -%}
 {%- capture quote_string_2 %}{{ newline }}> >{% endcapture -%}
@@ -173,17 +179,16 @@ doi: {{ item.DOI | json }}
 {%- if item.attachments.length > 0 -%}
 ## Attachments
 {%- for attachment in item.attachments -%}
-- [{{ attachment.filename }}](obsidian://zotflow?type=open-attachment&libraryID={{ attachment.libraryID }}&key={{ attachment.key }})
+- [{{ attachment.filename }}]({{ attachment | attachment_link }})
 {%- endfor -%}
 
 {%- endif -%}
-{%- if item.notes.length > 0 -%}
 ## Notes
+{%- if item.notes.length > 0 -%}
 {%- for note in item.notes -%}
-### {{ note.title | default: "Note" }}
-{{ note.note }}
-{%- endfor -%}
+{{ note.note | html2md | wrap_editable: "NOTE", note.key }}
 
+{%- endfor -%}
 {%- endif -%}
 {%- if item.attachments.length > 0 and item.attachmentAnnotations.length > 0 -%}
 ## Annotations
@@ -191,16 +196,16 @@ doi: {{ item.DOI | json }}
 {%- if attachment.annotations.length > 0 -%}
 ### {{ attachment.filename }}
 {%- for annotation in attachment.annotations -%}
-> [!zotflow-{{ annotation.type }}-{{ annotation.color }}] [{{ attachment.filename }}, p.{{ annotation.pageLabel }}](obsidian://zotflow?type=open-attachment&libraryID={{ attachment.libraryID }}&key={{ attachment.key }}&navigation={{ annotation.key | process_nav_info}})
+> [!zotflow-{{ annotation.type }}-{{ annotation.color }}] [{{ attachment.filename }}, p.{{ annotation.pageLabel }}]({{ annotation | annotation_link }})
 {%- if annotation.type == "ink" or annotation.type == "image"-%}
 > > ![[{{settings.annotationImageFolder}}/{{ annotation.key }}.png]]
 {%- else -%}
 > > {{ annotation.text | replace: newline, quote_string_2 }}
 {%- endif -%}
-{%- if annotation.comment != "" -%}
 >
-> {{ annotation.comment | replace: newline, quote_string }}
-{%- endif -%}^{{ annotation.key }}
+> {{ annotation.comment | wrap_editable: "ANNO", annotation.key | replace: newline, quote_string }}
+> {% if annotation.tags and annotation.tags.length > 0 -%} {% for t in annotation.tags %}#{{ t.tag | replace: " ", "_" }}{% unless forloop.last %} {% endunless %}{% endfor %} {%- endif %}
+^{{ annotation.key }}
 
 {%- endfor -%}
 {%- endif -%}
@@ -209,27 +214,27 @@ doi: {{ item.DOI | json }}
 {%- if item.attachments.length == 0 and item.itemType == "attachment" and item.annotations.length > 0 -%}
 ## Annotations
 {%- for annotation in item.annotations -%}
-> [!zotflow-{{ annotation.type }}-{{ annotation.color }}] [{{ item.title }}, p.{{ annotation.pageLabel }}](obsidian://zotflow?type=open-attachment&libraryID={{ item.libraryID }}&key={{ item.key }}&navigation={{ annotation.key | process_nav_info}})
+> [!zotflow-{{ annotation.type }}-{{ annotation.color }}] [{{ item.title }}, p.{{ annotation.pageLabel }}]({{ annotation | annotation_link }})
 {%- if annotation.type == "ink" or annotation.type == "image"-%}
 > > ![[{{settings.annotationImageFolder}}/{{ annotation.key }}.png]]
 {%- else -%}
 > > {{ annotation.text | replace: newline, quote_string_2 }}
 {%- endif -%}
-{%- if annotation.comment != "" -%}
 >
-> {{ annotation.comment | replace: newline, quote_string }}
-{%- endif -%}^{{ annotation.key }}
+> {{ annotation.comment | wrap_editable: "ANNO", annotation.key | replace: newline, quote_string }}
+> {% if annotation.tags and annotation.tags.length > 0 -%} {% for t in annotation.tags %}#{{ t.tag | replace: " ", "_" }}{% unless forloop.last %} {% endunless %}{% endfor %} {%- endif %}
+^{{ annotation.key }}
 
 {%- endfor -%}
 {%- endif -%}
 ```
 
-1. **frontmatter** — 输出 `citationKey`、`title`、`itemType`、`creators`、`publication`、`date`、`year`、`url`、`doi`
+1. **frontmatter** — 输出 `citationKey`、`title`、`itemType`、`creators`、`publication`、`date`、`year`、`url`、`doi`、`tags`
 2. **标题** — `# 标题`
 3. **摘要** — 以 blockquote 格式渲染
-4. **附件** — Obsidian URI 链接列表
-5. **子笔记** — 每个 note 渲染为一个 `### 标题` + `{{ note.note }}` 转 Markdown 的 section
-6. **批注** — 按 attachment 分组，使用 `[!zotflow-<type>-<color>]` callout 渲染，annotation comment 包裹为 editable region
+4. **附件** — 可点击链接列表（通过 `attachment_link` filter，默认在 ZotFlow reader 中打开）
+5. **子笔记** — 每个 note 通过 `html2md | wrap_editable` 渲染为 editable region
+6. **批注** — 按 attachment 分组，使用 `[!zotflow-<type>-<color>]` callout 渲染，annotation comment 包裹为 editable region，标签在评论下方独立行显示
 
 ---
 
@@ -294,6 +299,10 @@ zotflow-local-attachment: [[{{ path }}]]
 {%- if annotation.comment != "" -%}
 >
 > {{ annotation.comment | replace: newline, quote_string }}
+{%- endif -%}
+{%- if annotation.tags and annotation.tags.length > 0 -%}
+>
+> {% for t in annotation.tags %}#{{ t.tag | replace: " ", "_" }}{% unless forloop.last %} {% endunless %}{% endfor %}
 {%- endif -%}
 ^{{ annotation.key }}
 
@@ -454,6 +463,41 @@ ZotFlow 在 LiquidJS 内置 filter 之上注册了以下自定义 filter：
 输入：`"ABC12345"`
 输出：`%7B%22annotationID%22%3A%22ABC12345%22%7D`
 
+### `attachment_link`
+
+适用模板：**Zotero Source Note**
+
+生成打开附件的可点击链接。默认生成 ZotFlow 协议 URI（`obsidian://zotflow?type=open-attachment&...`），在 ZotFlow 内置阅读器中打开附件。传入 `"zotero"` 参数可生成原生 Zotero URI。
+
+```liquid
+{{ attachment | attachment_link }}
+{{ attachment | attachment_link: "zotero" }}
+```
+
+### `annotation_link`
+
+适用模板：**Zotero Source Note**
+
+生成导航到具体 annotation 的可点击链接。默认生成 ZotFlow 协议 URI（`obsidian://zotflow?type=open-annotation&...`），在 ZotFlow reader 中打开父附件并导航到该 annotation。传入 `"zotero"` 参数可生成原生 Zotero URI。
+
+```liquid
+{{ annotation | annotation_link }}
+{{ annotation | annotation_link: "zotero" }}
+```
+
+### `item_link`
+
+适用模板：**Zotero Source Note**
+
+生成条目的可点击链接。默认生成 ZotFlow 协议 URI（`obsidian://zotflow?type=open-note&...`），打开该条目的 Source Note。传入 `"zotero"` 参数可生成原生 Zotero `zotero://select/...` URI。
+
+```liquid
+{{ item | item_link }}
+{{ related | item_link: "zotero" }}
+```
+
+> **自动检测**：使用 `"zotero"` 参数时，Zotero URL 前缀自动区分 group 库（`groups/<id>`）与个人库（`library`）。
+
 ### `html2md`
 
 适用模板：**Zotero Source Note**
@@ -606,15 +650,18 @@ DOI: [{{ item.DOI }}](https://doi.org/{{ item.DOI }})
 {%- endif -%}
 ```
 
-### 渲染标签
+### 渲染标签（YAML Frontmatter）
 
 ```liquid
-{%- if item.tags.length > 0 -%}
-tags:
-{%- for tag in item.tags -%}
-  - {{ tag.tag }}
-{%- endfor -%}
-{%- endif -%}
+tags: [{% for t in item.tags %}"#{{ t.tag | replace: " ", "_" }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
+```
+
+### 渲染标签（Annotation Callout 内联）
+
+```liquid
+{% if annotation.tags and annotation.tags.length > 0 -%}
+> {% for t in annotation.tags %}#{{ t.tag | replace: " ", "_" }}{% unless forloop.last %} {% endunless %}{% endfor %}
+{%- endif %}
 ```
 
 ### 关联条目（Related Items）
@@ -636,16 +683,34 @@ tags:
 
 三个分支分别处理：有 Source Note 路径的（wikilink）、本地存在但无路径的（标题+key）、未同步/跨库的（仅 key）。
 
-### Deep Link 到附件
+### 附件链接
 
 ```liquid
-[Open PDF](obsidian://zotflow?type=open-attachment&libraryID={{ attachment.libraryID }}&key={{ attachment.key }})
+- [{{ attachment.filename }}]({{ attachment | attachment_link }})
 ```
 
-### 跳转到指定 Annotation
+如需在 Zotero 原生阅读器中打开：
 
 ```liquid
-[Jump to annotation](obsidian://zotflow?type=open-attachment&libraryID={{ attachment.libraryID }}&key={{ attachment.key }}&navigation={{ annotation.key | process_nav_info }})
+- [{{ attachment.filename }}]({{ attachment | attachment_link: "zotero" }})
+```
+
+### Annotation 链接（跳转到指定批注）
+
+```liquid
+> [!zotflow-{{ annotation.type }}-{{ annotation.color }}] [{{ attachment.filename }}, p.{{ annotation.pageLabel }}]({{ annotation | annotation_link }})
+```
+
+使用 Zotero 原生阅读器：
+
+```liquid
+[{{ attachment.filename }}, p.{{ annotation.pageLabel }}]({{ annotation | annotation_link: "zotero" }})
+```
+
+### 条目链接
+
+```liquid
+Related: [{{ related.title }}]({{ related | item_link }})
 ```
 
 ### 按 Attachment 分组渲染 Annotation

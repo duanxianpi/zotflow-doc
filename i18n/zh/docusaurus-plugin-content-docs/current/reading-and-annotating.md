@@ -26,14 +26,15 @@ ZotFlow 内置了一个阅读器——使用与 Zotero 相同的 PDF/EPUB/HTML �
 
 ### 方式 3：Protocol URI
 
-可从外部或笔记内通过 URI 跳转到附件或 Source Note：
+可从外部或笔记内通过 URI 跳转到附件、annotation 或 Source Note：
 
-```
-obsidian://zotflow?type=open-attachment&libraryID=<id>&key=<key>
-obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>
-```
+| URI 类型 | 格式 |
+| -------- | ---- |
+| **打开附件** | `obsidian://zotflow?type=open-attachment&libraryID=<id>&key=<key>` |
+| **打开 annotation** | `obsidian://zotflow?type=open-annotation&libraryID=<id>&key=<key>` |
+| **打开 note** | `obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>` |
 
-附加 `&navigation=<json>` 可跳转到指定页面或 annotation。
+`open-annotation` 协议通过 key 查找 annotation，定位其父附件，并在 Zotero reader 中打开该附件并直接导航到该条 annotation。打开附件时附加 `&navigation=<json>` 可跳转到指定页面或 annotation。
 
 ---
 
@@ -123,6 +124,9 @@ obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>
 | **Collection 或 Library** | Extract anno images for all child items | 批量提取 annotation 图片               |
 | **顶层条目**（非附件）    | Open source note                        | 打开（并强制更新）该条目的 Source Note |
 | **顶层条目**（非附件）    | Extract annotation images               | 提取该条目的 annotation 图片           |
+| **任意条目**              | Edit tags…                              | 打开标签编辑弹窗，管理条目标签         |
+| **Note 条目**             | Locate in Source Note                   | 打开父条目 Source Note 并滚动到对应 note 的 editable region |
+| **Note 条目**             | Open in Note Editor (Experimental)      | 在独立 Note Editor 标签页中直接打开该 note |
 
 ---
 

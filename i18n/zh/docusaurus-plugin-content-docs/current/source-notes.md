@@ -118,7 +118,7 @@ ZotFlow **永不修改**。重渲染时原样保留，不参与任何合并逻�
 
 #### Annotation 变更触发更新
 
-当你在 reader 中添加、编辑或删除 annotation，Source Note 自动更新——同样是 ~2s debounce。此类更新**强制触发**，不受 version 检查约束。
+当你在 reader 中添加、编辑或删除 annotation，Source Note 自动更新——同样是 ~2s debounce。此类更新**强制触发**，不受 version 检查约束。仅修改标签（通过标签编辑弹窗）同样触发重渲染，因为 annotation 变更检测现在会比较标签签名。
 
 #### 手动触发更新
 

@@ -56,6 +56,20 @@ In **Zotero Tree View**:
 
 ---
 
+## Opening a Child Note
+
+There are three ways to open a child note, controlled by the **Always Open Child Notes in Note Editor** setting (Settings → ZotFlow → General):
+
+| Setting | Behavior |
+| ------- | -------- |
+| **Off** (default) | Child notes open in their parent's source note, scrolled to the note's editable region |
+| **On** | Child notes always open in the standalone Note Editor view |
+
+Regardless of the setting, you can bypass the default behavior via the Tree View context menu:
+
+- **Right-click a `📝` node → Locate in Source Note** — Opens the parent source note scrolled to the note's editable region (even when the setting is on).
+- **Right-click a `📝` node → Open in Note Editor (Experimental)** — Opens the note directly in the standalone Note Editor view (even when the setting is off).
+
 ## Editing an Item Note
 
 There are two equivalent editing entry points. Both write to the same IndexedDB record and produce the same outgoing sync — choose by context.
@@ -66,6 +80,7 @@ Open via:
 
 - **Double-click** a `📝` node in Tree View, or
 - Right-click → **Open note** (appears in applicable contexts), or
+- Right-click → **Open in Note Editor (Experimental)**, or
 - URI: `obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>`
 
 The editor is Obsidian's standard embeddable Markdown editor — your shortcuts, snippets, CSS, and other plugin behaviors all work normally. On top of this, ZotFlow:
@@ -92,7 +107,7 @@ In **Zotero Tree View**:
 1. **Right-click** a `📝` note node
 2. Select **Delete note**
 
-ZotFlow marks the note as deleted in IndexedDB, refreshes the Tree View, and shows a `Note deleted.` notification. The deletion is pushed to Zotero on the next bidirectional sync. If the note was never synced (`syncStatus: "created"`), it's removed locally immediately.
+ZotFlow marks the note as deleted in IndexedDB, refreshes the Tree View, re-renders the parent item's Source Note (so the deleted note's editable region is removed), and shows a `Note deleted.` notification. The deletion is pushed to Zotero on the next bidirectional sync. If the note was never synced (`syncStatus: "created"`), it's removed locally immediately.
 
 > There is no undo. If you delete by mistake, recreate the note with the same content before the next sync, or restore from the Zotero side.
 

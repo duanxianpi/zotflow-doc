@@ -17,7 +17,7 @@ ZotFlow 的根本目标是消灭工具切换。阅读、批注、引用、笔记
 - **Pull**：从 Zotero Web API 拉取元数据、条目、collection、annotation 到本地 IndexedDB 缓存
 - **Push**：将你在 Obsidian 中的修改回写到 Zotero
 
-> **哪些数据会被回写？** 目前回写到 Zotero 的仅限 **annotation**（增删改）和 **Item Note**（子笔记的创建/编辑/删除）。标签（tags）、frontmatter、条目元数据（title、creator 等）的改变**不会**被 push 回 Zotero。Source Note 的 frontmatter 自定义字段仅供本地使用，Zotero 侧不可见
+> **哪些数据会被回写？** 目前回写到 Zotero 的有 **annotation**（增删改）、**Item Note**（子笔记的创建/编辑/删除）和**标签**（通过标签编辑弹窗编辑条目/annotation 标签）。frontmatter 和条目元数据（title、creator 等）的改变**不会**被 push 回 Zotero。Source Note 的 frontmatter 自定义字段仅供本地使用，Zotero 侧不可见
 
 每个可访问的 Zotero 库独立配置同步模式：
 

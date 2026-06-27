@@ -26,14 +26,15 @@ If the attachment is already open in another tab, ZotFlow activates the existing
 
 ### Method 3: Protocol URI
 
-You can jump to an attachment or Source Note from external links or within notes via URI:
+You can jump to an attachment, annotation, or Source Note from external links or within notes via URI:
 
-```
-obsidian://zotflow?type=open-attachment&libraryID=<id>&key=<key>
-obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>
-```
+| URI Type | Format |
+| -------- | ------ |
+| **Open attachment** | `obsidian://zotflow?type=open-attachment&libraryID=<id>&key=<key>` |
+| **Open annotation** | `obsidian://zotflow?type=open-annotation&libraryID=<id>&key=<key>` |
+| **Open note** | `obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>` |
 
-Add `&navigation=<json>` to jump to a specific page or annotation.
+The `open-annotation` protocol looks up the annotation by key, finds its parent attachment, and opens the attachment in the Zotero reader navigated directly to the annotation. Add `&navigation=<json>` to the attachment protocol to jump to a specific page or annotation.
 
 ---
 
@@ -123,6 +124,9 @@ Dragging a regular item also triggers Source Note creation/update, ensuring the 
 | **Collection or Library**         | Extract anno images for all child items  | Batch-extract annotation images                           |
 | **Top-level item** (non-attachment) | Open source note                        | Open (and force-update) the item's Source Note            |
 | **Top-level item** (non-attachment) | Extract annotation images               | Extract annotation images for this item                   |
+| **Any item**                      | Edit tags…                               | Open the tag editing modal to manage tags for the item    |
+| **Note item**                     | Locate in Source Note                    | Open the parent source note scrolled to the note's editable region |
+| **Note item**                     | Open in Note Editor (Experimental)       | Open the note directly in the standalone Note Editor view  |
 
 ---
 

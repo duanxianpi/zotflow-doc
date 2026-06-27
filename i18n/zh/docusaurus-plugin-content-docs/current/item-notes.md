@@ -56,6 +56,20 @@ Item Note 是 Zotero 条目下的 child note item——Zotero 原生的笔记对
 
 ---
 
+## 打开 Child Note
+
+有三种打开 child note 的方式，受 **Always Open Child Notes in Note Editor** 设置控制（Settings → ZotFlow → General）：
+
+| 设置 | 行为 |
+| ---- | ---- |
+| **关闭**（默认） | Child note 在父条目的 Source Note 中打开，滚动到对应 note 的 editable region |
+| **开启** | Child note 始终在独立 Note Editor 标签页中打开 |
+
+无论设置如何，你都可以通过 Tree View 右键菜单绕过默认行为：
+
+- **右键 `📝` 节点 → Locate in Source Note** — 在父条目的 Source Note 中定位到对应 note 的 editable region（即使设置为开启也有效）。
+- **右键 `📝` 节点 → Open in Note Editor (Experimental)** — 在独立 Note Editor 标签页中直接打开该 note（即使设置为关闭也有效）。
+
 ## 编辑 Item Note
 
 有两种等价编辑入口。两者写入同一份 IndexedDB 记录，产生同样的 outgoing sync——按场景选择即可。
@@ -66,6 +80,7 @@ Item Note 是 Zotero 条目下的 child note item——Zotero 原生的笔记对
 
 - **双击** Tree View 中的 `📝` 节点，或
 - 右键选择 **Open note**（在适用场景下出现），或
+- 右键选择 **Open in Note Editor (Experimental)**，或
 - 使用 URI：`obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>`
 
 编辑器是 Obsidian 标准的 embeddable Markdown 编辑器——你的快捷键、snippets、CSS、其他插件行为都正常工作。ZotFlow 在此基础上：
@@ -92,7 +107,7 @@ Item Note 是 Zotero 条目下的 child note item——Zotero 原生的笔记对
 1. **右键** `📝` note 节点
 2. 选择 **Delete note**
 
-ZotFlow 在 IndexedDB 中标记该 note 为删除，刷新 Tree View，弹出 `Note deleted.` 通知。删除操作在下一次 bidirectional sync 时推送到 Zotero。如果该 note 从未同步过（`syncStatus: "created"`），则直接从本地移除。
+ZotFlow 在 IndexedDB 中标记该 note 为删除，刷新 Tree View，重渲染父条目的 Source Note（删除其中的 note editable region），弹出 `Note deleted.` 通知。删除操作在下一次 bidirectional sync 时推送到 Zotero。如果该 note 从未同步过（`syncStatus: "created"`），则直接从本地移除。
 
 > 没有 undo。如果误删，在下一次 sync 前重建同内容 note，或从 Zotero 端恢复。
 

@@ -110,6 +110,7 @@ This configuration can be changed at any time.
 3. Use the top search bar to filter items
 4. **Double-click** an attachment to open it in the reader
 5. **Drag** a regular item into any editor to insert a citation
+6. **Right-click** any item → **Edit tags…** to manage tags directly from Obsidian
 
 ---
 

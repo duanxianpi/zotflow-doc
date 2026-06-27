@@ -118,7 +118,7 @@ The next bidirectional sync pushes the changes to Zotero.
 
 #### Annotation-Triggered Updates
 
-When you add, edit, or delete an annotation in the reader, the Source Note auto-updates — also ~2s debounce. These updates are **forced**, bypassing the version check.
+When you add, edit, or delete an annotation in the reader, the Source Note auto-updates — also ~2s debounce. These updates are **forced**, bypassing the version check. Tag-only edits (via the tag editing modal) also trigger re-renders, since the annotation change detector now compares tag signatures.
 
 #### Manual Trigger
 
