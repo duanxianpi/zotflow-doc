@@ -371,7 +371,7 @@ zotflow-local-attachment: [[{{ path }}]]
 **Footnote Definition：**
 
 ```liquid
-{%- if item.creators.length > 1 -%}
+[^{{ item.citationKey | default: item.key }}]: {%- if item.creators.length > 1 -%}
 {{ item.creators[0].name }} et al.
 {%- elsif item.creators.length == 1 -%}
 {{ item.creators[0].name }}
