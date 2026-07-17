@@ -520,17 +520,33 @@ Wraps content in hidden HTML comment markers recognized by ZotFlow's editor exte
 {{ value | wrap_editable: "TYPE", key }}
 ```
 
-| Parameter | Type     | Description                                                 |
-| --------- | -------- | ----------------------------------------------------------- |
-| `"TYPE"`  | `string` | `"NOTE"` — Zotero child note; `"ANNO"` — annotation comment |
-| `key`     | `string` | Corresponding Zotero note key or annotation key             |
+| Parameter | Type     | Description                                                                                       |
+| --------- | -------- | ------------------------------------------------------------------------------------------------- |
+| `"TYPE"`  | `string` | `"NOTE"` — Zotero child note; `"ANNO"` — annotation comment; `"PERSIST"` — local-only persist region |
+| `key`     | `string` | Corresponding Zotero note key or annotation key — or, for `"PERSIST"`, a stable id you choose      |
 
 Output: Input string wrapped with `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` markers.
 
 - **Note region**: `{{ note.note | html2md | wrap_editable: "NOTE", note.key }}`
 - **Annotation comment region**: `{{ annotation.comment | wrap_editable: "ANNO", annotation.key }}`
+- **Persist region**: `{{ "Write your thoughts here…" | wrap_editable: "PERSIST", "summary" }}`
 
 Annotation comments undergo a lightweight `annoHtml2md` conversion before entering the template context (`<b>`→`**`, `<i>`→`*`, `<sub>`/`<sup>` preserved, stray `<`/`>` escaped), so you can pipe directly to `| wrap_editable` without going through `| html2md`.
+
+**Persist regions** are local-only: their content survives every note update and is never synced to Zotero (see [Source Notes → Persist Regions](source-notes.md#persist-regions-local-only-content) for the full behavior). Unlike the other two types, you may equivalently write the marker pair by hand in the template:
+
+```markdown
+## My Summary
+<!-- ZF_PERSIST_BEG_summary -->
+
+<!-- ZF_PERSIST_END_summary -->
+```
+
+Id rules for persist regions:
+
+- You pick the id (`summary`, `reading-todo`, …). Allowed characters: letters, digits, `_`, `-` (max 64).
+- Ids must be **unique within a note** and **stable across renders** — the id is how ZotFlow finds the region's new home on each update. Don't generate ids from loop variables unless they're stable Zotero keys.
+- Keep at least one blank line between the BEG and END markers, or the editor cannot place a cursor inside the region (the filter form does this for you).
 
 ### `process_raw_anno_json`
 
@@ -585,11 +601,13 @@ The Source Note is read-only by default, but through the `wrap_editable` filter,
 
 - **Zotero child notes** → `{{ note.note | html2md | wrap_editable: "NOTE", note.key }}`
 - **Annotation comments** → `{{ annotation.comment | wrap_editable: "ANNO", annotation.key }}`
+- **Persist regions** (local-only) → `{{ "" | wrap_editable: "PERSIST", "summary" }}` or a hand-written `<!-- ZF_PERSIST_BEG_summary -->` … `<!-- ZF_PERSIST_END_summary -->` pair
 
 In Source / Live Preview mode, each region shows a 🔒 lock icon at the start of the line. Click to unlock and edit directly within the block. On save:
 
 - **Note region** → Markdown converted to Zotero HTML, written to the corresponding note record in IndexedDB
 - **Annotation comment region** → Blockquote `> ` prefix stripped, Markdown converted to Zotero comment HTML, written to the corresponding annotation comment field in IndexedDB
+- **Persist region** → nothing is written anywhere: the content simply stays in the file and survives every re-render
 
 Writes are debounced ~2s. Pushed to Zotero on the next bidirectional sync.
 
@@ -597,7 +615,7 @@ Related settings:
 
 - **Default Editable Region Locked** — Controls whether regions start locked
 - **Hide Editable Region Markers** — Hides `ZF_*_BEG` / `ZF_*_END` marker lines
-- Read Only libraries prevent unlocking
+- Read Only libraries prevent unlocking note and annotation regions; persist regions stay editable
 
 ---
 

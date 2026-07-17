@@ -520,17 +520,33 @@ ZotFlow 在 LiquidJS 内置 filter 之上注册了以下自定义 filter：
 {{ value | wrap_editable: "TYPE", key }}
 ```
 
-| 参数     | 类型     | 说明                                                    |
-| -------- | -------- | ------------------------------------------------------- |
-| `"TYPE"` | `string` | `"NOTE"` — Zotero 子笔记；`"ANNO"` — annotation comment |
-| `key`    | `string` | 对应的 Zotero note key 或 annotation key                |
+| 参数     | 类型     | 说明                                                                                  |
+| -------- | -------- | ------------------------------------------------------------------------------------- |
+| `"TYPE"` | `string` | `"NOTE"` — Zotero 子笔记；`"ANNO"` — annotation comment；`"PERSIST"` — 仅存本地的 persist region |
+| `key`    | `string` | 对应的 Zotero note key 或 annotation key；`"PERSIST"` 时为你自选的稳定 id             |
 
 输出：输入字符串首尾被 `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` 标记包裹。
 
 - **Note region**：`{{ note.note | html2md | wrap_editable: "NOTE", note.key }}`
 - **Annotation comment region**：`{{ annotation.comment | wrap_editable: "ANNO", annotation.key }}`
+- **Persist region**：`{{ "在这里写阅读笔记…" | wrap_editable: "PERSIST", "summary" }}`
 
 annotation comment 在进入 template context 前已经过 `annoHtml2md` 轻量转换（`<b>`→`**`、`<i>`→`*`、`<sub>`/`<sup>` 保留、stray `<`/`>` 转义），因此直接 `| wrap_editable` 即可，不需要再过 `| html2md`。
+
+**Persist region** 仅存本地：内容在每次 note 更新中存活，永不同步到 Zotero（完整行为见 [Source Note → Persist Region](source-notes.md#persist-region仅存本地的内容)）。与另外两种类型不同，它也可以在模板里直接手写等价的注释对：
+
+```markdown
+## 我的总结
+<!-- ZF_PERSIST_BEG_summary -->
+
+<!-- ZF_PERSIST_END_summary -->
+```
+
+Persist region 的 id 规则：
+
+- id 由你自选（`summary`、`reading-todo` 等）。允许字符：字母、数字、`_`、`-`（最长 64）。
+- id 必须**单个 note 内唯一**且**跨渲染稳定**——ZotFlow 靠 id 在每次更新时找回内容的位置。不要用循环变量生成 id，除非它是稳定的 Zotero key。
+- BEG 和 END marker 之间至少保留一个空行，否则编辑器无法在 region 内放置光标（filter 写法会自动处理）。
 
 ### `process_raw_anno_json`
 
@@ -585,11 +601,13 @@ Source Note 默认整体只读，但通过 `wrap_editable` filter，你可以在
 
 - **Zotero 子笔记** → `{{ note.note | html2md | wrap_editable: "NOTE", note.key }}`
 - **Annotation 评论** → `{{ annotation.comment | wrap_editable: "ANNO", annotation.key }}`
+- **Persist region**（仅存本地）→ `{{ "" | wrap_editable: "PERSIST", "summary" }}` 或手写 `<!-- ZF_PERSIST_BEG_summary -->` … `<!-- ZF_PERSIST_END_summary -->` 注释对
 
 在 Source / Live Preview 模式下，每个 region 行首显示 🔒 锁图标。点击解锁后在区块内直接编辑。保存时：
 
 - **Note region** → Markdown 转 Zotero HTML，写入 IndexedDB 中对应的 note 记录
 - **Annotation comment region** → 去除 blockquote `> ` 前缀，Markdown 转 Zotero 注释 HTML，写入 IndexedDB 中对应的 annotation comment 字段
+- **Persist region** → 不写入任何地方：内容留在文件里，在每次重渲染中存活
 
 写入 debounce ~2s。下次 bidirectional sync 推送到 Zotero。
 
@@ -597,7 +615,7 @@ Source Note 默认整体只读，但通过 `wrap_editable` filter，你可以在
 
 - **Default Editable Region Locked** — 控制 region 初始是否锁定
 - **Hide Editable Region Markers** — 隐藏 `ZF_*_BEG` / `ZF_*_END` marker 行
-- Read Only 库禁止解锁
+- Read Only 库禁止解锁 note 和 annotation region；persist region 仍可编辑
 
 ---
 

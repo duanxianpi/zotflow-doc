@@ -79,12 +79,13 @@ ZotFlow **永不修改**。重渲染时原样保留，不参与任何合并逻�
 
 ### Zotero Note Editable Regions & Annotation Comment Editable Regions
 
-正文中，两种 region 被隐藏 HTML comment marker 包裹，视为可编辑区：
+正文中，三种 region 被隐藏 HTML comment marker 包裹，视为可编辑区：
 
-| Region 类型            | Marker                                                      | 默认承载内容                           |
-| ---------------------- | ----------------------------------------------------------- | -------------------------------------- |
-| **Zotero child note**  | `<!-- ZF_NOTE_BEG_<key> -->` … `<!-- ZF_NOTE_END_<key> -->` | 一个 Zotero note item 的 Markdown 渲染 |
-| **Annotation comment** | `<!-- ZF_ANNO_BEG_<key> -->` … `<!-- ZF_ANNO_END_<key> -->` | 你附加在某条 annotation 上的评论文本   |
+| Region 类型            | Marker                                                            | 默认承载内容                           |
+| ---------------------- | ----------------------------------------------------------------- | -------------------------------------- |
+| **Zotero child note**  | `<!-- ZF_NOTE_BEG_<key> -->` … `<!-- ZF_NOTE_END_<key> -->`       | 一个 Zotero note item 的 Markdown 渲染 |
+| **Annotation comment** | `<!-- ZF_ANNO_BEG_<key> -->` … `<!-- ZF_ANNO_END_<key> -->`       | 你附加在某条 annotation 上的评论文本   |
+| **Persist region**     | `<!-- ZF_PERSIST_BEG_<id> -->` … `<!-- ZF_PERSIST_END_<id> -->`   | 模板给的默认内容——之后完全归你，仅存本地 |
 
 在 **Source / Live Preview** 模式下，每个 region 在 BEG marker 行首显示 🔒 锁图标。点击解锁后，region 内的内容变为可编辑。
 
@@ -95,13 +96,37 @@ ZotFlow **永不修改**。重渲染时原样保留，不参与任何合并逻�
 
 下一次 bidirectional sync 将修改推到 Zotero。
 
-> ⚠️ **Marker 之间的结构、annotation excerpt、标题、生成的骨架——仍然是 locked 的。只有 Marker 内部（和 frontmatter）属于你可编辑的范围。** Editable region 由模板中的 `wrap_editable` filter 生成（详见[模板系统](template-guide.md#wrap_editable)），目前仅支持 Note Region 和 Annotation Comment Region 两种类型。用户无法手动创建其他类型的 editable region。
+### Persist Region（仅存本地的内容）
+
+**Persist region** 属于*你*而不属于 Zotero：写在里面的内容在每次 source note 更新中都会存活，且**永远不会同步到 Zotero**。典型用法是不创建 item note、直接在 source note 里写个人总结或阅读笔记。
+
+在模板中用一个你自选的稳定 id 声明——原生注释对或 `wrap_editable: "PERSIST", "your-id"` 均可（语法与 id 规则详见[模板系统](template-guide.md#wrap_editable)）：
+
+```markdown
+## 我的总结
+<!-- ZF_PERSIST_BEG_summary -->
+
+<!-- ZF_PERSIST_END_summary -->
+```
+
+每次 note 更新时，ZotFlow 会在重渲染前提取 persist 内容，渲染后按 id 拼回原位。Marker 有问题（缺 id、id 重复、未闭合、嵌套）时该 note 会**拒绝更新**并报错指向出错行——解析失败时绝不覆写任何内容。
+
+**孤儿内容：** 如果模板中某个 region id 后来被删除或改名，其内容*不会*被删除——它会被移动到 note 底部一段有明确边界的 **"Orphaned persist regions"** 区域（`<!-- ZF_PERSIST_ORPHAN_BEG -->` … `<!-- ZF_PERSIST_ORPHAN_END -->`），并弹出一次性警告通知。清理由你自己完成：
+
+- **删除单个 region 的内容** — 解锁后清空文字；空 region 会在下次更新时自动消失。
+- **编辑或移除孤儿内容** — 在 frontmatter 中把 `zotflow-locked` 改为 `false`（完成后改回），或使用任何外部工具：哨兵 marker 让这段区域很容易被脚本定位，而编辑器锁定在 Obsidian 之外不存在。
+
+编辑器中，persist region 以**低饱和橙色边框**显示，与主题色边框的同步类 region 相区分。
+
+> ⚠️ Persist 内容存在 note 文件里。如果启用了**自动清理已回收 source note**，Zotero item 被移入回收站时整个文件（连同 persist 内容）会一起进入系统回收站。
+
+> ⚠️ **Marker 之外的结构、annotation excerpt、标题、生成的骨架——仍然是 locked 的。只有 Marker 内部（和 frontmatter）属于你可编辑的范围。** Note 和 annotation region 由模板中的 `wrap_editable` filter 生成（详见[模板系统](template-guide.md#wrap_editable)）；persist region 也可以直接手写注释对。
 
 ### Editable Region 相关设置
 
 - **Default Editable Region Locked**（Settings → ZotFlow → General） — 新 region 初始是否锁定。单 region 的 toggle 会覆盖此默认值（当前 session 内有效）
 - **Hide Editable Region Markers** — 隐藏 `ZF_*_BEG` / `ZF_*_END` marker 行
-- Read Only 库 → 解锁图标不可用，region 不可编辑
+- Read Only 库 → note 和 annotation region 的解锁图标不可用；**persist region 仍可编辑**（其内容从不离开你的 vault）
 - Editable region 仅在 **Source** 和 **Live Preview** 模式下可用。Reading View 下整页只读
 
 ---
