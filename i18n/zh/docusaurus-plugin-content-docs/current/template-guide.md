@@ -523,7 +523,7 @@ ZotFlow 在 LiquidJS 内置 filter 之上注册了以下自定义 filter：
 | `"TYPE"` | `string` | `"NOTE"` — Zotero 子笔记；`"ANNO"` — annotation comment；`"PERSIST"` — 仅存本地的 persist region |
 | `key`    | `string` | 对应的 Zotero note key 或 annotation key；`"PERSIST"` 时为你自选的稳定 id             |
 
-输出：输入字符串首尾被 `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` 标记包裹。
+输出：输入字符串首尾被 `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` 标记包裹。`"ANNO"` 且内容为单行时输出**行内**形式（`<!-- … -->评论<!-- … -->`），整个 region 收在一行 blockquote 内；多行内容自动回退为标记独占一行的块形式。`"NOTE"` 与 `"PERSIST"` 始终使用块形式（persist 解析器要求标记独占一行）。自定义模板中也可以手写行内 ANNO 标记——两种排布及其混合形态编辑器都能识别。
 
 - **Note region**：`{{ note.note | html2md | wrap_editable: "NOTE", note.key }}`
 - **Annotation comment region**：`{{ annotation.comment | wrap_editable: "ANNO", annotation.key }}`
@@ -544,7 +544,7 @@ Persist region 的 id 规则：
 
 - id 由你自选（`summary`、`reading-todo` 等）。允许字符：字母、数字、`_`、`-`（最长 64）。
 - id 必须**单个 note 内唯一**且**跨渲染稳定**——ZotFlow 靠 id 在每次更新时找回内容的位置。不要用循环变量生成 id，除非它是稳定的 Zotero key。
-- BEG 和 END marker 之间至少保留一个空行，否则编辑器无法在 region 内放置光标（filter 写法会自动处理）。
+- 建议在 BEG 和 END marker 之间保留一个空行（filter 写法会自动生成）——它给空 region 一个明显的点击位置。marker 紧邻也能工作，只是插入点较难点中。
 
 ### `process_raw_anno_json`
 

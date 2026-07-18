@@ -523,7 +523,7 @@ Wraps content in hidden HTML comment markers recognized by ZotFlow's editor exte
 | `"TYPE"`  | `string` | `"NOTE"` — Zotero child note; `"ANNO"` — annotation comment; `"PERSIST"` — local-only persist region |
 | `key`     | `string` | Corresponding Zotero note key or annotation key — or, for `"PERSIST"`, a stable id you choose      |
 
-Output: Input string wrapped with `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` markers.
+Output: Input string wrapped with `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` markers. For `"ANNO"` with single-line content the markers are emitted **inline** (`<!-- … -->comment<!-- … -->`), so the whole region fits on one blockquote line; multi-line content falls back to markers on their own lines. `"NOTE"` and `"PERSIST"` always use the block form (the persist parser requires markers on their own lines). You can also hand-write inline ANNO markers in custom templates — both layouts, and any mix of them, are recognized by the editor.
 
 - **Note region**: `{{ note.note | html2md | wrap_editable: "NOTE", note.key }}`
 - **Annotation comment region**: `{{ annotation.comment | wrap_editable: "ANNO", annotation.key }}`
@@ -544,7 +544,7 @@ Id rules for persist regions:
 
 - You pick the id (`summary`, `reading-todo`, …). Allowed characters: letters, digits, `_`, `-` (max 64).
 - Ids must be **unique within a note** and **stable across renders** — the id is how ZotFlow finds the region's new home on each update. Don't generate ids from loop variables unless they're stable Zotero keys.
-- Keep at least one blank line between the BEG and END markers, or the editor cannot place a cursor inside the region (the filter form does this for you).
+- A blank line between the BEG and END markers is recommended (the filter form emits one) — it gives the empty region an obvious place to click. Directly adjacent markers still work, but the insertion point is harder to hit.
 
 ### `process_raw_anno_json`
 
