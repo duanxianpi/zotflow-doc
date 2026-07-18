@@ -140,7 +140,7 @@ The conversion is **round-trip safe** for Zotero-supported features: rich text, 
 
 With **Convert Item Note Links** enabled (Settings → ZotFlow → General, default on), links inside item notes are converted at the same read/write boundary:
 
-- **Stored & synced form** (IDB and Zotero) — native `zotero://` links (`zotero://select/…`, `zotero://open-pdf/…?annotation=…`, `…?page=N`), so clicking the note in Zotero navigates with Zotero's reader.
+- **Stored & synced form** (IDB and Zotero) — native `zotero://` links (`zotero://select/…`, `zotero://open-pdf/…` / Zotero 7's `zotero://open/…` with `?annotation=` / `?page=N`), so clicking the note in Zotero navigates with Zotero's reader. Child-note links in the personal library are stored in [Better Notes](https://github.com/windingwind/zotero-better-notes)' `zotero://note/u/<key>/` format, so note-to-note links keep working for Better Notes users; inbound, those links open the note in ZotFlow (honoring the "Always Open Child Notes in Note Editor" setting).
 - **Displayed form** (Obsidian) — `obsidian://zotflow?…` links, so the same click opens ZotFlow's reader (attachments, annotations, page positions included).
 
 Conversion is round-trip stable for item, attachment, annotation, and page-level links. Anything that cannot be converted without losing its target (unknown libraries, unrecognized query parameters) is left untouched — a native link that still works beats a broken converted one. Legacy notes containing ZotFlow links are normalized to the Zotero form the next time they are edited and saved.

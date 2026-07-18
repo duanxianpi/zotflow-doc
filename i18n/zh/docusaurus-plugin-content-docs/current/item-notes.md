@@ -140,7 +140,7 @@ Zotero 以 ProseMirror HTML 格式存储 note。ZotFlow 在读写时各做一次
 
 启用 **Convert Item Note Links**（Settings → ZotFlow → General，默认开启）后，item note 内的链接在同一读写边界上自动转换：
 
-- **存储与同步形态**（IDB 和 Zotero）——原生 `zotero://` 链接（`zotero://select/…`、`zotero://open-pdf/…?annotation=…`、`…?page=N`），在 Zotero 中点击由 Zotero reader 导航。
+- **存储与同步形态**（IDB 和 Zotero）——原生 `zotero://` 链接（`zotero://select/…`、`zotero://open-pdf/…` / Zotero 7 的 `zotero://open/…`，带 `?annotation=` / `?page=N`），在 Zotero 中点击由 Zotero reader 导航。个人库的子笔记链接以 [Better Notes](https://github.com/windingwind/zotero-better-notes) 的 `zotero://note/u/<key>/` 格式存储，Better Notes 用户的笔记互链保持可用；入站方向这些链接在 ZotFlow 中直接打开对应笔记（遵循 "Always Open Child Notes in Note Editor" 设置）。
 - **显示形态**（Obsidian）——`obsidian://zotflow?…` 链接，同一个点击在这里由 ZotFlow reader 打开（附件、注释、页码定位均支持）。
 
 条目、附件、注释和页码级链接的转换是 round-trip 稳定的。任何转换会丢失目标信息的链接（未知库、无法识别的查询参数）会原样保留——能用的原生链接好过转坏的链接。旧笔记里已有的 ZotFlow 链接会在下次编辑保存时被规范化为 Zotero 形态。
