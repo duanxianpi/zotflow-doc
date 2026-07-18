@@ -523,7 +523,15 @@ ZotFlow 在 LiquidJS 内置 filter 之上注册了以下自定义 filter：
 | `"TYPE"` | `string` | `"NOTE"` — Zotero 子笔记；`"ANNO"` — annotation comment；`"PERSIST"` — 仅存本地的 persist region |
 | `key`    | `string` | 对应的 Zotero note key 或 annotation key；`"PERSIST"` 时为你自选的稳定 id             |
 
-输出：输入字符串首尾被 `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` 标记包裹。`"ANNO"` 且内容为单行时输出**行内**形式（`<!-- … -->评论<!-- … -->`），整个 region 收在一行 blockquote 内；多行内容自动回退为标记独占一行的块形式。`"NOTE"` 与 `"PERSIST"` 始终使用块形式（persist 解析器要求标记独占一行）。自定义模板中也可以手写行内 ANNO 标记——两种排布及其混合形态编辑器都能识别。
+输出：输入字符串首尾被 `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` 标记包裹，标记独占一行（块形式）。
+
+**可选的行内排布** —— 传入第三个参数 `"inline"`，标记与内容收在同一行，让 annotation 评论 region 只占一行 blockquote：
+
+```liquid
+> {{ annotation.comment | wrap_editable: "ANNO", annotation.key, "inline" }}
+```
+
+行内排布仅对 `"ANNO"` 且内容为单行时生效（多行内容自动回退块形式；`"NOTE"` 与 `"PERSIST"` 始终块形式——persist 解析器要求标记独占一行）。之所以是 opt-in 而非默认：Obsidian 的 Live Preview 会把与 HTML 注释同行的文本切分渲染。自定义模板中手写行内 ANNO 标记同样有效——两种排布及其混合形态编辑器都能识别。
 
 - **Note region**：`{{ note.note | html2md | wrap_editable: "NOTE", note.key }}`
 - **Annotation comment region**：`{{ annotation.comment | wrap_editable: "ANNO", annotation.key }}`

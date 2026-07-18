@@ -523,7 +523,15 @@ Wraps content in hidden HTML comment markers recognized by ZotFlow's editor exte
 | `"TYPE"`  | `string` | `"NOTE"` — Zotero child note; `"ANNO"` — annotation comment; `"PERSIST"` — local-only persist region |
 | `key`     | `string` | Corresponding Zotero note key or annotation key — or, for `"PERSIST"`, a stable id you choose      |
 
-Output: Input string wrapped with `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` markers. For `"ANNO"` with single-line content the markers are emitted **inline** (`<!-- … -->comment<!-- … -->`), so the whole region fits on one blockquote line; multi-line content falls back to markers on their own lines. `"NOTE"` and `"PERSIST"` always use the block form (the persist parser requires markers on their own lines). You can also hand-write inline ANNO markers in custom templates — both layouts, and any mix of them, are recognized by the editor.
+Output: Input string wrapped with `<!-- ZF_TYPE_BEG_key -->` / `<!-- ZF_TYPE_END_key -->` markers on their own lines (block form).
+
+**Optional inline layout** — pass `"inline"` as a third argument to put the markers and content on a single line, which keeps an annotation comment region on one blockquote row:
+
+```liquid
+> {{ annotation.comment | wrap_editable: "ANNO", annotation.key, "inline" }}
+```
+
+Inline applies only to `"ANNO"` with single-line content (multi-line content falls back to block form; `"NOTE"` and `"PERSIST"` are always block — the persist parser requires markers on their own lines). It is opt-in rather than the default because Obsidian's Live Preview renders text that shares a line with HTML comments in split segments. Hand-written inline ANNO markers work too — both layouts, and any mix of them, are recognized by the editor.
 
 - **Note region**: `{{ note.note | html2md | wrap_editable: "NOTE", note.key }}`
 - **Annotation comment region**: `{{ annotation.comment | wrap_editable: "ANNO", annotation.key }}`
