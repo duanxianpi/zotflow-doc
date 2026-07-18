@@ -136,6 +136,15 @@ Zotero stores notes in ProseMirror HTML format. ZotFlow converts on both read an
 
 The conversion is **round-trip safe** for Zotero-supported features: rich text, headings, lists, tables, images, math formulas, code blocks, blockquotes, links, and citations.
 
+### Link Conversion (ZotFlow ↔ Zotero)
+
+With **Convert Item Note Links** enabled (Settings → ZotFlow → General, default on), links inside item notes are converted at the same read/write boundary:
+
+- **Stored & synced form** (IDB and Zotero) — native `zotero://` links (`zotero://select/…`, `zotero://open-pdf/…?annotation=…`, `…?page=N`), so clicking the note in Zotero navigates with Zotero's reader.
+- **Displayed form** (Obsidian) — `obsidian://zotflow?…` links, so the same click opens ZotFlow's reader (attachments, annotations, page positions included).
+
+Conversion is round-trip stable for item, attachment, annotation, and page-level links. Anything that cannot be converted without losing its target (unknown libraries, unrecognized query parameters) is left untouched — a native link that still works beats a broken converted one. Legacy notes containing ZotFlow links are normalized to the Zotero form the next time they are edited and saved.
+
 An internal `<!-- ZF_NOTE_META … -->` comment is preserved to maintain Zotero wrapper div attributes (schema version, etc.) across round-trips. The Note Editor strips it on display and re-injects it on save — you never need to care about it.
 
 ---

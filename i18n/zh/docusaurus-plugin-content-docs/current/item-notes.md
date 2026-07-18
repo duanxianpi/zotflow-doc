@@ -136,6 +136,15 @@ Zotero 以 ProseMirror HTML 格式存储 note。ZotFlow 在读写时各做一次
 
 转换对 Zotero 支持的特性是** round-trip safe** 的：富文本、标题、列表、表格、图片、数学公式、代码块、blockquote、链接、引用。
 
+### 链接转换（ZotFlow ↔ Zotero）
+
+启用 **Convert Item Note Links**（Settings → ZotFlow → General，默认开启）后，item note 内的链接在同一读写边界上自动转换：
+
+- **存储与同步形态**（IDB 和 Zotero）——原生 `zotero://` 链接（`zotero://select/…`、`zotero://open-pdf/…?annotation=…`、`…?page=N`），在 Zotero 中点击由 Zotero reader 导航。
+- **显示形态**（Obsidian）——`obsidian://zotflow?…` 链接，同一个点击在这里由 ZotFlow reader 打开（附件、注释、页码定位均支持）。
+
+条目、附件、注释和页码级链接的转换是 round-trip 稳定的。任何转换会丢失目标信息的链接（未知库、无法识别的查询参数）会原样保留——能用的原生链接好过转坏的链接。旧笔记里已有的 ZotFlow 链接会在下次编辑保存时被规范化为 Zotero 形态。
+
 内部保留一个 `<!-- ZF_NOTE_META … -->` 注释用于维持 Zotero wrapper div 属性（schema version 等）跨 round-trip 的一致。Note Editor 会在显示时剥离它，保存时重新注入——你永远不需要关心它。
 
 ---
