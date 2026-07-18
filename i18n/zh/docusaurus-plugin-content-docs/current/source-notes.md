@@ -43,11 +43,13 @@ Source Note 是 ZotFlow 的核心机制：每个 Zotero 条目自动生成一份
 
 本地文件的 annotation 数据存储在 co-located `.zf.json` sidecar 中（如 `Papers/paper.pdf` → `Papers/paper.zf.json`），不在 Source Note 内部。
 
+本地 Source Note 同样支持可编辑区：**annotation 评论区**（编辑回写到 `.zf.json` sidecar，已打开的本地 reader 会自动刷新）和 **persist region**（仅存本地、每次重渲染都存活，见下文）。Zotero note region 不适用——本地文件没有 Zotero 子笔记。
+
 ---
 
 ## 用户可编辑的范围
 
-Source Note 默认整页只读，但两种内嵌内容被显式设计为可在 Obsidian 内编辑，frontmatter 则始终自由。
+Source Note 默认整页只读，但三种内嵌内容被显式设计为可在 Obsidian 内编辑，frontmatter 则始终自由。
 
 ### Frontmatter（始终可编辑）
 

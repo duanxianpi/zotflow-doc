@@ -276,7 +276,7 @@ tags: [{% for t in item.tags %}"#{{ t.tag | replace: " ", "_" }}"{% unless forlo
 
 ### 默认模板
 
-输出逻辑与 Zotero 模板类似但更精简：无元数据字段（本地文件没有 Zotero 元数据），只输出标题与 annotation 列表。
+输出逻辑与 Zotero 模板类似但更精简：无元数据字段（本地文件没有 Zotero 元数据），只输出标题与 annotation 列表。annotation 评论以**可编辑区**形式包裹——在 note 中的编辑会回写到 `.zf.json` sidecar。`wrap_editable`（包括 `"PERSIST"` 区域）同样适用于本地模板；只读/外部 annotation 会自动渲染为普通锁定文本。
 
 ```liquid
 ---
@@ -296,10 +296,8 @@ zotflow-local-attachment: [[{{ path }}]]
 {%- else -%}
 > > {{ annotation.text | replace: newline, quote_string_2 }}
 {%- endif -%}
-{%- if annotation.comment != "" -%}
 >
-> {{ annotation.comment | replace: newline, quote_string }}
-{%- endif -%}
+> {{ annotation.comment | wrap_editable: "ANNO", annotation.key | replace: newline, quote_string }}
 {%- if annotation.tags and annotation.tags.length > 0 -%}
 >
 > {% for t in annotation.tags %}#{{ t.tag | replace: " ", "_" }}{% unless forloop.last %} {% endunless %}{% endfor %}
@@ -512,7 +510,7 @@ ZotFlow 在 LiquidJS 内置 filter 之上注册了以下自定义 filter：
 
 ### `wrap_editable`
 
-适用模板：**Zotero Source Note**
+适用模板：**Zotero Source Note**、**Local Source Note**（本地仅支持 `"ANNO"` 与 `"PERSIST"`）
 
 将内容包裹在 ZotFlow editor extension 能识别的 hidden HTML comment marker 中，形成 editable region。
 

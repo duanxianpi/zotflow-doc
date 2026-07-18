@@ -43,6 +43,8 @@ Same pipeline, but with different context variables and mandatory fields:
 
 Annotation data for local files is stored in a co-located `.zf.json` sidecar (e.g., `Papers/paper.pdf` → `Papers/paper.zf.json`), not inside the Source Note.
 
+Local Source Notes support editable regions too: **annotation comment regions** (edits are written back to the `.zf.json` sidecar, and an open local reader picks them up automatically) and **persist regions** (local-only, survive every re-render — see below). Zotero note regions don't apply, since local files have no Zotero children.
+
 ---
 
 ## User-Editable Scope

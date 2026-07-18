@@ -276,7 +276,7 @@ Controls Source Notes for vault-local files (PDF/EPUB/HTML). Context is `{ item,
 
 ### Default Template
 
-Output logic is similar to the Zotero template but simpler: no metadata fields (local files lack Zotero metadata), only title and annotation list.
+Output logic is similar to the Zotero template but simpler: no metadata fields (local files lack Zotero metadata), only title and annotation list. Annotation comments are wrapped as **editable regions** — edits in the note are written back to the `.zf.json` sidecar. `wrap_editable` (including `"PERSIST"` regions) works in local templates too; read-only/external annotations are rendered as plain locked text automatically.
 
 ```liquid
 ---
@@ -296,10 +296,8 @@ zotflow-local-attachment: [[{{ path }}]]
 {%- else -%}
 > > {{ annotation.text | replace: newline, quote_string_2 }}
 {%- endif -%}
-{%- if annotation.comment != "" -%}
 >
-> {{ annotation.comment | replace: newline, quote_string }}
-{%- endif -%}
+> {{ annotation.comment | wrap_editable: "ANNO", annotation.key | replace: newline, quote_string }}
 {%- if annotation.tags and annotation.tags.length > 0 -%}
 >
 > {% for t in annotation.tags %}#{{ t.tag | replace: " ", "_" }}{% unless forloop.last %} {% endunless %}{% endfor %}
@@ -512,7 +510,7 @@ Converts Zotero HTML (ProseMirror format) to Markdown. Handles math formulas, co
 
 ### `wrap_editable`
 
-Applies to: **Zotero Source Note**
+Applies to: **Zotero Source Note**, **Local Source Note** (local: `"ANNO"` and `"PERSIST"` only)
 
 Wraps content in hidden HTML comment markers recognized by ZotFlow's editor extension, forming an editable region.
 
