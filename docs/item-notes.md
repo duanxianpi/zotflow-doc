@@ -145,6 +145,8 @@ With **Convert Item Note Links** enabled (Settings → ZotFlow → General, defa
 
 Conversion is round-trip stable for item, attachment, annotation, and page-level links. Anything that cannot be converted without losing its target (unknown libraries, unrecognized query parameters) is left untouched — a native link that still works beats a broken converted one. Legacy notes containing ZotFlow links are normalized to the Zotero form the next time they are edited and saved.
 
+Independently of this setting (always on), **Zotero annotation and citation spans** are clickable: highlights/underlines quoted from a PDF (`data-annotation`) open the attachment in ZotFlow's reader at the annotation, and citation spans (`data-citation`) open the cited item's source note. The spans and their payloads are never modified — a display-only anchor is injected on read and always stripped on save, so the objects stay fully functional in Zotero.
+
 An internal `<!-- ZF_NOTE_META … -->` comment is preserved to maintain Zotero wrapper div attributes (schema version, etc.) across round-trips. The Note Editor strips it on display and re-injects it on save — you never need to care about it.
 
 ---

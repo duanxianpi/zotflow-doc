@@ -145,6 +145,8 @@ Zotero 以 ProseMirror HTML 格式存储 note。ZotFlow 在读写时各做一次
 
 条目、附件、注释和页码级链接的转换是 round-trip 稳定的。任何转换会丢失目标信息的链接（未知库、无法识别的查询参数）会原样保留——能用的原生链接好过转坏的链接。旧笔记里已有的 ZotFlow 链接会在下次编辑保存时被规范化为 Zotero 形态。
 
+与此设置无关（始终启用），**Zotero 的注释与引用 span** 均可点击：从 PDF 引用的高亮/下划线（`data-annotation`）在 ZotFlow reader 中打开附件并跳到注释位置，引用 span（`data-citation`）打开被引条目的 source note。span 及其 payload 从不被修改——读取时注入仅用于显示的锚点、保存时无条件剥离，这些对象在 Zotero 中保持完全可用。
+
 内部保留一个 `<!-- ZF_NOTE_META … -->` 注释用于维持 Zotero wrapper div 属性（schema version 等）跨 round-trip 的一致。Note Editor 会在显示时剥离它，保存时重新注入——你永远不需要关心它。
 
 ---
