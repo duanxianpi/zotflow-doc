@@ -6,7 +6,7 @@ sidebar_position: 7
 
 ZotFlow lets you insert citations with controlled formatting at your writing point: drag from Tree View, type a trigger character in the editor, or copy from the reader — three paths, five formats, with annotation context available to templates.
 
-Citations are rendered by LiquidJS templates (see the [Template System](template-guide.md#3-citation-templates) for variable reference).
+Citations are rendered by LiquidJS templates (see [Template Variables & Defaults](template-variables.md#3-citation-templates) for variable reference). For real CSL styles — APA, IEEE, Chicago, rendered by citeproc — use the `citation` / `bibliography` filters inside those templates: see [CSL Citations](csl-citations.md).
 
 ---
 
@@ -36,6 +36,8 @@ If a citation key (e.g., from Better BibTeX) is not set, falls back to the Zoter
 Hold modifier keys while dragging to temporarily switch formats (see [Modifier Keys](#modifier-keys-override-default-format) below).
 
 > Dragging an **attachment** (PDF/EPUB) inserts a link to open the attachment, not a citation.
+
+**Annotations can be dragged too** — drag an annotation from the reader's annotation sidebar into the editor to insert a citation (default format) carrying that annotation's context, such as its page locator.
 
 ### 2. Citation Suggest (Trigger Character)
 
@@ -135,7 +137,7 @@ Configure under **Settings → Citation**:
 | **Footnote Definition Template** | Template for the footnote definition text                 | _(built-in fallback)_ |
 | **Wikilink Template**            | Template for Wikilink citations                           | _(built-in fallback)_ |
 
-Leaving a template field empty uses the built-in default. Default template source code is in the [Template System](template-guide.md#3-citation-templates).
+Leaving a template field empty uses the built-in default. Default template source code is in [Template Variables & Defaults](template-variables.md#3-citation-templates).
 
 ---
 
@@ -166,6 +168,6 @@ Leaving a template field empty uses the built-in default. Default template sourc
 
 ## Related Pages
 
-- [Template System](template-guide.md)
+- [Template Guide](template-guide.md)
 - [Reader & Annotations](reading-and-annotating.md)
 - [Source Note](source-notes.md)

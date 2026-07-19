@@ -17,6 +17,15 @@ Important clarification: the word "note" refers to two completely different conc
 
 This page covers only **Item Notes**. For Source Notes, see [Source Note](source-notes.md).
 
+## Item Note or Persist Region?
+
+Both hold your thoughts about a single source — the deciding question is **whether Zotero should see them**:
+
+- **Item Note** — syncs back to Zotero: readable in Zotero's UI, on every device Zotero reaches, and survives independently of your vault. Use it for content that belongs to the *reference*, not just your vault.
+- **[Persist region](source-notes.md#persist-regions-local-only-content)** — local-only, lives inside the Source Note itself, never synced. Use it for private reading notes, verdicts, or workflow scratch that Zotero has no business seeing.
+
+See the [ownership model](concepts.md#-distill--content-ownership-inside-a-source-note) for the full decision table.
+
 ---
 
 ## Where Item Notes Appear
@@ -31,26 +40,35 @@ In the **Zotero Tree View**, child notes appear as `📝` leaf nodes under their
     └── 📝 Summary
 ```
 
-Inside the **Source Note** body, each child note is rendered by default within its own editable region, wrapped by `<!-- ZF_NOTE_BEG_<key> -->` / `<!-- ZF_NOTE_END_<key> -->` markers (see [Editable Regions](source-notes.md#zotero-note-editable-regions--annotation-comment-editable-regions)).
+Inside the **Source Note** body, each child note is rendered by default within its own editable region, wrapped by `<!-- ZF_NOTE_BEG_<key> -->` / `<!-- ZF_NOTE_END_<key> -->` markers (see [Editable Regions](source-notes.md#editable-regions-three-kinds)).
 
 ---
 
 ## Creating an Item Note
 
-In **Zotero Tree View**:
+Three entry points — all guarded by library write permission:
+
+**From the Zotero Tree View:**
 
 1. **Right-click** a parent item (any item that is not a standalone attachment)
 2. Select **Create child note**
-3. ZotFlow will:
-   - Create an empty note in IndexedDB with `syncStatus: "created"`
-   - Refresh the Tree View — a new `📝` node appears
-   - Open the Note Editor in a **new tab**, ready for input
+
+**From an open Source Note** (both act on the note's item):
+
+- **Command palette** → `ZotFlow: Create child note for current source note`
+- The tab's **three-dot menu** (top-right) → **ZotFlow: Create child note**
+
+Every entry point then proceeds identically — ZotFlow will:
+
+- Create an empty note in IndexedDB with `syncStatus: "created"`
+- Refresh the Tree View — a new `📝` node appears
+- Open the Note Editor in a **new tab**, ready for input
 
 > At this point the note's key is temporary. On the next bidirectional sync, Zotero assigns the real key, and ZotFlow automatically updates the local record. Until then, the note is fully functional locally.
 
-**Entry point hidden when:**
+**Entry points are hidden or refused when:**
 
-- The target is a standalone attachment (attachments without a parent cannot have children)
+- The target is a standalone attachment (attachments cannot have child notes)
 - The library mode is Read Only
 - The API Key lacks notes write permission
 
@@ -81,7 +99,7 @@ Open via:
 - **Double-click** a `📝` node in Tree View, or
 - Right-click → **Open note** (appears in applicable contexts), or
 - Right-click → **Open in Note Editor (Experimental)**, or
-- URI: `obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>`
+- URI: `obsidian://zotflow?type=open-item-note&libraryID=<id>&key=<key>` (routes per the **Always Open Child Notes in Note Editor** setting; `type=open-note` opens an item's *Source Note* instead)
 
 The editor is Obsidian's standard embeddable Markdown editor — your shortcuts, snippets, CSS, and other plugin behaviors all work normally. On top of this, ZotFlow:
 

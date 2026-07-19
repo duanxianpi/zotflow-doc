@@ -5,49 +5,52 @@ sidebar_position: 1
 
 # ZotFlow Documentation
 
-## What is ZotFlow?
+**Literature flows in, insight flows out.**
 
-ZotFlow is an Obsidian plugin that eliminates the tool switching between "literature reading" and "note writing." It integrates Zotero's item browsing, PDF/EPUB annotation, citation insertion, and note management entirely within Obsidian, allowing you to complete the full read-to-write loop in a single editor, with one set of keyboard shortcuts, under one theme.
+ZotFlow connects Zotero and Obsidian into a single loop: your Zotero library streams into your vault, you read, annotate, and think inside Obsidian, and what you write cites back to the exact page — while every change syncs back to Zotero. Zotero stays the source of truth for your library; Obsidian is where your thinking happens.
 
-The core philosophy: **Zotero is the source of truth for bibliographic metadata, and Obsidian is your thinking and writing home base.** ZotFlow builds a bidirectional sync channel between the two — metadata, attachments, annotations, and child notes can all be pushed/pulled on demand — while using the Source Note auto-generation mechanism to create a traceable, linkable "source-of-fact layer" for each bibliographic item in your vault.
+## The Loop
 
-## Documentation Navigation
+ZotFlow ships a lot of features, but they all serve one of four stations:
 
-### 1. Quick Start & Working Model
+### ① In — sync your library
 
-- [Installation, connecting Zotero, and first sync](getting-started.md)
-- [Working model overview (sync modes, permissions, conflicts, Source Note design philosophy)](concepts.md)
+Connect your Zotero account and pull items, collections, attachments, and annotations into a local cache. Browse and search everything from the **Tree View** sidebar — fully offline once synced.
 
-### 2. Reader & Annotations
+→ [Installation, connecting Zotero, and first sync](getting-started.md)
 
-- [Reading attachments, local reader, annotations, and image extraction](reading-and-annotating.md)
+### ② Read — annotate without leaving
 
-### 3. Note System
+Open attachments in the built-in reader (the same engine Zotero uses, themed for Obsidian). Highlight, comment, extract annotation images. Local PDFs/EPUBs in your vault get the same treatment — their annotations stay in a sidecar file, never touching Zotero.
 
-- [Source Note: auto-generation, locking, and updates](source-notes.md)
-- [Item Note: creating, editing, and deleting Zotero child notes](item-notes.md)
+→ [Reader & annotations](reading-and-annotating.md)
 
-### 4. Citation & Writing Flow
+### ③ Distill — every source gets a page, your words get a home
 
-- [Citation formats, insertion methods, and annotation context](citation-guide.md)
+Each item renders into a **Source Note**: an auto-generated hub page collecting metadata, annotation excerpts, and child notes. Inside it, content has three owners — the **template** regenerates its part on every update; **Zotero-synced regions** (Item Notes, annotation comments) are editable and flow back on sync; **persist regions** are yours alone: local-only blocks that survive every re-render and never leave your vault. Cross-paper synthesis lives in standalone notes that link back.
 
-### 5. Templates & Automation
+→ [Source Note](source-notes.md) · [Item Note](item-notes.md)
 
-- [Template system and variable reference](template-guide.md)
+### ④ Out — cite as you write
 
-### 6. Settings & Troubleshooting
+Drag an item into your draft or type the trigger character to insert citations — Pandoc, wikilink, footnote, or real CSL styles rendered by citeproc. Links behave natively on both sides: they open ZotFlow's reader in Obsidian and Zotero's reader in Zotero.
 
+→ [Citation & writing flow](citation-guide.md) · [CSL Citations](csl-citations.md)
+
+The loop closes itself: citations from ④ jump back into ② and ③, new annotations from ② refresh ③ automatically, and everything you chose to sync returns to Zotero.
+
+## Customization & Support
+
+- **Templates** shape every output of ③ and ④ — note paths, note bodies, citation formats. [Template guide](template-guide.md) · [Variables](template-variables.md) · [Filters](template-filters.md)
 - [Settings reference](settings-reference.md)
 - [Troubleshooting](troubleshooting.md)
-
-### 7. Release Notes
-
-- [Version changelog](releases/1.0.11.md)
+- [Release notes](releases/1.3.0.md)
 
 ## Terminology
 
-- **Source Note**: An auto-generated Markdown note for each Zotero item, rendered by a LiquidJS template. Defaults to `zotflow-locked: true`, read-only in Reading View. Serves as the "source-of-fact layer" in your knowledge graph.
-- **Item Note**: A Zotero native child note attached to an item, which can be created/edited/deleted within ZotFlow and bidirectionally synced back to Zotero. A completely different concept from Source Note.
-- **Library Reader**: The reader mode for Zotero library attachments, where annotations can be written back to Zotero via bidirectional sync.
-- **Local Reader**: The reader mode for local PDF/EPUB/HTML files within your vault, where annotations are written to a co-located `.zf.json` sidecar file and never touch Zotero.
-- **Editable Region**: A section within a Source Note wrapped by `<!-- ZF_NOTE_BEG_<key> -->` / `<!-- ZF_ANNO_BEG_<key> -->` markers that can be unlocked for editing.
+- **Source Note**: the auto-generated Markdown hub page for a Zotero item, rendered from a LiquidJS template. The template owns its skeleton; editable regions and persist regions inside it are yours.
+- **Item Note**: a Zotero-native child note attached to an item — creatable, editable, and deletable from ZotFlow, synced back to Zotero. A different concept from Source Note.
+- **Persist Region**: a template-declared block inside a Source Note whose content is local-only — it survives every re-render and is never synced to Zotero.
+- **Editable Region**: a marker-fenced section of a Source Note that can be unlocked and edited. Three kinds: Item Note regions and annotation comment regions (synced), and persist regions (local-only).
+- **Library Reader**: the reader for Zotero library attachments; annotations sync back to Zotero.
+- **Local Reader**: the reader for local PDF/EPUB/HTML files in your vault; annotations live in a co-located `.zf.json` sidecar and never touch Zotero.

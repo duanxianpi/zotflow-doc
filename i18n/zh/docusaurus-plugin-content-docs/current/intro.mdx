@@ -5,49 +5,52 @@ sidebar_position: 1
 
 # ZotFlow 中文文档
 
-## What is ZotFlow?
+**Literature flows in, insight flows out.**
 
-ZotFlow 是一个 Obsidian 插件，目标是消除"文献阅读"与"笔记写作"之间的工具切换。它把 Zotero 的条目浏览、PDF/EPUB 批注、引用插入、笔记管理全部整合到 Obsidian 内，让你在一个统一的编辑器、一套快捷键、一个主题下完成从读到写的完整闭环。
+ZotFlow 把 Zotero 和 Obsidian 连成一个循环：文献库流入你的 vault，阅读、批注、思考都在 Obsidian 里发生，写作时引用能跳回原文精确位置——而每一处改动都会同步回 Zotero。Zotero 始终是文献库的 source of truth，Obsidian 是你思考发生的地方。
 
-核心思路就一条：**Zotero 是文献元数据的 source of truth，Obsidian 是你的思考和写作主场**。ZotFlow 在这两者之间搭建了一条双向同步通道——metadata、attachment、annotation、child note 均可按需 push/pull——同时用 Source Note 这套自动生成机制在你的 vault 里为每个文献条目建立可追踪、可链接的"来源事实层"。
+## 主循环
 
-## 文档导航
+ZotFlow 功能很多，但全部服务于四个站点之一：
 
-### 1. 快速开始与工作模型
+### ① 进 —— 同步文献库
 
-- [安装、连接 Zotero、首次同步](getting-started.md)
-- [工作模型总览（同步模式、权限、冲突、Source Note 设计理念）](concepts.md)
+连接 Zotero 账户，把条目、集合、附件、注释拉入本地缓存。在侧边栏 **Tree View** 中浏览、检索一切——首次同步后完全离线可用。
 
-### 2. 阅读器与批注
+→ [安装、连接 Zotero 与首次同步](getting-started.md)
 
-- [阅读附件、本地阅读器、批注与图片提取](reading-and-annotating.md)
+### ② 读 —— 批注不出走
 
-### 3. 笔记系统
+用内置阅读器打开附件（与 Zotero 同一渲染引擎，主题随 Obsidian）。高亮、评论、摘取注释图片。vault 里的本地 PDF/EPUB 享受同等待遇——它们的注释存在旁车文件里，永不触碰 Zotero。
 
-- [Source Note：自动生成、锁定与更新](source-notes.md)
-- [Item Note：Zotero 子笔记的创建、编辑、删除](item-notes.md)
+→ [阅读器与批注](reading-and-annotating.md)
 
-### 4. 引用与写作流
+### ③ 沉淀 —— 每个来源一张页面，你的文字有处安放
 
-- [引用格式、插入方式、批注上下文](citation-guide.md)
+每个条目渲染为一张 **Source Note**：自动生成的汇总页，收纳元数据、注释摘录与子笔记。页面内的内容有三种所有者——**模板**在每次更新时重生成自己的部分；**Zotero 同步区域**（Item Note、注释评论）可编辑并随同步回流；**persist region** 完全属于你：仅存本地的区块，在每次重渲染中存活、永不离开 vault。跨文献的综合写在独立笔记里，用链接连回来。
 
-### 5. 模板与自动化
+→ [Source Note](source-notes.md) · [Item Note](item-notes.md)
 
-- [模板系统与变量参考](template-guide.md)
+### ④ 出 —— 边写边引
 
-### 6. 设置与排错
+把条目拖进草稿，或输入触发字符插入引用——Pandoc、wikilink、脚注，或由 citeproc 渲染的真实 CSL 样式。链接在两侧都入乡随俗：在 Obsidian 中打开 ZotFlow reader，在 Zotero 中打开 Zotero reader。
 
+→ [引用与写作流](citation-guide.md) · [CSL 引用](csl-citations.md)
+
+循环自行闭合：④ 的引用跳回 ② 和 ③，② 的新批注自动刷新 ③，所有你选择同步的内容回流 Zotero。
+
+## 定制与支持
+
+- **模板**塑造 ③ 与 ④ 的一切输出——笔记路径、笔记正文、引用格式。[模板指南](template-guide.md) · [变量参考](template-variables.md) · [Filter 参考](template-filters.md)
 - [设置参考](settings-reference.md)
-- [故障排查](troubleshooting.md)
+- [疑难排查](troubleshooting.md)
+- [版本日志](releases/1.3.0.md)
 
-### 7. 发布说明
+## 术语表
 
-- [版本更新记录](releases/1.0.11.md)
-
-## 术语约定
-
-- **Source Note**：每个 Zotero 条目对应的一份自动生成 Markdown 笔记，由 LiquidJS 模板驱动渲染。默认 `zotflow-locked: true`，在 Reading View 下只读。是知识图谱中的"来源事实层"。
-- **Item Note**：Zotero 原生子笔记（child note），附着在条目下，可在 ZotFlow 内新建/编辑/删除并双向同步回 Zotero。与 Source Note 是两个完全不同的概念。
-- **Library Reader**：读取 Zotero 库附件的阅读器模式，annotation 可随 bidirectional sync 回写 Zotero。
-- **Local Reader**：读取 vault 内本地 PDF/EPUB/HTML 的阅读器模式，annotation 写入 `.zf.json` sidecar，永不接触 Zotero。
-- **Editable Region**：Source Note 中由 `<!-- ZF_NOTE_BEG_<key> -->` / `<!-- ZF_ANNO_BEG_<key> -->` 标记包裹的可解锁编辑区域。
+- **Source Note**：为每个 Zotero 条目自动生成的 Markdown 汇总页，由 LiquidJS 模板渲染。骨架归模板所有；其中的可编辑区与 persist region 归你所有。
+- **Item Note**：挂在条目下的 Zotero 原生子笔记——可在 ZotFlow 内创建、编辑、删除，同步回 Zotero。与 Source Note 是完全不同的概念。
+- **Persist Region**：在模板中声明的 Source Note 区块，内容仅存本地——在每次重渲染中存活，永不同步到 Zotero。
+- **Editable Region**：Source Note 中由 marker 围栏、可解锁编辑的区段。三种：Item Note 区域与注释评论区域（同步），以及 persist region（仅本地）。
+- **Library Reader**：Zotero 库附件的阅读器；注释同步回 Zotero。
+- **Local Reader**：vault 本地 PDF/EPUB/HTML 的阅读器；注释存于同址 `.zf.json` 旁车文件，永不触碰 Zotero。

@@ -128,11 +128,12 @@ Library → Collection → Item → Attachment 层级浏览器（侧边栏）。
 
 ### Activity Center
 
-集中控制面板（ribbon 图标打开），五个标签页：
+集中控制面板（ribbon 图标打开），六个标签页：
 
 - **Sync** — 触发全量或单库同步，解决同步冲突
 - **Tasks** — 监控 Active / Queued 任务进度
 - **Template** — LiquidJS 模板沙箱，实时预览渲染结果
+- **CSL** — 管理 `citation` / `bibliography` filter 使用的引用样式：按 id 添加（带实时预览）、自定义 `.csl` 文件夹、一键更新。详见 [CSL 引用](csl-citations.md)
 - **Repair** — 修复因重渲染产生的失效 Block Reference
 - **Telemetry** — 按级别过滤的运行日志
 
@@ -148,6 +149,8 @@ Library → Collection → Item → Attachment 层级浏览器（侧边栏）。
 2. 开启 **WebDAV Sync**
 3. 填入 **Server URL**、**Username**、**Password**
 4. 点击 **Verify & Connect**
+
+> **注意：**Zotero 会把附件存放在 WebDAV 服务器上以 `/zotero` 结尾的文件夹里。Server URL 应指向其*上级*目录——与你在 Zotero 客户端里配置的 URL 保持一致——并确认 Zotero 实际写入的是那个 `zotero` 子文件夹。
 
 ### 附件缓存
 
@@ -211,4 +214,4 @@ ZotFlow 会缓存已下载的附件以加速重复打开：
 - **[阅读器与批注](reading-and-annotating.md)** — 阅读器功能、批注类型、图片提取、拖拽行为
 - **[Source Note](source-notes.md)** — Source Note 何时更新、frontmatter 合并、版本感知重渲染
 - **[引用与写作流](citation-guide.md)** — 每种引用插入方式、annotation 上下文带入
-- **[模板系统](template-guide.md)** — 完整 LiquidJS 变量与 filter 参考
+- **[模板指南](template-guide.md)** — 完整 LiquidJS 变量与 filter 参考

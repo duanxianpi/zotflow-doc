@@ -128,11 +128,12 @@ Invoke via `ZotFlow: Search Zotero Library` or the ribbon icon. Real-time search
 
 ### Activity Center
 
-Central control panel (opened via ribbon icon), five tabs:
+Central control panel (opened via ribbon icon), six tabs:
 
 - **Sync** — Trigger full or single-library sync, resolve conflicts
 - **Tasks** — Monitor Active / Queued task progress
 - **Template** — LiquidJS template sandbox with live preview
+- **CSL** — Manage citation styles for the `citation` / `bibliography` filters: add styles by id with live preview, custom `.csl` folder, one-click updates. See [CSL Citations](csl-citations.md)
 - **Repair** — Fix broken Block References caused by re-renders
 - **Telemetry** — Runtime logs filterable by level
 
@@ -148,6 +149,8 @@ If your attachments are on a WebDAV server rather than Zotero cloud:
 2. Enable **WebDAV Sync**
 3. Fill in **Server URL**, **Username**, **Password**
 4. Click **Verify & Connect**
+
+> **Note:** Zotero stores attachments inside a folder ending in `/zotero` on your WebDAV server. Point the Server URL at the *parent* folder — the same URL you configured in Zotero itself — and make sure the `zotero` subfolder is the one Zotero actually writes to.
 
 ### Attachment Cache
 
@@ -211,4 +214,4 @@ Now that you have a working ZotFlow, we recommend exploring in this order:
 - **[Reader & Annotations](reading-and-annotating.md)** — Reader features, annotation types, image extraction, drag behavior
 - **[Source Note](source-notes.md)** — When Source Notes update, frontmatter merging, version-aware re-rendering
 - **[Citation & Writing Flow](citation-guide.md)** — Each citation insertion method, bringing in annotation context
-- **[Template System](template-guide.md)** — Complete LiquidJS variable and filter reference
+- **[Template Guide](template-guide.md)** — Complete LiquidJS variable and filter reference

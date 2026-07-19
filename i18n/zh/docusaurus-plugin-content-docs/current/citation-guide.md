@@ -6,7 +6,7 @@ sidebar_position: 7
 
 ZotFlow 让你在写作现场快速插入可控格式的引用：从 Tree View 拖拽、在编辑器中输入触发词、从阅读器复制——三种路径，五种格式，annotation 上下文可带入模板。
 
-引用由 LiquidJS 模板渲染（模板变量参考见[模板系统](template-guide.md#3-citation-模板)）。
+引用由 LiquidJS 模板渲染（模板变量参考见[模板变量与默认模板](template-variables.md#3-citation-模板)）。想要真实的 CSL 样式——APA、IEEE、Chicago，由 citeproc 渲染——在模板中使用 `citation` / `bibliography` filter：见 [CSL 引用](csl-citations.md)。
 
 ---
 
@@ -36,6 +36,8 @@ ZotFlow 让你在写作现场快速插入可控格式的引用：从 Tree View �
 拖拽时按住修饰键可临时切换格式（见下方[修饰键](#修饰键覆盖默认格式)）。
 
 > 拖拽**附件**（PDF/EPUB）时插入的是打开附件的链接而非引用。
+
+**Annotation 也支持拖拽**——从 reader 的注释侧栏把 annotation 拖进编辑器，即以默认格式插入携带该注释上下文（如页码定位）的引用。
 
 ### 2. Citation Suggest（触发词建议框）
 
@@ -135,7 +137,7 @@ Embed 格式为每条 annotation 生成指向 Source Note 中对应 block ID 的
 | **Footnote Definition Template** | 脚注定义文本的模板                     | _(built-in fallback)_ |
 | **Wikilink Template**            | Wikilink 引用的模板                    | _(built-in fallback)_ |
 
-模板字段留空则使用 built-in 默认。默认模板源码见[模板系统](template-guide.md#3-citation-模板)。
+模板字段留空则使用 built-in 默认。默认模板源码见[模板变量与默认模板](template-variables.md#3-citation-模板)。
 
 ---
 
@@ -166,6 +168,6 @@ Embed 格式为每条 annotation 生成指向 Source Note 中对应 block ID 的
 
 ## 相关页面
 
-- [模板系统](template-guide.md)
+- [模板指南](template-guide.md)
 - [阅读器与批注](reading-and-annotating.md)
 - [Source Note](source-notes.md)

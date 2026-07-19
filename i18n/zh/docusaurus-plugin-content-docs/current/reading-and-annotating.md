@@ -34,7 +34,7 @@ ZotFlow 内置了一个阅读器——使用与 Zotero 相同的 PDF/EPUB/HTML �
 | **打开 annotation** | `obsidian://zotflow?type=open-annotation&libraryID=<id>&key=<key>` |
 | **打开 note** | `obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>` |
 
-`open-annotation` 协议通过 key 查找 annotation，定位其父附件，并在 Zotero reader 中打开该附件并直接导航到该条 annotation。打开附件时附加 `&navigation=<json>` 可跳转到指定页面或 annotation。
+`open-annotation` 协议通过 key 查找 annotation，定位其父附件，并在 Zotero reader 中打开该附件并直接导航到该条 annotation。
 
 ---
 

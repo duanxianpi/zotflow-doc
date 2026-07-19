@@ -17,6 +17,15 @@ Item Note 是 Zotero 条目下的 child note item——Zotero 原生的笔记对
 
 本页只讨论 **Item Note**。Source Note 参见 [Source Note](source-notes.md)。
 
+## Item Note 还是 Persist Region？
+
+两者都承载你对单篇文献的想法——决定性问题是**要不要让 Zotero 看到**：
+
+- **Item Note**——同步回 Zotero：在 Zotero 界面可读、在 Zotero 所达的每台设备上可见、独立于 vault 存在。适合属于*文献本身*而不只属于 vault 的内容。
+- **[Persist region](source-notes.md#persist-region仅存本地的内容)**——仅存本地，直接住在 Source Note 页面里，永不同步。适合私人阅读笔记、评价、与 Zotero 无关的工作草稿。
+
+完整决策表见[所有权模型](concepts.md#-沉淀--source-note-内的内容所有权)。
+
 ---
 
 ## Item Note 在哪里出现
@@ -31,26 +40,35 @@ Item Note 是 Zotero 条目下的 child note item——Zotero 原生的笔记对
     └── 📝 Summary
 ```
 
-在 **Source Note** 正文内，每个 child note 默认被渲染进自己的 editable region，由 `<!-- ZF_NOTE_BEG_<key> -->` / `<!-- ZF_NOTE_END_<key> -->` 标记包裹（详见 [Editable Regions](source-notes.md#zotero-note-editable-regions--annotation-comment-editable-regions)）。
+在 **Source Note** 正文内，每个 child note 默认被渲染进自己的 editable region，由 `<!-- ZF_NOTE_BEG_<key> -->` / `<!-- ZF_NOTE_END_<key> -->` 标记包裹（详见[可编辑区](source-notes.md#可编辑区三种类型)）。
 
 ---
 
 ## 创建 Item Note
 
-在 **Zotero Tree View** 中：
+三个入口——均受库写权限保护：
+
+**在 Zotero Tree View 中：**
 
 1. **右键**一个父条目（非 standalone attachment 的任何条目）
 2. 选择 **Create child note**
-3. ZotFlow 会：
-   - 在 IndexedDB 中创建空 note，`syncStatus: "created"`
-   - 刷新 Tree View，新 `📝` 节点出现
-   - 在**新标签页**中打开 Note Editor，可直接输入
+
+**在已打开的 Source Note 中**（作用于该笔记对应的条目）：
+
+- **命令面板** → `ZotFlow: Create child note for current source note`
+- 标签页右上角**三点菜单** → **ZotFlow: Create child note**
+
+各入口随后的行为完全一致——ZotFlow 会：
+
+- 在 IndexedDB 中创建空 note，`syncStatus: "created"`
+- 刷新 Tree View，新 `📝` 节点出现
+- 在**新标签页**中打开 Note Editor，可直接输入
 
 > 此时 note 的 key 是临时的。下一次 bidirectional sync 时 Zotero 分配真实 key，ZotFlow 自动更新本地记录。在这之前 note 完全可在本地正常使用。
 
-**入口隐藏条件：**
+**入口隐藏或拒绝的条件：**
 
-- 目标是 standalone attachment（没有父条目的附件不能有 child）
+- 目标是 standalone attachment（附件不能有 child note）
 - 库模式为 Read Only
 - API Key 缺少 notes write 权限
 
@@ -81,7 +99,7 @@ Item Note 是 Zotero 条目下的 child note item——Zotero 原生的笔记对
 - **双击** Tree View 中的 `📝` 节点，或
 - 右键选择 **Open note**（在适用场景下出现），或
 - 右键选择 **Open in Note Editor (Experimental)**，或
-- 使用 URI：`obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>`
+- 使用 URI：`obsidian://zotflow?type=open-item-note&libraryID=<id>&key=<key>`（按 **Always Open Child Notes in Note Editor** 设置路由；`type=open-note` 打开的是条目的 *Source Note*）
 
 编辑器是 Obsidian 标准的 embeddable Markdown 编辑器——你的快捷键、snippets、CSS、其他插件行为都正常工作。ZotFlow 在此基础上：
 

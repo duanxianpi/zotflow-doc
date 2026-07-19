@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 13
 ---
 
 # 故障排查（按症状）
@@ -45,12 +45,16 @@ sidebar_position: 10
 
 根因：
 
-- 你编辑了模板驱动区域，重渲染时被刷新。
+- 你编辑了模板所有的区域，重渲染时被重新生成。
 
 建议：
 
-1. 把长期维护字段放 frontmatter 自定义键。
-2. 把对这篇文献的理解写进 Item Note（内嵌在 Source Note 中），跨文献的综合分析写在独立笔记，链接回各 Source Note。
+1. 关于这篇文献的自由笔记 → 写进 **persist region**（模板声明、仅存本地、每次重渲染都存活）。
+2. 想让 Zotero 看到的想法 → 写进 **Item Note** 区域（同步回流）。
+3. 结构化字段（评分、状态）→ frontmatter 自定义键（永不被碰）。
+4. 跨文献综合 → 独立笔记，链接回各 Source Note。
+
+详见[所有权模型](concepts.md#-沉淀--source-note-内的内容所有权)。
 
 ## 症状 5：引用插入异常
 

@@ -10,9 +10,9 @@ Source Note 是 ZotFlow 的核心机制：每个 Zotero 条目自动生成一份
 
 ## 快速理解
 
-1. Source Note 是由系统自动维护的**参考页**——元数据、annotation 摘录、子笔记由模板驱动，随条目变化自动刷新
-2. 你可以在 Source Note 内编辑 Item Note 和 annotation 评论（通过 editable region）。Source Note 的定位偏向**参考与索引**：对单篇文献的批注、摘录放在 Source Note 及其 Item Note 中，跨文献的综合分析则适合放在独立笔记里，链接回各 Source Note
-3. 默认 `zotflow-locked: true`，在 Reading View 下整页只读——但 frontmatter 和 editable region 例外，初次之外任何非法修改会在下一次重渲染时被覆盖
+1. Source Note 是条目的**汇总页**——元数据、annotation 摘录、子笔记由模板驱动，随条目变化自动刷新
+2. 页面内的内容有三种所有者：**模板**在每次更新时重生成骨架；**Zotero 同步区域**（Item Note、注释评论）可编辑并随同步回流；**persist region** 与自加 frontmatter 字段**完全属于你**——仅存本地、原样保留。完整图景见[所有权模型](concepts.md#-沉淀--source-note-内的内容所有权)
+3. 页面以锁定状态打开（`zotflow-locked: true`），防止误改模板所有的内容——凡属于你的始终可编辑，且不会因重渲染丢失
 
 ---
 
@@ -49,7 +49,7 @@ Source Note 是 ZotFlow 的核心机制：每个 Zotero 条目自动生成一份
 
 ## 用户可编辑的范围
 
-Source Note 默认整页只读，但三种内嵌内容被显式设计为可在 Obsidian 内编辑，frontmatter 则始终自由。
+模板拥有页面的骨架——除此之外的内容都归你编辑：frontmatter（始终自由）、Zotero 同步区域（Item Note 与注释评论）、以及仅存本地的 persist region。
 
 ### Frontmatter（始终可编辑）
 
@@ -79,7 +79,7 @@ ZotFlow **永不修改**。重渲染时原样保留，不参与任何合并逻�
 - 在 template 中写 `tags:` → 每次重渲染都覆盖，确保 tags 与 Zotero 同步
 - 在 note 里直接写 `myNotes: "..."` → ZotFlow 永远不碰
 
-### Zotero Note Editable Regions & Annotation Comment Editable Regions
+### 可编辑区：三种类型
 
 正文中，三种 region 被隐藏 HTML comment marker 包裹，视为可编辑区：
 
@@ -102,7 +102,7 @@ ZotFlow **永不修改**。重渲染时原样保留，不参与任何合并逻�
 
 **Persist region** 属于*你*而不属于 Zotero：写在里面的内容在每次 source note 更新中都会存活，且**永远不会同步到 Zotero**。典型用法是不创建 item note、直接在 source note 里写个人总结或阅读笔记。
 
-在模板中用一个你自选的稳定 id 声明——原生注释对或 `wrap_editable: "PERSIST", "your-id"` 均可（语法与 id 规则详见[模板系统](template-guide.md#wrap_editable)）：
+在模板中用一个你自选的稳定 id 声明——原生注释对或 `wrap_editable: "PERSIST", "your-id"` 均可（语法与 id 规则详见[模板 Filter 参考](template-filters.md#wrap_editable)）：
 
 ```markdown
 ## 我的总结
@@ -122,7 +122,7 @@ ZotFlow **永不修改**。重渲染时原样保留，不参与任何合并逻�
 
 > ⚠️ Persist 内容存在 note 文件里。如果启用了**自动清理已回收 source note**，Zotero item 被移入回收站时整个文件（连同 persist 内容）会一起进入系统回收站。
 
-> ⚠️ **Marker 之外的结构、annotation excerpt、标题、生成的骨架——仍然是 locked 的。只有 Marker 内部（和 frontmatter）属于你可编辑的范围。** Note 和 annotation region 由模板中的 `wrap_editable` filter 生成（详见[模板系统](template-guide.md#wrap_editable)）；persist region 也可以直接手写注释对。
+> ⚠️ **Marker 之外的结构、annotation excerpt、标题、生成的骨架——仍然是 locked 的。只有 Marker 内部（和 frontmatter）属于你可编辑的范围。** Note 和 annotation region 由模板中的 `wrap_editable` filter 生成（详见[模板 Filter 参考](template-filters.md#wrap_editable)）；persist region 也可以直接手写注释对。
 
 ### Editable Region 相关设置
 
@@ -162,10 +162,18 @@ ZotFlow **永不修改**。重渲染时原样保留，不参与任何合并逻�
 
 ## 推荐用法
 
-1. 让它承载**来源事实**：题录、摘要、annotation 摘录、子笔记
-2. 对**这篇文献本身**的理解、批注延伸、复述总结——写在 **Item Note** 里（可编辑、会同步回 Zotero，内嵌在 Source Note 中）。对**多篇文献之间的关系**、主题综述、跨文献论证——写在**独立 Obsidian 笔记**里，通过 wikilink 指向各 Source Note。这样做的好处是：Source Note 重渲染不会影响你的笔记；单篇思考跟随文献走，跨篇综合独立组织
-3. 不要在模板渲染区（非 editable region 部分）放长篇内容——重渲染会丢弃它们。长期维护的内容建议放在 editable region 内，或直接在 note 的 frontmatter 中添加自定义字段（ZotFlow 永不修改）
-4. 想在 template 中预设可被用户覆盖的默认值时，用 `??` 前缀（如 `??rating: 0`、`??status: unread`）——首次生成时写入，之后用户可在 note 中自行修改
+写在哪，问两个问题——*是不是关于这一篇？* 和 *要不要让 Zotero 看到？*
+
+| | 要同步到 Zotero | 只留在 vault |
+| --- | --- | --- |
+| **关于这一篇** | **Item Note**——注释延伸、复述、想在 Zotero 所达设备上都看到的总结 | **Persist region**——私人阅读笔记、评价、工作草稿，就写在来源页面里 |
+| **跨多篇** | — | **独立 Obsidian 笔记**——综述、比较、论证；wikilink 连回各 Source Note |
+
+配套习惯：
+
+1. 让模板所有的部分承载**来源事实**——题录、摘要、注释摘录。别在那里写正文：重渲染会重新生成。
+2. 结构化的单条目元数据（评分、阅读状态）用**自定义 frontmatter 字段**——直接在 note 里添加（永不被碰），或用 `??` 前缀在模板中预设可覆盖的默认值（如 `??rating: 0`、`??status: unread`）。
+3. 在模板里为你常用的个人段落声明 persist region（比如一个 `## 我的总结` 区块）——改一次模板，每张 source note 都有了你的文字的持久归处。
 
 ---
 
@@ -173,7 +181,13 @@ ZotFlow **永不修改**。重渲染时原样保留，不参与任何合并逻�
 
 ### 我改过的正文又变回去了
 
-你编辑的是模板驱动的区域。重渲染时这些区域会被模板输出覆盖。把长期维护的内容放在 note 的 frontmatter 中直接添加（ZotFlow 不修改），或确保在 editable region 内修改（note region 和 annotation comment region 的修改会写回 IndexedDB 并在重渲染时保留）。
+你写在了模板所有的区域——那里每次重渲染都会重新生成。为你的内容设计了三个持久归处：
+
+- **Persist region**——模板中声明的仅本地区块，最适合在来源页面里写自由笔记（[详情](#persist-region仅存本地的内容)）
+- **同步区域**——Item Note / 注释评论的编辑写入 IndexedDB 并回流 Zotero
+- **自定义 frontmatter 字段**——ZotFlow 永不修改
+
+完整决策指南见[所有权模型](concepts.md#-沉淀--source-note-内的内容所有权)。
 
 ### 锁图标不可点
 
@@ -190,6 +204,6 @@ ZotFlow **永不修改**。重渲染时原样保留，不参与任何合并逻�
 ## 相关页面
 
 - [Item Note](item-notes.md)
-- [模板系统](template-guide.md)
+- [模板指南](template-guide.md)
 - [阅读器与批注](reading-and-annotating.md)
 - [工作模型总览](concepts.md)

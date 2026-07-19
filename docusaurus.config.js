@@ -19,6 +19,11 @@ const config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
+  markdown: {
+    mermaid: true,
+  },
+  themes: ["@docusaurus/theme-mermaid"],
+
   // Set the production url of your site here
   url: "https://zotflow.peterduan.dev",
   // Set the /<baseUrl>/ pathname under which your site is served

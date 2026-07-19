@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 13
 ---
 
 # Troubleshooting (By Symptom)
@@ -45,12 +45,16 @@ Note: Local Reader annotations are written to `.zf.json` and are never written b
 
 Root cause:
 
-- You edited a template-driven area, and it was refreshed on re-render.
+- You edited a template-owned area, and it was regenerated on re-render.
 
 Suggestions:
 
-1. Put long-lived fields in custom frontmatter keys.
-2. Write your understanding of the paper in Item Notes (embedded in the Source Note). For cross-paper synthesis, use standalone notes linked back to Source Notes.
+1. Free-form notes about the source → write inside a **persist region** (template-declared, local-only, survives every re-render).
+2. Thoughts that should reach Zotero → write in the **Item Note** region (synced back).
+3. Structured fields (rating, status) → custom frontmatter keys (never touched).
+4. Cross-paper synthesis → standalone notes linked back to Source Notes.
+
+See the [ownership model](concepts.md#-distill--content-ownership-inside-a-source-note).
 
 ## Symptom 5: Citation Insertion Issues
 

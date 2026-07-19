@@ -34,7 +34,7 @@ You can jump to an attachment, annotation, or Source Note from external links or
 | **Open annotation** | `obsidian://zotflow?type=open-annotation&libraryID=<id>&key=<key>` |
 | **Open note** | `obsidian://zotflow?type=open-note&libraryID=<id>&key=<key>` |
 
-The `open-annotation` protocol looks up the annotation by key, finds its parent attachment, and opens the attachment in the Zotero reader navigated directly to the annotation. Add `&navigation=<json>` to the attachment protocol to jump to a specific page or annotation.
+The `open-annotation` protocol looks up the annotation by key, finds its parent attachment, and opens the attachment in the Zotero reader navigated directly to the annotation.
 
 ---
 

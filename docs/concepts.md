@@ -4,22 +4,34 @@ sidebar_position: 3
 
 # Working Model Overview
 
-## Core Design Principles
+**Literature flows in, insight flows out.** This page explains the loop behind that sentence — what data moves at each station, what syncs, and what stays yours alone. Read it once and every ZotFlow feature will have an obvious place.
 
-### 1. Stay in the Flow
+## The Loop, as Data Flow
 
-ZotFlow's fundamental goal is to eliminate tool switching. Reading, annotating, citing, and note-taking — these actions naturally belong in the same tool, under the same keyboard shortcuts, within the same theme. Every ZotFlow feature is designed to reduce your reasons to leave Obsidian.
+```mermaid
+flowchart LR
+    Z[("Zotero Cloud")]
+    C[("IndexedDB<br/>local cache")]
+    R["② Reader<br/>read & annotate"]
+    S["③ Source Notes<br/>template skeleton<br/>+ synced regions<br/>+ persist regions (local-only)"]
+    D["④ Your drafts"]
 
-### 2. Zotero is the Source of Truth (Mostly)
+    Z -- "① pull" --> C
+    C -- push --> Z
+    C --> R
+    R -- "annotations" --> C
+    C -- "render" --> S
+    S -- "synced region edits" --> C
+    S -- "cite & link" --> D
+    D -. "jump back" .-> R
+    D -. "jump back" .-> S
+```
 
-Your Zotero library is the canonical store for bibliographic metadata. ZotFlow's role is:
+### ① In — Zotero to local cache
 
-- **Pull**: Fetch metadata, items, collections, and annotations from the Zotero Web API into a local IndexedDB cache
-- **Push**: Write your Obsidian-side changes back to Zotero
+ZotFlow pulls items, collections, attachments, and annotations from the Zotero Web API into local IndexedDB. After the first sync you can browse, search, read, and annotate **fully offline** — the network is only needed for syncing and downloading attachments (from Zotero storage or your WebDAV server). Cached attachments are managed with a configurable LRU size limit.
 
-> **What data gets written back?** Currently, **annotations** (add/edit/delete), **Item Notes** (create/edit/delete child notes), and **tags** (edit item/annotation tags via the tag editing modal) are pushed back to Zotero. Changes to frontmatter and item metadata (title, creators, etc.) are **not** pushed back to Zotero. Source Note frontmatter custom fields are local-only and invisible to Zotero.
-
-Each accessible Zotero library has an independently configured sync mode:
+Each library has its own sync mode:
 
 | Mode              | Behavior                                                                 |
 | ----------------- | ------------------------------------------------------------------------ |
@@ -27,144 +39,67 @@ Each accessible Zotero library has an independently configured sync mode:
 | **Read Only**     | Pull only. Local annotations stay local and never reach Zotero           |
 | **Ignored**       | Completely skipped during sync                                           |
 
-When the same field is modified on both sides between syncs, ZotFlow provides a **field-level diff viewer** that lets you choose which side wins on a per-field basis, rather than blunt whole-item overwrites.
+**What flows back to Zotero?** Annotations (add/edit/delete), Item Notes (create/edit/delete), and tags. Item metadata, frontmatter, and persist regions never flow back. When the same field changes on both sides between syncs, a **field-level diff viewer** lets you pick the winner per field — no wholesale overwrites.
 
-### 3. Source Note: One per Item, Auto-Generated, Locked by Default
+Practices that reduce conflicts: keep your primary editing side fixed (either Obsidian or Zotero), and sync before editing from a second device.
 
-Each Zotero item gets one auto-rendered Markdown file in your vault — this is the heart of ZotFlow's note model:
+### ② Read — two readers, two destinations
 
-- **One source, one note.** Stable, addressable atomic nodes in your knowledge graph.
-- **Auto-generated from a template.** You define a LiquidJS template; ZotFlow fills in metadata, child notes, attachments, and annotations.
-- **Locked by default.** In Reading View, the entire page is read-only, with exceptions for frontmatter and editable regions. Any illicit modification is overwritten on the next re-render.
+The built-in reader uses Zotero's rendering engine with Obsidian-matched theming, in two modes:
 
-Source Notes are generated or updated under these conditions:
+| Mode               | What it reads                   | Where annotations go                          |
+| ------------------ | ------------------------------- | --------------------------------------------- |
+| **Library Reader** | Attachments synced from Zotero  | IndexedDB → Zotero (via bidirectional sync)   |
+| **Local Reader**   | Local PDF/EPUB/HTML in vault    | Co-located `.zf.json` sidecar — never Zotero  |
 
-| Trigger                          | Behavior                                                                                                         |
-| -------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| **After first sync**             | Source Notes are auto-created after sync completes (can be disabled in settings)                                  |
-| **Sync detects item changes**    | Source Note is auto-re-rendered (can be disabled in settings)                                                     |
-| **Annotation changes**           | After adding/editing/deleting annotations in the reader, Source Note auto-re-renders (debounced ~2s, bypasses version check) |
-| **Item Note changes**            | After editing an Item Note, the parent item's Source Note refreshes to reflect the updated embedded note region    |
-| **Manual trigger**               | Tree View right-click item → Open source note (forces update), or batch create command                            |
+Annotation changes ripple forward automatically: the affected Source Note re-renders on a ~2s debounce. (Local Reader is enabled via Settings → General → Overwrite PDF/EPUB/HTML Viewer.)
 
-#### Child Notes & Annotation Comments: Exceptions to the Rule
+### ③ Distill — content ownership inside a Source Note
 
-Zotero **child notes** (native note items attached to bibliographic entries) are the most important exception to the "locked" rule. ZotFlow treats child notes as **first-class editable objects**, providing two equivalent editing entry points:
+Each Zotero item gets exactly one auto-rendered Markdown file — a stable, addressable node in your knowledge graph. The file is a **projection of the local cache through your template**, which raises the central question of ZotFlow's note model: *when the template re-renders, what survives?*
 
-- **Editable region inside Source Note** — Each child note is rendered into the Source Note wrapped by `<!-- ZF_NOTE_BEG_<key> -->` / `<!-- ZF_NOTE_END_<key> -->` hidden comment markers. In Source / Live Preview mode, a 🔒 lock icon appears at the start of the region line; click to unlock and edit in place. Annotation comments work the same way (markers use `ZF_ANNO_*`).
-- **Standalone Note Editor** — Double-click a `📝` node in Tree View (or right-click → Open note) to open a full embedded Markdown editor in a separate tab.
+The answer is ownership. Every piece of content in a Source Note has one of three owners:
 
-Both entry points write to the same IndexedDB record. See [Item Note](item-notes.md) for details.
+| Owner | Content | On re-render | Syncs to Zotero? |
+| --- | --- | --- | --- |
+| **Template** | metadata, annotation excerpts, headings, structure | regenerated — don't write here | — (it *comes from* Zotero) |
+| **Zotero (shared, editable)** | Item Note regions, annotation comment regions | your edits preserved, written to IndexedDB | ✅ on next sync |
+| **You (local)** | persist regions, custom frontmatter fields | preserved verbatim | ❌ never |
 
-#### Frontmatter: Another Exception
+- **Zotero-owned regions** are fenced by `ZF_NOTE_*` / `ZF_ANNO_*` markers with a 🔒 lock toggle. Editing them *is* editing the Zotero object — the change flows back on sync. Item Notes can equivalently be edited in a standalone Note Editor tab; both entry points write the same record.
+- **Persist regions** (`ZF_PERSIST_*` markers, declared in your template) are the place for your own words *inside* the source's page: reading notes, verdicts, todo lists. They survive every re-render and never leave your vault. If a region disappears from the template, its content moves to a clearly-bounded "Orphaned persist regions" section — never deleted.
+- **Custom frontmatter fields** you add by hand are preserved as-is; template-defined fields follow the `??` merge prefix rules (see [Source Note](source-notes.md#frontmatter-always-editable)).
 
-Source Note YAML frontmatter has two editable sources:
+That table yields a simple decision guide for **where to write**:
 
-- **In the template**: You can define frontmatter fields in the template's `---` block
-- **In the note**: After generation, you can also add fields directly to the `.md` file's frontmatter
+| | Should sync to Zotero | Stays in your vault |
+| --- | --- | --- |
+| **About this one source** | **Item Note** — annotation extensions, paraphrases, summaries you want on every device Zotero reaches | **Persist region** — private reading notes, verdicts, workflow scratch |
+| **Across sources** | — (Zotero has no cross-item note concept) | **Standalone Obsidian note** — surveys, comparisons, arguments; wikilink back to Source Notes |
 
-For **fields you add directly in the note** (not defined in the template), ZotFlow never touches them — they are always preserved as-is.
+Source Notes re-render automatically: after syncs that change an item (version-aware), after annotation changes (forced, debounced), after Item Note edits, or manually from the Tree View / command palette. Whatever the trigger, the ownership rules above decide what survives — by construction, everything that is yours does.
 
-For **frontmatter fields defined in the template**, the following merge rules apply on re-render:
+### ④ Out — citations and links that belong to both sides
 
-| Field prefix                                   | Behavior                                                                                                |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **`??` prefix** (e.g., `??rating`, `??status`) | If the field **does not exist** in the note → fill with template value. If it **already exists** → keep the note's existing value, template does not overwrite |
-| **No `??` prefix**                             | Always overwrite the note's value with the template content                                             |
+Insert citations while writing by dragging items from the Tree View or typing a trigger character — output as Pandoc keys, wikilinks, footnotes, or real CSL styles rendered by citeproc (see [`citation` / `bibliography` filters](template-filters.md#citation-csl)).
 
-Mandatory fields (`zotflow-locked`, `library-id`, `zotero-key`, `item-version`) are always re-injected regardless of the above rules.
+Links keep their allegiance sorted: Item Notes store native `zotero://` links (so they navigate Zotero's reader when opened there) while Obsidian displays ZotFlow links that open the built-in reader. Zotero's embedded annotation highlights and citation markers are clickable too. Citations and links from your drafts jump straight back into ② and ③ — closing the loop.
 
-See [Source Note Frontmatter Merge Strategy](source-notes.md#frontmatter-always-editable).
+## Cross-Cutting Principles
 
-#### Recommended Note Division of Labor
+These apply at every station:
 
-Understanding the model above leads to a natural usage pattern:
-
-- **Item Note** — Holds your understanding of **this specific piece of literature**: annotation extensions, paragraph paraphrases, key formula derivations, post-reading questions. Item Notes are editable, sync back to Zotero, and are naturally bound to their source when embedded in the Source Note.
-- **Standalone Obsidian note** — Holds **cross-literature** synthesis: topic surveys, multi-paper comparisons, methodology discussions, research lineage mapping. Link to Source Notes via wikilinks — one note can connect many sources.
-
-The benefit of this division: per-paper thinking is not lost when Source Notes re-render (Item Notes are stored in IndexedDB and synced back to Zotero), while cross-paper synthesis is not constrained by the structure of any single source.
-
-### 4. Two Reader Modes
-
-ZotFlow's built-in reader (using the same PDF/EPUB/HTML rendering engine as Zotero, but with Obsidian-matched theming) operates in two modes:
-
-| Mode               | What it reads                   | Where annotations are stored                |
-| ------------------ | ------------------------------- | ------------------------------------------- |
-| **Library Reader** | Attachments synced from Zotero  | Zotero (written back via bidirectional sync) |
-| **Local Reader**   | Local PDF/EPUB/HTML in vault    | Co-located `.zf.json` sidecar file          |
-
-Local Reader must be manually enabled: Settings → ZotFlow → General → Overwrite PDF/EPUB/HTML Viewer. Once enabled, all PDF/EPUB/HTML files in your vault open with the ZotFlow reader. Local annotations never touch Zotero.
-
-### 5. Template-First
-
-ZotFlow is **template-first**. Almost all user-visible output is rendered by LiquidJS templates:
-
-- Source Note file path
-- Library Source Note body
-- Local Source Note body
-- Each citation format output (Pandoc, Wikilink, Footnote, Citekey)
-
-If you're not happy with the default output, you don't need to file a feature request — just edit the template. See the [Template System](template-guide.md).
-
-### 6. Offline-First
-
-Every synced Zotero item, collection, and library is cached in local IndexedDB. After your first sync completes, you can browse, search, read, and edit annotations **with no network connection**. The network is only needed for:
-
-- Syncing with the Zotero Web API
-- Downloading attachments (from Zotero cloud storage or your WebDAV server)
-
-Cached attachment files are managed with an LRU policy; the size limit is configurable in settings.
-
-### 7. Two Main Interaction Panels
-
-Most of your interaction with ZotFlow is concentrated on two panels:
-
-- **Zotero Tree View** (sidebar) — Navigation panel. Browse the Library → Collection → Item → Attachment hierarchy; search and filter; drag items into the editor to insert citations; double-click attachments to open the reader.
-- **Activity Center** (opened via ribbon icon) — Control panel. Trigger syncs, monitor task progress, view logs, test templates.
-
-### 8. Privacy & Security by Default
-
-- No telemetry, analytics, or third-party tracking
-- Network requests are only sent to the Zotero API and your configured WebDAV server
-- API Key and WebDAV password are stored in Obsidian's platform-native `SecretStorage` — they do **not** appear in your synced `data.json`
-
----
-
-## Data Flow Overview
-
-```
-Zotero Cloud ──pull──→ IndexedDB (local cache) ──template render──→ Source Notes (.md) ←── contain Item Notes
-     ↑                      ↑                                │
-     │                      │                                │
-     └──push── edits/anno changes ─┘                         │
-                                                            │
-                              Cross-paper synthesis ←──wikilink──┘
-```
-
-1. ZotFlow pulls items, collections, attachments, and annotations from the Zotero Web API into local IndexedDB
-2. You read attachments, make annotations, and edit Item Notes within Obsidian
-3. On the next bidirectional sync, changes are written back to Zotero
-4. Source Notes auto-re-render based on item and annotation state changes (debounced ~2s)
-5. Your independent thinking notes link to Source Notes via wikilinks
-
-## Conflict Resolution Principles
-
-When the same field is modified on both ends, ZotFlow's field-level diff viewer lets you choose which side to keep on a per-field basis — not wholesale overwrites, but field-level decisions.
-
-Practices to reduce conflict probability:
-
-1. Keep your primary editing side fixed — either Obsidian or Zotero
-2. Sync before editing from a second device
+- **Template-first.** Nearly all user-visible output — note paths, Source Note bodies, citation formats — is rendered by LiquidJS templates you can edit. If you don't like the default output, change the template, not your workflow. See the [Template Guide](template-guide.md).
+- **Offline-first.** Everything synced is cached locally; the loop keeps running without a network.
+- **Two panels.** The **Tree View** (sidebar) is navigation: browse, search, drag-to-cite, open. The **Activity Center** (ribbon icon) is control: sync, tasks, logs, template preview, CSL styles.
+- **Privacy by default.** No telemetry. Network requests go only to the Zotero API and your configured WebDAV server. Credentials live in Obsidian's platform-native `SecretStorage`, never in synced `data.json`.
 
 ## Why This Design
 
-1. **Closed loop**: Reading, annotating, and writing happen in the same tool — zero context switching
-2. **Stable references**: Source Notes ensure every source has an always-present "fact layer" node
-3. **User control**: The template system puts output formatting in your hands, with no hardcoded workflows
-4. **Offline-capable**: Local cache + LRU attachment management means no dependency on a persistent network connection
-
----
+1. **Closed loop** — reading, annotating, and writing happen in one tool, zero context switching.
+2. **Stable references** — every source has an always-present, addressable page.
+3. **Clear ownership** — you always know what survives a re-render and what reaches Zotero: template content is regenerated, shared regions sync, your local content is untouchable.
+4. **User control** — templates put output formatting in your hands, with no hardcoded workflows.
 
 ## Related Entry Points
 
@@ -173,4 +108,4 @@ Practices to reduce conflict probability:
 - [Source Note](source-notes.md)
 - [Item Note](item-notes.md)
 - [Citation & Writing Flow](citation-guide.md)
-- [Template System](template-guide.md)
+- [Template Guide](template-guide.md)
