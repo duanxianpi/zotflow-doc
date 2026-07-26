@@ -93,7 +93,7 @@ Tables are also padded so the columns line up:
 | longer | b |     | longer         | b      |
 ```
 
-:::tip Line breaks
+:::tip[Line breaks]
 Whether a single newline becomes a visible line break depends on Obsidian's
 **Strict line breaks** setting (Settings → Editor). ZotFlow reads that setting
 and converts both directions consistently with it, so you do not need to do
@@ -101,6 +101,19 @@ anything — but the exact output differs between the two modes.
 :::
 
 ## Not supported
+
+Everything below is limited by what a Zotero note can hold. If you need one of
+these, the way around it is to keep the content **out of the Zotero note** while
+staying in the same file:
+
+- a **[persist region](source-notes.md#persist-regions-local-only-content)** in
+  a Source Note — local-only, never synced to Zotero, and preserved verbatim
+  across every re-render. This keeps the content attached to the item, which a
+  separate note does not;
+- the Source Note's **frontmatter**, which is always yours to edit;
+- or an ordinary vault note, if the content does not belong to a specific item.
+
+Only Item Notes and annotation comments make the trip through Zotero's format.
 
 ### Code block languages
 
@@ -116,9 +129,9 @@ format has no place to store it.
 **Most visible consequence:** a ` ```mermaid ` diagram stops rendering as a
 diagram and shows its source instead.
 
-**What to do:** if a note contains diagrams you care about, keep it as a
-regular vault note rather than an Item Note. Syntax highlighting in Obsidian is
-the only other thing you lose.
+**What to do:** put diagrams in a persist region of the Source Note, where they
+are never converted. Syntax highlighting in Obsidian is the only other thing you
+lose, and only inside Item Notes.
 
 ### YAML frontmatter
 
@@ -131,8 +144,8 @@ you write        ---                after sync    (mangled)
 Frontmatter belongs to a vault note, not to a Zotero note — Zotero has nowhere
 to keep it. Item Notes should not contain it.
 
-**What to do:** put properties on the vault note that links to the item, not in
-the Item Note body.
+**What to do:** use the Source Note's own frontmatter, which is always yours to
+edit and is never sent to Zotero.
 
 ### Custom checkbox statuses
 
@@ -148,8 +161,8 @@ with a backslash and stop being recognised as statuses.
 Nothing is destroyed — the text is still there and still readable — but the
 plugin no longer sees a status.
 
-**What to do:** use standard checkboxes in Item Notes, and keep custom statuses
-in ordinary vault notes.
+**What to do:** use standard checkboxes in Item Notes. If you rely on custom
+statuses, keep that list in a persist region instead.
 
 ### Unused link definitions
 
