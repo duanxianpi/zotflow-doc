@@ -150,7 +150,7 @@ Library → Collection → Item → Attachment 层级浏览器（侧边栏）。
 3. 填入 **Server URL**、**Username**、**Password**
 4. 点击 **Verify & Connect**
 
-> **注意：**Zotero 会把附件存放在 WebDAV 服务器上以 `/zotero` 结尾的文件夹里。Server URL 应指向其*上级*目录——与你在 Zotero 客户端里配置的 URL 保持一致——并确认 Zotero 实际写入的是那个 `zotero` 子文件夹。
+> **注意：**Server URL **必须包含 `/zotero`**，直接指向 Zotero 存放附件的那个 `zotero` 文件夹。这与 Zotero 客户端里的填法不同：Zotero 会自动在你填的地址后面补上 `zotero/`，而 ZotFlow 不会，所以要自己带上。例如：Zotero 里配置的是 `https://dav.example.com/dav`，这里就填 `https://dav.example.com/dav/zotero`。
 
 ### 附件缓存
 

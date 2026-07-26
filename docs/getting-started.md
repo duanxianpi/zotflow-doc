@@ -150,7 +150,7 @@ If your attachments are on a WebDAV server rather than Zotero cloud:
 3. Fill in **Server URL**, **Username**, **Password**
 4. Click **Verify & Connect**
 
-> **Note:** Zotero stores attachments inside a folder ending in `/zotero` on your WebDAV server. Point the Server URL at the *parent* folder — the same URL you configured in Zotero itself — and make sure the `zotero` subfolder is the one Zotero actually writes to.
+> **Note:** The **Server URL must include the `/zotero` folder** — point it directly at the folder where Zotero stores its attachments. This differs from Zotero's own setting: Zotero automatically appends `zotero/` to the URL you give it, but ZotFlow does not, so you must add it yourself. Example: if Zotero is configured with `https://dav.example.com/dav`, enter `https://dav.example.com/dav/zotero` here.
 
 ### Attachment Cache
 
