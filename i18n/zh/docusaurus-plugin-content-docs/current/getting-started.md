@@ -49,17 +49,61 @@ ZotFlow 通过 Zotero Web API 获取库数据，因此你的条目必须已经�
 2. 登录 Zotero 账号并确认 **Data Syncing** 已开启
 3. 点击 **Sync**（绿色环形箭头）并等待完成
 
-### 附件（PDF）存储方案
+### 选择 ZotFlow 打开附件的方式
 
-Zotero 免费同步条目元数据，但附件文件需要存储空间。如果附件库较大，有三个选择：
+:::important[ZotFlow 需要 Data Sync，但不要求同步附件文件]
+ZotFlow 需要 Zotero **Data Sync**，以便通过 Web API 获取条目、笔记、标签、Collection
+和附件元数据。Zotero 中独立的 **File Syncing** 选项（`Sync attachment files in My
+Library using`）不是必需项。即使关闭附件文件同步，仍可正常使用 ZotFlow 的 Tree View、
+Source Note、引用、同步和其他只依赖元数据的功能。Zotero 官方也明确说明
+[Data Sync 可以脱离 File Syncing 单独使用](https://www.zotero.org/support/sync#data_syncing)。
+:::
 
-| 方案               | 详情                                                                                                                                                       |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Zotero Storage** | 内置，零配置。免费 300 MB。付费 $20/年起（2 GB）。[查看方案 →](https://www.zotero.org/storage)                                                             |
-| **WebDAV**         | 自建或第三方（如 [Box](https://www.box.com)、[pCloud](https://www.pcloud.com)、[koofr](https://koofr.eu)）。有免费档位。配置在 Settings → ZotFlow → WebDAV |
-| **Linked files**   | PDF 放本地任意目录（或第三方云盘），Zotero 以链接形式引用。在 Settings → ZotFlow → General → Linked Attachment Base Directory 设置基目录。仅桌面端可用     |
+如果希望在移动端、未安装 Zotero 的电脑，或 Zotero 尚未下载附件的另一台电脑上直接
+用 ZotFlow 打开附件，才需要远程附件同步方案。请根据实际使用场景选择：
 
-> 不使用附件同步也可以正常使用 ZotFlow 的 Source Note、引用和 Tree View——这些只需要元数据。附件存储只影响你是否能在 ZotFlow reader 中打开 PDF。
+- **只在一台安装了 Zotero 的桌面电脑上使用，且不需要跨设备访问附件：**
+  优先选择 **Zotero 本地存储**。ZotFlow 会直接读取 Zotero 已有的本地副本。如果你
+  已开启 File Syncing，且它只是为了 ZotFlow，但你只在一台电脑上使用，那么在确保
+  所有附件都已保存在本机后，可以将该选项关闭；保留开启也没有问题。
+- **需要在移动端或未安装 Zotero 的其他电脑上使用：** 选择 **Zotero Cloud Storage**
+  或 **WebDAV**，让 ZotFlow 可以从远程服务下载附件。对于其他桌面电脑，也可以用
+  第三方云盘同步 linked-file 目录，并在每台电脑上设置 **Linked Attachment Base
+  Directory**；linked files 不支持移动端。参见 [Zotero 官方 linked files 说明](https://www.zotero.org/support/attaching_files#linked_files)
+  和[下方配置教程](#linked-attachment-base-directory)。
+- **已经在使用 Zotero Cloud Storage、WebDAV 或 linked files：** 保留现有方案，并在
+  ZotFlow 中配置对应选项即可。
+
+| 方式 | 适用场景 | 说明 |
+| ---- | -------- | ---- |
+| **Zotero 本地存储** | 安装了 Zotero 的单台桌面电脑；不需要跨设备访问附件 | 直接读取 Zotero 已下载到本机 `storage` 目录的副本，避免再次下载和创建 ZotFlow 缓存副本。仅桌面端可用 |
+| **Zotero Cloud Storage** | 移动端、多台电脑、Group Library，或未安装 Zotero 的电脑 | Zotero 内置文件同步，提供 300 MB 免费空间。[查看方案 →](https://www.zotero.org/storage) |
+| **WebDAV** | 在移动端或多台电脑使用 Personal Library，并已有 WebDAV 服务 | 在 **Settings → ZotFlow → WebDAV** 中配置；Zotero 的 WebDAV 文件同步不支持 Group Library |
+| **Linked files** | 已有 linked-file 工作流，或使用外部工具同步附件目录 | 在 **General → Source Notes → Library Source Note** 中配置 **Linked Attachment Base Directory**。仅桌面端可用 |
+
+### 从 Zotero 本地存储目录读取
+
+如果 Zotero 与 Obsidian 运行在同一台桌面电脑上，ZotFlow 可以直接读取 Zotero 本地
+数据目录中的存储型附件：
+
+1. 确认 Zotero 已在这台电脑上下载该附件。
+2. 打开 **Settings → ZotFlow → General → Source Notes → Library Source Note**。
+3. 开启 **Use Zotero Storage Directory**。
+4. 将 **Zotero Storage Path** 设为 Zotero `storage` 目录的完整绝对路径，例如
+   `C:\Users\name\Zotero\storage`、`/Users/name/Zotero/storage` 或
+   `/home/name/Zotero/storage`。
+
+直接读取适用于存储型附件（`imported_file` 和 `imported_url`）。ZotFlow 每次都会先
+从磁盘读取，不经过附件缓存或已配置的同步服务，也不会把结果写入缓存。Linked file
+仍使用自身路径或 **Linked Attachment Base Directory**；移动端继续使用 Zotero Cloud
+Storage 或 WebDAV。
+
+:::note
+这是本机读取方式，不是附件同步服务。Zotero 必须已经在这台电脑上保存该文件，但
+不需要开启 Zotero File Syncing。请指向 `storage` 目录本身，而不是它的上一级 Zotero
+数据目录，并且不要使用 `~`。如果本地文件缺失，ZotFlow 会报告错误而不会静默下载；
+关闭该选项即可恢复通常的同步服务读取路径。
+:::
 
 ### 创建 API Key
 
@@ -164,7 +208,7 @@ ZotFlow 会缓存已下载的附件以加速重复打开：
 
 如果你在 Zotero 中使用了 Linked Attachment Base Directory（Zotero → Preferences → Advanced → Files and Folders），需要告知 ZotFlow 文件的实际位置：
 
-1. **Settings → ZotFlow → General → Linked Attachment Base Directory**
+1. **Settings → ZotFlow → General → Source Notes → Library Source Note → Linked Attachment Base Directory**
 2. 填入与 Zotero 设置中**相同的绝对路径**（如 `D:\Papers` 或 `/Users/name/Papers`）
 3. 存储为 `attachments:papers/foo.pdf` 的附件将解析到 `D:\Papers\papers\foo.pdf`
 
@@ -174,7 +218,7 @@ ZotFlow 会缓存已下载的附件以加速重复打开：
 
 要让 vault 内的任意 PDF/EPUB/HTML 文件也用 ZotFlow reader 打开：
 
-1. **Settings → ZotFlow → General → Overwrite PDF/EPUB/HTML Viewer** → 开启
+1. **Settings → ZotFlow → General → Reader → Overwrite PDF/EPUB/HTML Viewer** → 开启
 2. **重启 Obsidian**
 3. Vault 内的 PDF/EPUB/HTML 现在由 ZotFlow reader 打开，annotation 写入同目录的 `.zf.json` sidecar 文件
 

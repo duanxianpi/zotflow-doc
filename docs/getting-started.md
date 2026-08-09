@@ -49,17 +49,72 @@ ZotFlow fetches library data via the Zotero Web API, so your items must be synce
 2. Sign in with your Zotero account and make sure **Data Syncing** is enabled
 3. Click **Sync** (green circular arrow) and wait for it to complete
 
-### Attachment (PDF) Storage Strategy
+### Choose How ZotFlow Opens Attachments
 
-Zotero syncs item metadata for free, but attachment files require storage space. If your attachment library is large, you have three options:
+:::important[ZotFlow requires data sync, not attachment file sync]
+ZotFlow needs Zotero **Data Sync** so it can retrieve your items, notes, tags,
+collections, and attachment metadata through the Web API. Zotero's separate
+**File Syncing** option (`Sync attachment files in My Library using`) is
+optional. You can disable attachment file syncing and still use ZotFlow's Tree
+View, Source Notes, citations, sync, and other metadata-based features. Zotero
+also documents that [Data Sync can be used without File Syncing](https://www.zotero.org/support/sync#data_syncing).
+:::
 
-| Option             | Details                                                                                                                                                                                          |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Zotero Storage** | Built-in, zero config. Free 300 MB. Paid plans from $20/year (2 GB). [View plans →](https://www.zotero.org/storage)                                                                              |
-| **WebDAV**         | Self-hosted or third-party (e.g., [Box](https://www.box.com), [pCloud](https://www.pcloud.com), [koofr](https://koofr.eu)). Free tiers available. Configure in Settings → ZotFlow → WebDAV       |
-| **Linked files**   | Store PDFs in any local directory (or third-party cloud), referenced by Zotero as links. Set the base directory in Settings → ZotFlow → General → Linked Attachment Base Directory. Desktop-only |
+Attachment file syncing is useful when you want to open attachments in ZotFlow
+on mobile, on a computer without Zotero installed, or on another computer where
+Zotero has not downloaded the file. Choose a method based on where you use
+ZotFlow:
 
-> You can use Source Note, citations, and Tree View normally without attachment sync — those only need metadata. Attachment storage only affects whether you can open PDFs in the ZotFlow reader.
+- **One desktop computer with Zotero installed, with no need for cross-device
+  attachment access:** use **Zotero local storage**. This is the recommended
+  path because ZotFlow reads Zotero's existing local copy directly. If File
+  Syncing is already enabled only for ZotFlow and you use a single computer,
+  you may turn it off after ensuring all attachments are saved locally;
+  leaving it enabled is also fine.
+- **Mobile or another computer without a local Zotero installation:** use
+  **Zotero Cloud Storage** or **WebDAV** so ZotFlow can download the attachment
+  from a remote service. For additional desktop computers, another option is
+  to synchronize a linked-file folder with third-party cloud storage and set
+  **Linked Attachment Base Directory** on each computer. Linked files do not
+  work on mobile. See [Zotero's linked-files documentation](https://www.zotero.org/support/attaching_files#linked_files)
+  and the [setup guide below](#linked-attachment-base-directory).
+- **Already using Zotero Cloud Storage, WebDAV, or linked files:** keep your
+  existing strategy and configure the matching option in ZotFlow.
+
+| Method | Best fit | Details |
+| ------ | -------- | ------- |
+| **Zotero local storage** | One desktop computer with Zotero installed; no cross-device attachment access required | Reads Zotero's downloaded copy from its local `storage` directory. Avoids another download and ZotFlow cache copy. Desktop-only |
+| **Zotero Cloud Storage** | Mobile, multiple computers, group libraries, or computers without Zotero installed | Zotero's built-in file sync with 300 MB free storage. [View plans →](https://www.zotero.org/storage) |
+| **WebDAV** | Mobile or multiple computers using a personal library and an existing WebDAV service | Configure under **Settings → ZotFlow → WebDAV**. Zotero WebDAV file sync does not support group libraries |
+| **Linked files** | Existing linked-file workflows or externally synchronized attachment folders | Configure **Linked Attachment Base Directory** under **General → Source Notes → Library Source Note**. Desktop-only |
+
+### Read from Zotero's Local Storage Directory
+
+If Zotero and Obsidian run on the same desktop computer, ZotFlow can read
+stored attachments directly from Zotero's local data directory:
+
+1. Make sure Zotero has downloaded the attachment on this computer.
+2. Open **Settings → ZotFlow → General → Source Notes → Library Source Note**.
+3. Enable **Use Zotero Storage Directory**.
+4. Set **Zotero Storage Path** to the complete absolute path of Zotero's
+   `storage` directory, for example `C:\Users\name\Zotero\storage`,
+   `/Users/name/Zotero/storage`, or `/home/name/Zotero/storage`.
+
+Direct reading applies to stored attachments (`imported_file` and
+`imported_url`). ZotFlow reads the file from disk each time before consulting
+its attachment cache or configured sync service, and does not add the result
+to its cache. Linked files continue to use their own path or **Linked
+Attachment Base Directory**. Mobile continues to use Zotero Cloud Storage or
+WebDAV.
+
+:::note
+This is a local reading method, not an attachment sync service. Zotero must
+already have the file on this computer, but Zotero File Syncing does not need
+to be enabled. Point ZotFlow to the `storage` directory itself, not its parent
+Zotero data directory, and do not use `~`. If the local file is missing,
+ZotFlow reports the error instead of silently downloading it; disable the
+option to return to the normal sync-service path.
+:::
 
 ### Create an API Key
 
@@ -164,7 +219,7 @@ ZotFlow caches downloaded attachments for faster repeat access:
 
 If you use Linked Attachment Base Directory in Zotero (Zotero → Preferences → Advanced → Files and Folders), you need to tell ZotFlow where the files actually live:
 
-1. **Settings → ZotFlow → General → Linked Attachment Base Directory**
+1. **Settings → ZotFlow → General → Source Notes → Library Source Note → Linked Attachment Base Directory**
 2. Enter the **same absolute path** as in Zotero settings (e.g., `D:\Papers` or `/Users/name/Papers`)
 3. An attachment stored as `attachments:papers/foo.pdf` will resolve to `D:\Papers\papers\foo.pdf`
 
@@ -174,7 +229,7 @@ Skip this if you don't use linked attachments.
 
 To use the ZotFlow reader for any PDF/EPUB/HTML file inside your vault:
 
-1. **Settings → ZotFlow → General → Overwrite PDF/EPUB/HTML Viewer** → Enable
+1. **Settings → ZotFlow → General → Reader → Overwrite PDF/EPUB/HTML Viewer** → Enable
 2. **Restart Obsidian**
 3. PDF/EPUB/HTML files in your vault are now opened by the ZotFlow reader, with annotations written to a co-located `.zf.json` sidecar file
 
