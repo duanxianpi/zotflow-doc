@@ -158,8 +158,8 @@ const config = {
           alt: "ZotFlow",
           src: "img/zotflow-light.svg",
           srcDark: "img/zotflow-dark.svg",
-          width: 95,
-          height: 22,
+          width: 107,
+          height: 32,
         },
         items: [
           // {
@@ -183,7 +183,7 @@ const config = {
           alt: "ZotFlow",
           src: "img/zotflow-dark.svg",
           width: 120,
-          height: 28,
+          height: 36,
         },
         links: [
           {
@@ -221,8 +221,16 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Xianpi Duan. Built with Docusaurus.`,
       },
       prism: {
-        theme: prismThemes.github,
-        darkTheme: prismThemes.oneDark,
+        // Token colours from GitHub / One Dark; backgrounds from the site's
+        // warm surface and Obsidian's neutral dark.
+        theme: {
+          ...prismThemes.github,
+          plain: { ...prismThemes.github.plain, backgroundColor: "#f4f1ec" },
+        },
+        darkTheme: {
+          ...prismThemes.oneDark,
+          plain: { ...prismThemes.oneDark.plain, backgroundColor: "#262626" },
+        },
       },
       mermaid: {
         theme: { light: "neutral", dark: "dark" },

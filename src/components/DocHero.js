@@ -15,8 +15,8 @@ export default function DocHero({ title, tagline, actions = [] }) {
         <ThemedImage
           className="zf-hero__logo"
           alt=""
-          width={354}
-          height={82}
+          width={373}
+          height={112}
           sources={{
             light: useBaseUrl("/img/zotflow-light.svg"),
             dark: useBaseUrl("/img/zotflow-dark.svg"),

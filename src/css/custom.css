@@ -1,35 +1,78 @@
 /**
  * ZotFlow theme.
  *
- * Colours come from the wordmark: Zotero red on the z, Obsidian violet on
- * the second o, ink for everything else. Violet carries links and the
- * active state; red is an accent only.
+ * Colours follow the brand guide: one accent, deep teal on light
+ * backgrounds and mint on dark ones, with ink, paper and a teal wash.
+ * No second accent and no large gradients.
+ *
+ * Infima's own greys are cool blue-greys and its status colours are fully
+ * saturated; both are replaced here so every component (admonitions,
+ * pagination, cards, the TOC) sits on the same warm neutrals.
  */
 
 :root {
-  --zf-red: #cc272e;
-  --zf-violet: #7e4ed7;
-  --zf-ink: #1f1e26;
-  --zf-paper: #fcfbf9;
+  --zf-accent: #216a63;
+  --zf-ink: #211f26;
+  --zf-paper: #faf8f4;
   --zf-surface: #ffffff;
-  --zf-muted: #6b6878;
-  --zf-border: #e8e5ee;
-  --zf-tint: rgba(126, 78, 215, 0.08);
+  --zf-muted: #6e6574;
+  --zf-border: #e6e0d8;
+  --zf-wash: #e3eeeb;
+  --zf-tint: rgba(33, 106, 99, 0.08);
+  --zf-footer: #211f26;
 
-  --ifm-color-primary: #7e4ed7;
-  --ifm-color-primary-dark: #7146c2;
-  --ifm-color-primary-darker: #6b42b7;
-  --ifm-color-primary-darkest: #583796;
-  --ifm-color-primary-light: #8b60db;
-  --ifm-color-primary-lighter: #9169dd;
-  --ifm-color-primary-lightest: #a583e3;
+  /* Warm greys between paper and ink. Infima builds its emphasis scale
+     (borders, secondary text, hover fills) from these. */
+  --ifm-color-gray-100: #f5f2eb;
+  --ifm-color-gray-200: #ebe6de;
+  --ifm-color-gray-300: #dcd5cb;
+  --ifm-color-gray-400: #cbc3b9;
+  --ifm-color-gray-500: #b0a7a8;
+  --ifm-color-gray-600: #8c838f;
+  --ifm-color-gray-700: #6e6574;
+  --ifm-color-gray-800: #45404b;
+  --ifm-color-gray-900: #211f26;
+
+  --ifm-color-primary: #216a63;
+  --ifm-color-primary-dark: #1e5f59;
+  --ifm-color-primary-darker: #1c5a54;
+  --ifm-color-primary-darkest: #174a45;
+  --ifm-color-primary-light: #24756d;
+  --ifm-color-primary-lighter: #267a72;
+  --ifm-color-primary-lightest: #2b8a81;
+
+  /* Status colours, matched to the teal's weight. Tip is the brand teal;
+     note is neutral; important, warning and caution keep their meaning
+     in muted blue, amber and brick. */
+  --ifm-color-secondary: #ebe6de;
+  --ifm-color-secondary-dark: #cbc3b9;
+  --ifm-color-secondary-contrast-background: var(--zf-surface);
+  --ifm-color-secondary-contrast-foreground: var(--zf-ink);
+  --ifm-color-success: #216a63;
+  --ifm-color-success-dark: #216a63;
+  --ifm-color-success-contrast-background: var(--zf-wash);
+  --ifm-color-success-contrast-foreground: #143f3b;
+  --ifm-color-info: #3a6788;
+  --ifm-color-info-dark: #3a6788;
+  --ifm-color-info-contrast-background: #e7eef3;
+  --ifm-color-info-contrast-foreground: #1d3446;
+  --ifm-color-warning: #b7801f;
+  --ifm-color-warning-dark: #b7801f;
+  --ifm-color-warning-contrast-background: #f8f0df;
+  --ifm-color-warning-contrast-foreground: #4a3509;
+  --ifm-color-danger: #b4433b;
+  --ifm-color-danger-dark: #b4433b;
+  --ifm-color-danger-contrast-background: #f7e8e5;
+  --ifm-color-danger-contrast-foreground: #4d1c18;
 
   --ifm-background-color: var(--zf-paper);
   --ifm-background-surface-color: var(--zf-surface);
+  --ifm-color-content: var(--zf-ink);
+  --ifm-color-content-secondary: var(--zf-muted);
   --ifm-font-color-base: var(--zf-ink);
   --ifm-heading-color: var(--zf-ink);
   --ifm-toc-border-color: var(--zf-border);
-  --ifm-hr-border-color: var(--zf-border);
+  --ifm-hr-background-color: var(--zf-border);
   --ifm-table-border-color: var(--zf-border);
 
   --ifm-font-family-base: system-ui, -apple-system, "Segoe UI", Roboto,
@@ -44,38 +87,109 @@
   --ifm-global-radius: 8px;
 
   --ifm-navbar-height: 3.75rem;
-  --ifm-navbar-background-color: rgba(252, 251, 249, 0.82);
+  --ifm-navbar-background-color: rgba(250, 248, 244, 0.82);
   --ifm-navbar-shadow: none;
   --ifm-menu-color-background-active: var(--zf-tint);
-  --ifm-menu-color-background-hover: rgba(31, 30, 38, 0.05);
-  --ifm-footer-background-color: #17161d;
+  --ifm-menu-color-background-hover: rgba(33, 31, 38, 0.05);
 
-  --docusaurus-highlighted-code-line-bg: rgba(126, 78, 215, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(33, 106, 99, 0.1);
 }
 
-[data-theme="dark"] {
-  --zf-red: #f97770;
-  --zf-violet: #ad8dfd;
-  --zf-ink: #e7e7ed;
-  --zf-paper: #14131a;
-  --zf-surface: #1b1a22;
-  --zf-muted: #9a97a8;
-  --zf-border: #2b2935;
-  --zf-tint: rgba(173, 141, 253, 0.12);
+/* html[...] matches Infima's own dark selector, so these win over it. */
+html[data-theme="dark"] {
+  --zf-accent: #4fb3a8;
+  --zf-ink: #e6e3de;
+  --zf-paper: #1e1e1e;
+  --zf-surface: #252525;
+  --zf-muted: #aaa4ad;
+  --zf-border: #333132;
+  --zf-wash: #203c38;
+  --zf-tint: rgba(79, 179, 168, 0.12);
+  --zf-footer: #161616;
 
-  --ifm-color-primary: #ad8dfd;
-  --ifm-color-primary-dark: #9c7fe4;
-  --ifm-color-primary-darker: #9378d7;
-  --ifm-color-primary-darkest: #7963b1;
-  --ifm-color-primary-light: #b598fd;
-  --ifm-color-primary-lighter: #b99efd;
-  --ifm-color-primary-lightest: #c6affe;
+  /* Infima reverses the grey scale for dark mode; set the result
+     directly so it stays neutral against Obsidian's #1e1e1e. */
+  --ifm-color-emphasis-0: #161616;
+  --ifm-color-emphasis-100: #252525;
+  --ifm-color-emphasis-200: #2f2e2f;
+  --ifm-color-emphasis-300: #3d3b3f;
+  --ifm-color-emphasis-400: #57535a;
+  --ifm-color-emphasis-500: #77727a;
+  --ifm-color-emphasis-600: #9a959d;
+  --ifm-color-emphasis-700: #bdb8bf;
+  --ifm-color-emphasis-800: #dad6d2;
+  --ifm-color-emphasis-900: #ebe8e4;
+  --ifm-color-emphasis-1000: #ffffff;
 
-  --ifm-navbar-background-color: rgba(20, 19, 26, 0.8);
-  --ifm-menu-color-background-hover: rgba(231, 231, 237, 0.06);
-  --ifm-footer-background-color: #0f0e14;
+  --ifm-color-primary: #4fb3a8;
+  --ifm-color-primary-dark: #46a298;
+  --ifm-color-primary-darker: #429990;
+  --ifm-color-primary-darkest: #367e76;
+  --ifm-color-primary-light: #61bbb1;
+  --ifm-color-primary-lighter: #6abfb5;
+  --ifm-color-primary-lightest: #85cac3;
 
-  --docusaurus-highlighted-code-line-bg: rgba(173, 141, 253, 0.14);
+  --ifm-color-secondary: #3d3b3f;
+  --ifm-color-secondary-dark: #57535a;
+  --ifm-color-secondary-contrast-background: var(--zf-surface);
+  --ifm-color-secondary-contrast-foreground: var(--zf-ink);
+  --ifm-color-success: #4fb3a8;
+  --ifm-color-success-dark: #4fb3a8;
+  --ifm-color-success-contrast-background: var(--zf-wash);
+  --ifm-color-success-contrast-foreground: #d5ece8;
+  --ifm-color-info: #74a5c8;
+  --ifm-color-info-dark: #74a5c8;
+  --ifm-color-info-contrast-background: #1e2c37;
+  --ifm-color-info-contrast-foreground: #dbe8f1;
+  --ifm-color-warning: #d6a24a;
+  --ifm-color-warning-dark: #d6a24a;
+  --ifm-color-warning-contrast-background: #352b17;
+  --ifm-color-warning-contrast-foreground: #f4e7cc;
+  --ifm-color-danger: #dd7a71;
+  --ifm-color-danger-dark: #dd7a71;
+  --ifm-color-danger-contrast-background: #3a201d;
+  --ifm-color-danger-contrast-foreground: #f5dcd8;
+
+  --ifm-background-color: var(--zf-paper);
+  --ifm-background-surface-color: var(--zf-surface);
+  --ifm-color-content: var(--zf-ink);
+  --ifm-color-content-secondary: var(--zf-muted);
+  --ifm-toc-border-color: var(--zf-border);
+  --ifm-hover-overlay: rgba(230, 227, 222, 0.05);
+  --ifm-table-stripe-background: rgba(230, 227, 222, 0.04);
+  --ifm-scrollbar-track-background-color: #2a2a2a;
+  --ifm-scrollbar-thumb-background-color: #4a474c;
+  --ifm-scrollbar-thumb-hover-background-color: #5c595e;
+
+  --ifm-navbar-background-color: rgba(30, 30, 30, 0.8);
+  --ifm-menu-color-background-hover: rgba(230, 227, 222, 0.06);
+
+  --docusaurus-highlighted-code-line-bg: rgba(79, 179, 168, 0.14);
+}
+
+/* Mint is a light fill: text on it is ink (6.48:1), not white. */
+
+html[data-theme="dark"] .button--primary {
+  --ifm-button-color: #211f26;
+}
+
+/* Inline code and links inside an admonition get a tint of its own
+   colour (Infima hard-codes the default green, blue, yellow and red). */
+
+.alert--success {
+  --ifm-alert-background-color-highlight: color-mix(in srgb, var(--ifm-color-success) 14%, transparent);
+}
+
+.alert--info {
+  --ifm-alert-background-color-highlight: color-mix(in srgb, var(--ifm-color-info) 14%, transparent);
+}
+
+.alert--warning {
+  --ifm-alert-background-color-highlight: color-mix(in srgb, var(--ifm-color-warning) 14%, transparent);
+}
+
+.alert--danger {
+  --ifm-alert-background-color-highlight: color-mix(in srgb, var(--ifm-color-danger) 14%, transparent);
 }
 
 /* Navbar: translucent, a hairline instead of a shadow. */
@@ -87,7 +201,8 @@
 }
 
 .navbar__logo {
-  height: 1.375rem;
+  /* 32px: the guide prefers 40px, but the wordmark still reads here. */
+  height: 2rem;
   margin-right: 1rem;
 }
 
@@ -122,7 +237,7 @@
 }
 
 .markdown blockquote {
-  border-left-color: var(--zf-violet);
+  border-left-color: var(--zf-accent);
   background: var(--zf-tint);
   border-radius: 0 var(--ifm-global-radius) var(--ifm-global-radius) 0;
   padding: 0.75rem 1rem;
@@ -177,9 +292,11 @@
 /* Footer */
 
 .footer--dark {
-  --ifm-footer-link-color: #b4b1c1;
-  --ifm-footer-title-color: #e7e7ed;
-  --ifm-footer-color: #8e8b9c;
+  /* Infima sets its own slate here, so the root variable never reaches it. */
+  --ifm-footer-background-color: var(--zf-footer);
+  --ifm-footer-link-color: #c9c3cc;
+  --ifm-footer-title-color: #f5f2eb;
+  --ifm-footer-color: #9a93a0;
 }
 
 .footer__logo {
@@ -195,10 +312,7 @@
   text-align: center;
   border: 1px solid var(--zf-border);
   border-radius: 16px;
-  background:
-    radial-gradient(60% 90% at 100% 0%, color-mix(in srgb, var(--zf-violet) 14%, transparent), transparent 70%),
-    radial-gradient(50% 80% at 0% 100%, color-mix(in srgb, var(--zf-red) 10%, transparent), transparent 70%),
-    var(--zf-surface);
+  background: var(--zf-wash);
 }
 
 .zf-hero__title {
@@ -218,12 +332,9 @@
   font-weight: 500;
 }
 
-.zf-hero__tagline .zf-in {
-  color: var(--zf-red);
-}
-
+.zf-hero__tagline .zf-in,
 .zf-hero__tagline .zf-out {
-  color: var(--zf-violet);
+  color: var(--zf-accent);
 }
 
 .zf-hero__actions {
@@ -250,4 +361,54 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.markdown .zf-hero .button--secondary {
+  --ifm-button-background-color: var(--zf-surface);
+  --ifm-button-border-color: var(--zf-border);
+  /* Infima pins secondary buttons to gray-900, dark in both themes. */
+  color: var(--zf-ink);
+}
+
+/* Code blocks: the copy button's "copied" tick is a hard-coded bright
+   green in Docusaurus. */
+
+[class*="copyButtonSuccessIcon"] {
+  color: var(--ifm-color-primary);
+}
+
+/* Mermaid: the neutral and dark themes draw cool greys; recolour the
+   flowchart parts we use with the site's neutrals. Mermaid scopes its own
+   styles to the diagram's id, hence !important. */
+
+.docusaurus-mermaid-container .node rect,
+.docusaurus-mermaid-container .node circle,
+.docusaurus-mermaid-container .node ellipse,
+.docusaurus-mermaid-container .node polygon,
+.docusaurus-mermaid-container .node path {
+  fill: var(--zf-surface) !important;
+  stroke: var(--ifm-color-emphasis-500) !important;
+}
+
+.docusaurus-mermaid-container .flowchart-link {
+  stroke: var(--zf-muted) !important;
+}
+
+.docusaurus-mermaid-container .marker,
+.docusaurus-mermaid-container .arrowMarkerPath {
+  fill: var(--zf-muted) !important;
+  stroke: var(--zf-muted) !important;
+}
+
+.docusaurus-mermaid-container .nodeLabel,
+.docusaurus-mermaid-container .edgeLabel,
+.docusaurus-mermaid-container .label {
+  color: var(--zf-ink) !important;
+  fill: var(--zf-ink) !important;
+}
+
+.docusaurus-mermaid-container .edgeLabel,
+.docusaurus-mermaid-container .edgeLabel p,
+.docusaurus-mermaid-container .labelBkg {
+  background-color: var(--ifm-background-color) !important;
 }
