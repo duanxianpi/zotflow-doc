@@ -1,5 +1,6 @@
 ---
 sidebar_position: 5
+description: "Source Notes are template-generated Markdown pages for each Zotero item, collecting metadata, annotations and child notes in Obsidian."
 ---
 
 # Source Notes

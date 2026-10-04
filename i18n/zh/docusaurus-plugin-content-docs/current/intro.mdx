@@ -1,11 +1,25 @@
 ---
 slug: /
 sidebar_position: 1
+title: ZotFlow 中文文档
+hide_title: true
+description: "ZotFlow 是免费开源的 Obsidian 插件，把 Zotero 带进你的库：同步文献库、在 Obsidian 中阅读和批注 PDF/EPUB、按模板生成文献笔记，并用 CSL 格式插入引用。"
 ---
 
-# ZotFlow 中文文档
+import DocHero from "@site/src/components/DocHero";
 
-**Literature flows in, insight flows out.**
+<head>
+  <title>ZotFlow — 在 Obsidian 中使用 Zotero</title>
+</head>
+
+<DocHero
+  title="ZotFlow 中文文档"
+  tagline={<>Literature flows <span className="zf-in">in</span>, insight flows <span className="zf-out">out</span>.</>}
+  actions={[
+    { label: "快速开始", to: "/getting-started", primary: true },
+    { label: "GitHub", to: "https://github.com/duanxianpi/zotflow" },
+  ]}
+/>
 
 ZotFlow 把 Zotero 和 Obsidian 连成一个循环：文献库流入你的 vault，阅读、批注、思考都在 Obsidian 里发生，写作时引用能跳回原文精确位置——而每一处改动都会同步回 Zotero。Zotero 始终是文献库的 source of truth，Obsidian 是你思考发生的地方。
 

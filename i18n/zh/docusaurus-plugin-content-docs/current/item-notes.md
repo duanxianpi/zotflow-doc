@@ -1,5 +1,6 @@
 ---
 sidebar_position: 6
+description: "在 Obsidian 中创建、编辑和删除 Zotero 子笔记并同步回 Zotero，以及条目笔记与来源笔记的区别。"
 ---
 
 # Item Note：Zotero 子笔记

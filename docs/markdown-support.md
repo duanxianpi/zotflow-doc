@@ -1,5 +1,6 @@
 ---
 sidebar_position: 7
+description: "Which Obsidian Markdown syntax survives the round trip to Zotero notes, what is converted, and what is lost."
 ---
 
 # Markdown Syntax Support

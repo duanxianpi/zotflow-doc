@@ -1,5 +1,6 @@
 ---
 sidebar_position: 11
+description: "ZotFlow 模板可用的全部变量参考，以及内置的默认模板。"
 ---
 
 # 模板变量与默认模板

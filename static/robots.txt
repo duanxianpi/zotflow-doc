@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zotflow.peterduan.dev/sitemap.xml
+Sitemap: https://zotflow.peterduan.dev/zh/sitemap.xml

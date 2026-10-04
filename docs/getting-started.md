@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: "Install the ZotFlow plugin in Obsidian, connect your Zotero account with an API key, and run your first library sync."
 ---
 
 # Quick Start & Setup

@@ -1,5 +1,6 @@
 ---
 sidebar_position: 11
+description: "Reference of every variable available to ZotFlow templates, plus the built-in default templates."
 ---
 
 # Template Variables & Defaults

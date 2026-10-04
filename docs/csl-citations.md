@@ -1,5 +1,6 @@
 ---
 sidebar_position: 9
+description: "Render APA, IEEE, Chicago and thousands of other CSL citation styles and bibliographies in Obsidian with citeproc."
 ---
 
 # CSL Citations

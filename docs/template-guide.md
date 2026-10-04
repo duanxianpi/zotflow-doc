@@ -1,5 +1,6 @@
 ---
 sidebar_position: 10
+description: "Customize ZotFlow's Source Notes, citation formats and note paths with LiquidJS templates."
 ---
 
 # Template Guide

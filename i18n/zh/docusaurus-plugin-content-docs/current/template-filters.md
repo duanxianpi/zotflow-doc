@@ -1,5 +1,6 @@
 ---
 sidebar_position: 12
+description: "ZotFlow 自定义 LiquidJS 过滤器参考：链接、HTML/Markdown 转换、可编辑区域和 CSL 引用。"
 ---
 
 # 模板 Filter 参考

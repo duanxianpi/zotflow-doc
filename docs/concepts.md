@@ -1,5 +1,6 @@
 ---
 sidebar_position: 3
+description: "How ZotFlow moves data between Zotero and Obsidian: what syncs, what stays local, and who owns each part of a Source Note."
 ---
 
 # Working Model Overview

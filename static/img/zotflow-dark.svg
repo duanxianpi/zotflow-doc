@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 24 354 82" width="354" height="82" role="img" aria-label="ZotFlow">
+  <title>ZotFlow</title>
+  <g fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 50H60L20 100H60" stroke="#F97770"/>
+    <circle cx="99" cy="75" r="25" stroke="#E7E7ED"/>
+    <path d="M144 30V86Q144 100 158 100" stroke="#E7E7ED"/>
+    <path d="M176 100V46Q176 30 192 30H198" stroke="#E7E7ED"/>
+    <path d="M214 30V86Q214 100 228 100" stroke="#E7E7ED"/>
+    <circle cx="266" cy="75" r="25" stroke="#AD8DFD"/>
+    <path d="M306 50L318 100L334 62L350 100L362 50" stroke="#E7E7ED"/>
+    <path d="M135 50H196" stroke="#E7E7ED"/>
+  </g>
+</svg>

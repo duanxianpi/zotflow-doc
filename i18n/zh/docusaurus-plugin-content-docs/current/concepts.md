@@ -1,5 +1,6 @@
 ---
 sidebar_position: 3
+description: "ZotFlow 如何在 Zotero 与 Obsidian 之间流转数据：哪些会同步、哪些只留在本地，以及来源笔记中各部分归谁所有。"
 ---
 
 # 工作模型总览

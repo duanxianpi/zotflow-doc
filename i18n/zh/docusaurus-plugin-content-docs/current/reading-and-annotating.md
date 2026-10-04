@@ -1,5 +1,6 @@
 ---
 sidebar_position: 4
+description: "用内置的 Zotero 阅读器在 Obsidian 中阅读并批注 PDF、EPUB 和网页快照，批注会同步回 Zotero。"
 ---
 
 # 阅读器与批注

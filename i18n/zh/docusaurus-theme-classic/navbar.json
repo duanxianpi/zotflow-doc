@@ -1,10 +1,6 @@
 {
-  "title": {
-    "message": "ZotFlow",
-    "description": "The title in the navbar"
-  },
   "logo.alt": {
-    "message": "ZotFlow 标志",
+    "message": "ZotFlow",
     "description": "The alt text of navbar logo"
   },
   "item.label.GitHub": {

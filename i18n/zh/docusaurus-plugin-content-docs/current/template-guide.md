@@ -1,5 +1,6 @@
 ---
 sidebar_position: 10
+description: "用 LiquidJS 模板自定义 ZotFlow 的来源笔记、引用格式和笔记路径。"
 ---
 
 # 模板指南

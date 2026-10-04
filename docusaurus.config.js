@@ -5,6 +5,42 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import { themes as prismThemes } from "prism-react-renderer";
+import llmsTxtPlugin from "./src/plugins/llms-txt.js";
+
+const SITE_URL = "https://zotflow.peterduan.dev";
+
+// Structured data for search engines and AI answer engines.
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${SITE_URL}/#software`,
+      name: "ZotFlow",
+      description:
+        "Obsidian plugin that integrates Zotero: two-way library sync, a built-in PDF/EPUB reader for annotating, templated literature notes, and citations in any CSL style.",
+      applicationCategory: "ProductivityApplication",
+      applicationSubCategory: "Obsidian plugin",
+      operatingSystem: "Windows, macOS, Linux, iOS, Android",
+      isAccessibleForFree: true,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      license: "https://www.gnu.org/licenses/agpl-3.0.html",
+      url: `${SITE_URL}/`,
+      downloadUrl: "https://community.obsidian.md/plugins/zotflow",
+      softwareHelp: `${SITE_URL}/`,
+      sameAs: ["https://github.com/duanxianpi/zotflow"],
+      author: { "@type": "Person", name: "Xianpi Duan", url: "https://github.com/duanxianpi" },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: "ZotFlow Documentation",
+      url: `${SITE_URL}/`,
+      inLanguage: ["en", "zh-CN"],
+      about: { "@id": `${SITE_URL}/#software` },
+    },
+  ],
+};
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -13,6 +49,22 @@ const config = {
   title: "ZotFlow",
   tagline: "Keep your research in flow",
   favicon: "img/favicon.ico",
+
+  headTags: [
+    {
+      tagName: "script",
+      attributes: { type: "application/ld+json" },
+      innerHTML: JSON.stringify(STRUCTURED_DATA),
+    },
+    {
+      tagName: "link",
+      attributes: { rel: "icon", type: "image/svg+xml", href: "/img/favicon.svg" },
+    },
+    {
+      tagName: "link",
+      attributes: { rel: "apple-touch-icon", href: "/img/apple-touch-icon.png" },
+    },
+  ],
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -23,12 +75,16 @@ const config = {
     mermaid: true,
   },
   themes: ["@docusaurus/theme-mermaid"],
+  plugins: [llmsTxtPlugin],
 
   // Set the production url of your site here
-  url: "https://zotflow.peterduan.dev",
+  url: SITE_URL,
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
+  // Cloudflare serves getting-started.html at /getting-started, so URLs,
+  // canonicals and the sitemap all match without a redirect.
+  trailingSlash: false,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -45,7 +101,7 @@ const config = {
     locales: ["en", "zh"],
     localeConfigs: {
       en: { label: "English" },
-      zh: { label: "简体中文" },
+      zh: { label: "简体中文", htmlLang: "zh-CN" },
     },
   },
 
@@ -62,21 +118,7 @@ const config = {
           // editUrl:
           // "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
-        // blog: {
-        //   showReadingTime: true,
-        //   feedOptions: {
-        //     type: ["rss", "atom"],
-        //     xslt: true,
-        //   },
-        //   // Please change this to your repo.
-        //   // Remove this to remove the "edit this page" links.
-        //   // editUrl:
-        //   // "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
-        //   // Useful options to enforce blogging best practices
-        //   onInlineTags: "warn",
-        //   onInlineAuthors: "warn",
-        //   onUntruncatedBlogPosts: "warn",
-        // },
+        blog: false,
         theme: {
           customCss: "./src/css/custom.css",
         },
@@ -99,16 +141,25 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
-      image: "img/docusaurus-social-card.jpg",
+      image: "img/social-card.png",
+      metadata: [
+        {
+          name: "keywords",
+          content:
+            "Zotero, Obsidian, Obsidian plugin, Zotero Obsidian integration, literature notes, PDF annotation, citation manager, CSL, research workflow, ZotFlow",
+        },
+        { name: "author", content: "Xianpi Duan" },
+      ],
       colorMode: {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: "ZotFlow",
         logo: {
-          alt: "My Site Logo",
-          src: "img/logo.svg",
+          alt: "ZotFlow",
+          src: "img/zotflow-light.svg",
+          srcDark: "img/zotflow-dark.svg",
+          width: 95,
+          height: 22,
         },
         items: [
           // {
@@ -128,6 +179,12 @@ const config = {
       },
       footer: {
         style: "dark",
+        logo: {
+          alt: "ZotFlow",
+          src: "img/zotflow-dark.svg",
+          width: 120,
+          height: 28,
+        },
         links: [
           {
             title: "Docs",
@@ -165,7 +222,10 @@ const config = {
       },
       prism: {
         theme: prismThemes.github,
-        darkTheme: prismThemes.dracula,
+        darkTheme: prismThemes.oneDark,
+      },
+      mermaid: {
+        theme: { light: "neutral", dark: "dark" },
       },
     }),
 };

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="ZotFlow">
+  <rect width="128" height="128" rx="28" fill="#1F1E26"/>
+  <g transform="translate(64 64) scale(0.86) translate(-72 -75)" fill="none" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 50H60L20 100H60" stroke="#F97770"/>
+    <circle cx="99" cy="75" r="25" stroke="#AD8DFD"/>
+  </g>
+</svg>

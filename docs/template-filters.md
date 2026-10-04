@@ -1,5 +1,6 @@
 ---
 sidebar_position: 12
+description: "Reference of ZotFlow's custom LiquidJS filters: links, HTML/Markdown conversion, editable regions and CSL citations."
 ---
 
 # Template Filters

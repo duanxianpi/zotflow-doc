@@ -1,5 +1,6 @@
 ---
 sidebar_position: 5
+description: "来源笔记是为每个 Zotero 条目按模板生成的 Markdown 页面，在 Obsidian 中汇集元数据、批注和子笔记。"
 ---
 
 # Source Notes

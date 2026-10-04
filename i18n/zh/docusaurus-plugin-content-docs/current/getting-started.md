@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: "在 Obsidian 中安装 ZotFlow 插件，用 API 密钥连接 Zotero 账户，并完成第一次文献库同步。"
 ---
 
 # 快速开始与连接

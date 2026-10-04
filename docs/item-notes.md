@@ -1,5 +1,6 @@
 ---
 sidebar_position: 6
+description: "Create, edit and delete Zotero child notes from Obsidian and sync them back to Zotero — and how Item Notes differ from Source Notes."
 ---
 
 # Item Note: Zotero Child Notes

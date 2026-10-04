@@ -1,5 +1,6 @@
 ---
 sidebar_position: 14
+description: "按症状排查 ZotFlow 常见问题：API 密钥验证、同步、编辑、阅读器与引用。"
 ---
 
 # 故障排查（按症状）

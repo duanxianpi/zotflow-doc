@@ -1,5 +1,6 @@
 ---
 sidebar_position: 8
+description: "在 Obsidian 写作时插入引用——Pandoc、脚注、双链或 citekey——支持拖拽、自动补全和快捷键。"
 ---
 
 # 引用与写作流

@@ -1,5 +1,6 @@
 ---
 sidebar_position: 8
+description: "Insert citations while writing in Obsidian — Pandoc, footnote, wikilink or citekey — by drag and drop, autocomplete or hotkey."
 ---
 
 # Citation & Writing Flow

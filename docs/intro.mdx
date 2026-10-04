@@ -1,11 +1,25 @@
 ---
 slug: /
 sidebar_position: 1
+title: ZotFlow Documentation
+hide_title: true
+description: "ZotFlow is a free, open-source Obsidian plugin that brings Zotero into your vault: sync your library, read and annotate PDFs and EPUBs, generate templated literature notes, and cite with CSL styles."
 ---
 
-# ZotFlow Documentation
+import DocHero from "@site/src/components/DocHero";
 
-**Literature flows in, insight flows out.**
+<head>
+  <title>ZotFlow — Zotero integration for Obsidian</title>
+</head>
+
+<DocHero
+  title="ZotFlow Documentation"
+  tagline={<>Literature flows <span className="zf-in">in</span>, insight flows <span className="zf-out">out</span>.</>}
+  actions={[
+    { label: "Get started", to: "/getting-started", primary: true },
+    { label: "GitHub", to: "https://github.com/duanxianpi/zotflow" },
+  ]}
+/>
 
 ZotFlow connects Zotero and Obsidian into a single loop: your Zotero library streams into your vault, you read, annotate, and think inside Obsidian, and what you write cites back to the exact page — while every change syncs back to Zotero. Zotero stays the source of truth for your library; Obsidian is where your thinking happens.
 

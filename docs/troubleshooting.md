@@ -1,5 +1,6 @@
 ---
 sidebar_position: 14
+description: "Fix common ZotFlow problems by symptom: API key verification, sync, editing, reader and citation issues."
 ---
 
 # Troubleshooting (By Symptom)

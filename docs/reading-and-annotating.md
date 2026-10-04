@@ -1,5 +1,6 @@
 ---
 sidebar_position: 4
+description: "Read and annotate Zotero PDFs, EPUBs and web snapshots inside Obsidian with the built-in Zotero reader, synced back to Zotero."
 ---
 
 # Reader & Annotations

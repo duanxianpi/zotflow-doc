@@ -1,5 +1,6 @@
 ---
 sidebar_position: 7
+description: "哪些 Obsidian Markdown 语法能在与 Zotero 笔记之间往返时保留，哪些会被转换或丢失。"
 ---
 
 # Markdown 语法支持

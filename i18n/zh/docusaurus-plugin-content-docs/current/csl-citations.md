@@ -1,5 +1,6 @@
 ---
 sidebar_position: 9
+description: "用 citeproc 在 Obsidian 中渲染 APA、IEEE、Chicago 等数千种 CSL 引文格式和参考文献列表。"
 ---
 
 # CSL 引用
